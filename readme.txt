@@ -1,7 +1,7 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook share, twitter share, facebook share button, twitter share button
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button
 Requires at least: 2.9+
 Tested up to: 3.0.5
 Stable tag: 1.0.0
