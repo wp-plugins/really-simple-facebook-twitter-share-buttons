@@ -11,6 +11,8 @@ Puts Facebook and Twitter share buttons above or below your posts.
 == Description ==
 This plugin shows Facebook and Twitter share buttons above or below your posts.
 
+For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
+
 == Installation ==
 1. Upload the `really-simple-facebook-twitter-share-buttons` directory into the `/wp-content/plugins/` directory
 2. Set your favourite values in the `Settings->Really simple share` menu in Wordpress
