@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook and Twitter share buttons above or below your posts.
 Author: WhileTrue
-Version: 1.0.0
+Version: 1.0.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -24,7 +24,7 @@ add_filter('the_content', 'really_simple_share');
 add_action('admin_menu', 'really_simple_share_menu');
 
 function really_simple_share_menu() {
-	add_options_page('Really simple share Options', 'Really simple share', 'manage_options', 'my-unique-identifier', 'really_simple_share_options');
+	add_options_page('Really simple share Options', 'Really simple share', 'manage_options', 'really_simple_share_options', 'really_simple_share_options');
 }
 
 
@@ -59,31 +59,27 @@ function really_simple_share ($content) {
 
 function really_simple_share_options () {
 
-    //must check that the user has the required capability 
-    if (!current_user_can('manage_options')) {
-      wp_die( __('You do not have sufficient permissions to access this page.') );
-    }
+	$option_name = 'really_simple_share';
 
-    // See if the user has posted us some information
-    if( isset($_POST['really_simple_share_position'])) {
+	//must check that the user has the required capability 
+	if (!current_user_can('manage_options')) {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
 
-        update_option( 'really_simple_share', esc_html($_POST['really_simple_share_position']));
-
+	// See if the user has posted us some information
+	if( isset($_POST['really_simple_share_position'])) {
+		update_option($option_name, esc_html($_POST['really_simple_share_position']));
 		// Put an settings updated message on the screen
-
-?>
-<div class="updated"><p><strong><?php _e('Settings saved.', 'menu-test' ); ?></strong></p></div>
-<?php
-
+		$out .= '<div class="updated"><p><strong>'.__('Settings saved.', 'menu-test' ).'</strong></p></div>';
 	}
 	
 	//GET STORED VALUES
-	$option_string = get_option('really_simple_share');
-
+	$option_string = get_option($option_name);
+	 
 	if ($option_string===false) {
 		//OPTION NOT IN DATABASE, SO WE INSERT DEFAULT VALUES
-		add_option('really_simple_share', 'above');
-		$option_string = get_option('really_simple_share');
+		add_option($option_name, 'above');
+		$option_string = get_option($option_name);
 	}
 
 	$really_simple_share_options = explode('|||',$option_string);
@@ -91,37 +87,35 @@ function really_simple_share_options () {
 	$sel_above = ($really_simple_share_options[0]=='above') ? 'selected="selected"' : '';
 	$sel_below = ($really_simple_share_options[0]=='below') ? 'selected="selected"' : '';
 
-    // SETTINGS FORM
-    ?>
-	
-<div class="wrap">
-	<h2><?php echo __( 'Really simple Facebook and Twitter share buttons', 'menu-test' ); ?></h2>
-	<form name="form1" method="post" action="">
+	// SETTINGS FORM
+	$out .= '
+	<div class="wrap">
+		<h2>'.__( 'Really simple Facebook and Twitter share buttons', 'menu-test' ).'</h2>
+		<form name="form1" method="post" action="">
 
-	<table>
+		<table>
 <!--
-	<tr><td valign="top"><?php _e("Text", 'menu-test' ); ?>:</td>
-	<td><input type="text" name="reading_time_text" value="<?php echo stripslashes($reading_time_options[0]); ?>" size="100"><br />
-	<span class="description"><?php _e("Facebook share test", 'menu-test' ); ?></span><br />
-	<br /></td></tr>
+		<tr><td valign="top">'.__("Text", 'menu-test' ).':</td>
+		<td><input type="text" name="really_simple_share_text" value="'.stripslashes($really_simple_share_options[1]).'" size="100"><br />
+		<span class="description">'.__("Facebook share test", 'menu-test' ).'</span><br />
+		<br /></td></tr>
 -->	
 
-	<tr><td valign="top"><?php _e("Position", 'menu-test' ); ?>:</td>
-	<td><select name="really_simple_share_position">
-		<option value="above" <?php echo $sel_above; ?> > <?php _e('above the post', 'menu-test' ); ?></option>
-		<option value="below" <?php echo $sel_below; ?> > <?php _e('below the post', 'menu-test' ); ?></option>
-		</select><br /> 
-	<br /></td></tr>
+		<tr><td valign="top">'.__("Position", 'menu-test' ).':</td>
+		<td><select name="really_simple_share_position">
+			<option value="above" '.$sel_above.' > '.__('above the post', 'menu-test' ).'</option>
+			<option value="below" '.$sel_below.' > '.__('below the post', 'menu-test' ).'</option>
+			</select><br /> 
+		<br /></td></tr>
 
-	</table>
-	<hr />
-	<p class="submit">
-		<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
-	</p>
+		</table>
+		<hr />
+		<p class="submit">
+			<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
+		</p>
 
-	</form>
-</div>
-
-<?php
- 
+		</form>
+	</div>
+	';
+	echo $out; 
 }
