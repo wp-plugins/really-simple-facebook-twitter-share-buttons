@@ -1,15 +1,15 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, links, post, page
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 
-Puts Facebook and Twitter share buttons above or below your posts. 
+Puts Facebook, LinkedIn and Twitter share buttons above or below your posts. 
 
 == Description ==
-This plugin shows Facebook and Twitter share buttons above or below your posts.
+This plugin shows Facebook, LinkedIn and Twitter share buttons above or below your posts.
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
@@ -29,6 +29,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.1.0 =
+* LinkedIn share button added
 
 = 1.0.1 =
 * Uninstall bugfix

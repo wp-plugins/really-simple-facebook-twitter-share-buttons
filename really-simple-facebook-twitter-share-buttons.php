@@ -2,9 +2,9 @@
 /*
 Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
-Description: Puts Facebook and Twitter share buttons above or below your posts.
+Description: Puts Facebook, LinkedIn and Twitter share buttons above or below your posts.
 Author: WhileTrue
-Version: 1.0.1
+Version: 1.1.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -36,11 +36,15 @@ function really_simple_share ($content) {
 		}
 		$really_simple_share_options = explode('|||',get_option('really_simple_share'));
 
-		$out = '<div style="height:20px; padding-top:2px;">
+		$out = '<div style="height:21px; padding-top:2px;">
 			<div style="float:left;"> 
 				<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">Share</a> 
 				<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> 
 			</div> 
+			<div style="float:left; padding-left:20px;"> 
+	  			<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
+				<script type="in/share" data-counter="right"></script>
+			</div>
 			<div style="float:left; padding-left:20px;"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a> 
 				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
