@@ -31,15 +31,17 @@ function really_simple_share_menu() {
 
 function really_simple_share ($content) {
 
+	$option_string = get_option('really_simple_share');
+
 	if ($option_string=='above' or $option_string=='below') {
 		// Versions below 1.2.0 compatibility
 		$option = array();
 		$option['active_buttons'] = array('facebook'=>true, 'twitter'=>true, 'linkedin'=>true);
 		$option['position'] = get_option('really_simple_share');
-		$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true);
+		$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
 
 	} else {
-		$option = json_decode(get_option('really_simple_share'), true);
+		$option = json_decode($option_string, true);
 	}
 
 	if (is_single()) {
