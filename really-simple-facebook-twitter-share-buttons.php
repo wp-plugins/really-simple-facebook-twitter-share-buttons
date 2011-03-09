@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, LinkedIn and Twitter share buttons above or below your posts.
 Author: WhileTrue
-Version: 1.2.1
+Version: 1.2.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -21,13 +21,24 @@ Author URI: http://www.whiletrue.it
 
 add_filter('the_content', 'really_simple_share');
 
+add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2 );
+
 add_action('admin_menu', 'really_simple_share_menu');
 
 function really_simple_share_menu() {
 	add_options_page('Really simple share Options', 'Really simple share', 'manage_options', 'really_simple_share_options', 'really_simple_share_options');
 }
 
-
+function really_simple_share_add_settings_link($links, $file) {
+	static $this_plugin;
+	if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
+ 
+	if ($file == $this_plugin){
+		$settings_link = '<a href="admin.php?page=really_simple_share_options">'.__("Settings").'</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+} 
 
 function really_simple_share ($content) {
 
@@ -35,13 +46,12 @@ function really_simple_share ($content) {
 
 	if ($option_string=='above' or $option_string=='below') {
 		// Versions below 1.2.0 compatibility
-		$option = array();
-		$option['active_buttons'] = array('facebook'=>true, 'twitter'=>true, 'linkedin'=>true);
-		$option['position'] = get_option('really_simple_share');
-		$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
-
-	} else {
+		$option = really_simple_share_get_default_options($option_string);
+	} else if(!is_array($option_string)) {
+		// Versions below 1.2.2 compatibility
 		$option = json_decode($option_string, true);
+	} else {
+		$option = $option_string;
 	}
 
 	if (is_single()) {
@@ -78,22 +88,58 @@ function really_simple_share ($content) {
 		return $content;
 	}
 	
+	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
+	
 	$out = '<div style="height:21px; padding-top:2px;">';
 	if ($option['active_buttons']['facebook']==true) {
-		$out .= '<div style="float:left;"> 
+		$first_shown = true;
+		$out .= '<div style="float:left; width:90px;"> 
 				<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php"
 					share_url="'.get_permalink().'">Share</a> 
 				<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> 
 			</div>';
 	}
+	if ($option['active_buttons']['facebook_like']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; width:90px; '.$padding.'"> 
+				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=lifdke&amp;colorscheme=light&amp;height=21" 
+					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90; height:21px;" allowTransparency="true"></iframe>
+			</div>';
+	}
 	if ($option['active_buttons']['linkedin']==true) {
-		$out .= '<div style="float:left; padding-left:20px;"> 
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'"> 
 	  			<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
 				<script type="in/share" data-counter="right" data-url="'.get_permalink().'"></script>
 			</div>';
 	}
+	if ($option['active_buttons']['buzz']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'"> 
+				<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count" 
+					data-url="'.get_permalink().'"></a>
+				<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+			</div>';
+	}
 	if ($option['active_buttons']['twitter']==true) {
-		$out .= '<div style="float:left; padding-left:20px;"> 
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
 					data-text="'.htmlentities(get_the_title()).'" data-url="'.get_permalink().'">Tweet</a> 
 				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
@@ -109,7 +155,6 @@ function really_simple_share ($content) {
 	}
 }
 
-
 function really_simple_share_options () {
 
 	$option_name = 'really_simple_share';
@@ -123,24 +168,23 @@ function really_simple_share_options () {
 	if( isset($_POST['really_simple_share_position'])) {
 		$option = array();
 
-		// TODO: convert to ternary operator
-		$option['active_buttons'] = array('facebook'=>false, 'twitter'=>false, 'linkedin'=>false);
-		if ($_POST['really_simple_share_active_facebook']=='on') { $option['active_buttons']['facebook'] = true; }
-		if ($_POST['really_simple_share_active_twitter']=='on') { $option['active_buttons']['twitter'] = true; }
-		if ($_POST['really_simple_share_active_linkedin']=='on') { $option['active_buttons']['linkedin'] = true; }
+		$option['active_buttons']['facebook'] = ($_POST['really_simple_share_active_facebook']=='on') ? true : false;
+		$option['active_buttons']['facebook_like'] = ($_POST['really_simple_share_active_facebook_like']=='on') ? true : false;
+		$option['active_buttons']['twitter']  = ($_POST['really_simple_share_active_twitter'] =='on') ? true : false;
+		$option['active_buttons']['linkedin'] = ($_POST['really_simple_share_active_linkedin']=='on') ? true : false;
+		$option['active_buttons']['buzz']     = ($_POST['really_simple_share_active_buzz']    =='on') ? true : false;
 
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		
-		$option['show_in'] = array('posts'=>false, 'pages'=>false, 'home_page'=>false, 'tags'=>false, 'categories'=>false, 'dates'=>false, 'authors'=>false);
-		if ($_POST['really_simple_share_show_posts']=='on') { $option['show_in']['posts'] = true; }
-		if ($_POST['really_simple_share_show_pages']=='on') { $option['show_in']['pages'] = true; }
-		if ($_POST['really_simple_share_show_home']=='on') { $option['show_in']['home_page'] = true; }
-		if ($_POST['really_simple_share_show_tags']=='on') { $option['show_in']['tags'] = true; }
-		if ($_POST['really_simple_share_show_categories']=='on') { $option['show_in']['categories'] = true; }
-		if ($_POST['really_simple_share_show_dates']=='on') { $option['show_in']['dates'] = true; }
-		if ($_POST['really_simple_share_show_authors']=='on') { $option['show_in']['authors'] = true; }
+		$option['show_in']['posts']      = ($_POST['really_simple_share_show_posts']     =='on') ? true : false;
+		$option['show_in']['pages']      = ($_POST['really_simple_share_show_pages']     =='on') ? true : false;
+		$option['show_in']['home_page']  = ($_POST['really_simple_share_show_home']      =='on') ? true : false;
+		$option['show_in']['tags']       = ($_POST['really_simple_share_show_tags']      =='on') ? true : false;
+		$option['show_in']['categories'] = ($_POST['really_simple_share_show_categories']=='on') ? true : false;
+		$option['show_in']['dates']      = ($_POST['really_simple_share_show_dates']     =='on') ? true : false;
+		$option['show_in']['authors']    = ($_POST['really_simple_share_show_authors']   =='on') ? true : false;
 		
-		update_option($option_name, json_encode($option));
+		update_option($option_name, $option);
 		// Put an settings updated message on the screen
 		$out .= '<div class="updated"><p><strong>'.__('Settings saved.', 'menu-test' ).'</strong></p></div>';
 	}
@@ -151,34 +195,29 @@ function really_simple_share_options () {
 	 
 	if ($option_string===false) {
 		//OPTION NOT IN DATABASE, SO WE INSERT DEFAULT VALUES
-		$option = array();
-		$option['active_buttons'] = array('facebook'=>true, 'twitter'=>true, 'linkedin'=>true);
-		$option['position'] = 'above';
-		$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
-		
+		$option = really_simple_share_get_default_options();
 		add_option($option_name, 'above');
 		$option_string = get_option($option_name);
 	}
 	
 	if ($option_string=='above' or $option_string=='below') {
 		// Versions below 1.2.0 compatibility
-
-		$really_simple_share_options = explode('|||',$option_string);
-
-		$option = array();
-		$option['active_buttons'] = array('facebook'=>true, 'twitter'=>true, 'linkedin'=>true);
-		$option['position'] = $really_simple_share_options[0];
-		$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
-	} else {
+		$option = really_simple_share_get_default_options($option_string);
+	} else if(!is_array($option_string)) {
+		// Versions below 1.2.2 compatibility
 		$option = json_decode($option_string, true);
+	} else {
+		$option = $option_string;
 	}
 	
 	$sel_above = ($option['position']=='above') ? 'selected="selected"' : '';
 	$sel_below = ($option['position']=='below') ? 'selected="selected"' : '';
 
 	$active_facebook = ($option['active_buttons']['facebook']==true) ? 'checked="checked"' : '';
+	$active_facebook_like = ($option['active_buttons']['facebook_like']==true) ? 'checked="checked"' : '';
 	$active_twitter  = ($option['active_buttons']['twitter'] ==true) ? 'checked="checked"' : '';
 	$active_linkedin = ($option['active_buttons']['linkedin']==true) ? 'checked="checked"' : '';
+	$active_buzz     = ($option['active_buttons']['buzz']    ==true) ? 'checked="checked"' : '';
 
 	$show_in_posts = ($option['show_in']['posts']==true) ? 'checked="checked"' : '';
 	$show_in_pages = ($option['show_in']['pages'] ==true) ? 'checked="checked"' : '';
@@ -199,12 +238,16 @@ function really_simple_share_options () {
 
 		<tr><td valign="top">'.__("Active share buttons", 'menu-test' ).':</td>
 		<td>'
+		.' <input type="checkbox" name="really_simple_share_active_facebook_like" '.$active_facebook_like.'> '
+		. __("Facebook like", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_facebook" '.$active_facebook.'> '
-		. __("Facebook", 'menu-test' ).' &nbsp;&nbsp;'
-		.' <input type="checkbox" name="really_simple_share_active_twitter" '.$active_twitter.'> '
-		. __("Twitter", 'menu-test' ).' &nbsp;&nbsp;'
+		. __("Facebook share (deprecated)", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_linkedin" '.$active_linkedin.'> '
-		. __("Linkedin", 'menu-test' )
+		. __("Linkedin", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_buzz" '.$active_buzz.'> '
+		. __("Buzz", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_twitter" '.$active_twitter.'> '
+		. __("Twitter", 'menu-test' )
 		.'<br /><br /></td></tr>
 
 		<tr><td valign="top">'.__("Show buttons in these pages", 'menu-test' ).':</td>
@@ -250,3 +293,15 @@ function really_simple_share_options () {
 	';
 	echo $out; 
 }
+
+
+// PRIVATE FUNCTIONS
+
+function really_simple_share_get_default_options ($position='above') {
+	$option = array();
+	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'facebook_like'=>true);
+	$option['position'] = $position;
+	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
+	return $option;
+}
+
