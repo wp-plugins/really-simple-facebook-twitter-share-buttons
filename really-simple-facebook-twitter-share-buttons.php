@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, LinkedIn and Twitter share buttons above or below your posts.
 Author: WhileTrue
-Version: 1.2.3
+Version: 1.3.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -90,7 +90,7 @@ function really_simple_share ($content) {
 	
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
-	$out = '<div style="height:21px; padding-top:2px;">';
+	$out = '<div style="height:21px; padding-top:2px;" class="really_simple_share">';
 	if ($option['active_buttons']['facebook']==true) {
 		$first_shown = true;
 		
@@ -100,7 +100,7 @@ function really_simple_share ($content) {
 			$facebook_link = substr($facebook_link,7);
 		}
 		
-		$out .= '<div style="float:left; width:100px;"> 
+		$out .= '<div style="float:left; width:100px;" class="really_simple_share_facebook"> 
 				<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php"
 					share_url="'.$facebook_link.'">Share</a> 
 				<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> 
@@ -112,7 +112,7 @@ function really_simple_share ($content) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; width:90px; '.$padding.'"> 
+		$out .= '<div style="float:left; width:90px; '.$padding.'" class="really_simple_share_facebook_like"> 
 				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=lifdke&amp;colorscheme=light&amp;height=21" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90; height:21px;" allowTransparency="true"></iframe>
 			</div>';
@@ -123,7 +123,7 @@ function really_simple_share ($content) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; '.$padding.'"> 
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_linkedin"> 
 	  			<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
 				<script type="in/share" data-counter="right" data-url="'.get_permalink().'"></script>
 			</div>';
@@ -134,24 +134,54 @@ function really_simple_share ($content) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; '.$padding.'"> 
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_buzz"> 
 				<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count" 
 					data-url="'.get_permalink().'"></a>
 				<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
 			</div>';
 	}
+	if ($option['active_buttons']['digg']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_digg"> 
+				<script type="text/javascript">
+				(function() {
+				var s = document.createElement("SCRIPT"), s1 = document.getElementsByTagName("SCRIPT")[0];
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = "http://widgets.digg.com/buttons.js";
+				s1.parentNode.insertBefore(s, s1);
+				})();
+				</script>
+				<a class="DiggThisButton DiggCompact" href="http://digg.com/submit?url='.get_permalink().'&amp;title='.htmlentities(get_the_title()).'"></a>	
+			</div>';
+	}
+	if ($option['active_buttons']['stumbleupon']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_stumbleupon"> 
+				<script src="http://www.stumbleupon.com/hostedbadge.php?s=1&r='.get_permalink().'"></script>
+			</div>';
+	}	
 	if ($option['active_buttons']['twitter']==true) {
 		$padding = 'padding-left:10px;';
 		if (!$first_shown) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; '.$padding.'"> 
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
 					data-text="'.htmlentities(get_the_title()).'" data-url="'.get_permalink().'">Tweet</a> 
 				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
 			</div>';
 	}
+	
 	$out .= '</div>
 	<br style="clear:both;" />';
 		
@@ -180,6 +210,8 @@ function really_simple_share_options () {
 		$option['active_buttons']['twitter']  = ($_POST['really_simple_share_active_twitter'] =='on') ? true : false;
 		$option['active_buttons']['linkedin'] = ($_POST['really_simple_share_active_linkedin']=='on') ? true : false;
 		$option['active_buttons']['buzz']     = ($_POST['really_simple_share_active_buzz']    =='on') ? true : false;
+		$option['active_buttons']['digg']     = ($_POST['really_simple_share_active_digg']    =='on') ? true : false;
+		$option['active_buttons']['stumbleupon'] = ($_POST['really_simple_share_active_stumbleupon']=='on') ? true : false;
 
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		
@@ -225,6 +257,8 @@ function really_simple_share_options () {
 	$active_twitter  = ($option['active_buttons']['twitter'] ==true) ? 'checked="checked"' : '';
 	$active_linkedin = ($option['active_buttons']['linkedin']==true) ? 'checked="checked"' : '';
 	$active_buzz     = ($option['active_buttons']['buzz']    ==true) ? 'checked="checked"' : '';
+	$active_digg     = ($option['active_buttons']['digg']    ==true) ? 'checked="checked"' : '';
+	$active_stumbleupon = ($option['active_buttons']['stumbleupon']==true) ? 'checked="checked"' : '';
 
 	$show_in_posts = ($option['show_in']['posts']==true) ? 'checked="checked"' : '';
 	$show_in_pages = ($option['show_in']['pages'] ==true) ? 'checked="checked"' : '';
@@ -249,10 +283,14 @@ function really_simple_share_options () {
 		. __("Facebook like", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_facebook" '.$active_facebook.'> '
 		. __("Facebook share (deprecated)", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_digg" '.$active_digg.'> '
+		. __("Digg", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_buzz" '.$active_buzz.'> '
+		. __("Google Buzz", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_linkedin" '.$active_linkedin.'> '
 		. __("Linkedin", 'menu-test' ).' &nbsp;&nbsp;'
-		.' <input type="checkbox" name="really_simple_share_active_buzz" '.$active_buzz.'> '
-		. __("Buzz", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_stumbleupon" '.$active_stumbleupon.'> '
+		. __("Stumbleupon", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_twitter" '.$active_twitter.'> '
 		. __("Twitter", 'menu-test' )
 		.'<br /><br /></td></tr>
@@ -306,9 +344,8 @@ function really_simple_share_options () {
 
 function really_simple_share_get_default_options ($position='above') {
 	$option = array();
-	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'facebook_like'=>true);
+	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true);
 	return $option;
 }
-
