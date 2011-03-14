@@ -283,6 +283,8 @@ function really_simple_share_options () {
 		. __("Facebook like", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_facebook" '.$active_facebook.'> '
 		. __("Facebook share (deprecated)", 'menu-test' ).' &nbsp;&nbsp;'
+		.' <input type="checkbox" name="really_simple_share_active_twitter" '.$active_twitter.'> '
+		. __("Twitter", 'menu-test' ).'<br />'
 		.' <input type="checkbox" name="really_simple_share_active_digg" '.$active_digg.'> '
 		. __("Digg", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_buzz" '.$active_buzz.'> '
@@ -290,9 +292,7 @@ function really_simple_share_options () {
 		.' <input type="checkbox" name="really_simple_share_active_linkedin" '.$active_linkedin.'> '
 		. __("Linkedin", 'menu-test' ).' &nbsp;&nbsp;'
 		.' <input type="checkbox" name="really_simple_share_active_stumbleupon" '.$active_stumbleupon.'> '
-		. __("Stumbleupon", 'menu-test' ).' &nbsp;&nbsp;'
-		.' <input type="checkbox" name="really_simple_share_active_twitter" '.$active_twitter.'> '
-		. __("Twitter", 'menu-test' )
+		. __("Stumbleupon", 'menu-test' )
 		.'<br /><br /></td></tr>
 
 		<tr><td valign="top">'.__("Show buttons in these pages", 'menu-test' ).':</td>
