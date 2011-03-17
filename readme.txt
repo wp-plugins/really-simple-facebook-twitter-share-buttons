@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -39,6 +39,10 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.3.1 =
+* Twitter additional text option added, e.g. ' (via @authorofblogentry)'
+* Settings display improvement
 
 = 1.3.0 =
 * Digg and Stumbleupon share buttons added
