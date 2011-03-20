@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, links, post, page
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -26,9 +26,9 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 
 = What's the difference between Facebook Like and Share buttons? =
 Facebook Like's behaviour is similar to Facebook Share: it is a counter and if you click it a story is published inside your Wall on Facebook.
-We suggest you to use Facebook Like because:
-* it works better identifying title and text for the story to be published;
-* it's the only one currently developed by Facebook.
+We suggest you to use Facebook Like because it works better identifying title and text for the story to be published and it's the only one currently developed by Facebook.
+Unfortunately, using Facebook Like the user can't choose each time which image to share, but you can set the right image inside the code using the 
+<a href="http://developers.facebook.com/docs/reference/plugins/like/">Open Graph Tag</a> og:image.
 
 = How about other social networks? =
 We'll see!
@@ -39,6 +39,11 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.4.0 =
+* Avoid multiple external JavaScript files loading when possible, for better performance
+* "Show in Search results" option added
+* Twitter title button bugfix
 
 = 1.3.1 =
 * Twitter additional text option added, e.g. ' (via @authorofblogentry)'
