@@ -127,7 +127,7 @@ function really_simple_share ($content) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; width:90px; '.$padding.'" class="really_simple_share_facebook_like"> 
+		$out .= '<div style="float:left; width:100px; '.$padding.'" class="really_simple_share_facebook_like"> 
 				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=lifdke&amp;colorscheme=light&amp;height=21" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90; height:21px;" allowTransparency="true"></iframe>
 			</div>';
