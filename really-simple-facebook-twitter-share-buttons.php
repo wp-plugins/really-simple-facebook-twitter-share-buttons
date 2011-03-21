@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, LinkedIn and Twitter share buttons above or below your posts.
 Author: WhileTrue
-Version: 1.4.0
+Version: 1.4.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -22,7 +22,9 @@ Author URI: http://www.whiletrue.it
 
 // ACTION AND FILTERS
 
-add_filter('the_content', 'really_simple_share');
+add_filter('the_content', 'really_simple_share_content');
+
+add_filter('the_excerpt', 'really_simple_share_excerpt');
 
 add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2 );
 
@@ -35,6 +37,7 @@ function really_simple_share_menu() {
 	add_options_page('Really simple share Options', 'Really simple share', 'manage_options', 'really_simple_share_options', 'really_simple_share_options');
 }
 
+
 function really_simple_share_add_settings_link($links, $file) {
 	static $this_plugin;
 	if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
@@ -46,20 +49,30 @@ function really_simple_share_add_settings_link($links, $file) {
 	return $links;
 } 
 
-function really_simple_share ($content) {
+
+function really_simple_share_content ($content) {
+	return really_simple_share ($content, 'the_content');
+}
+
+
+function really_simple_share_excerpt ($content) {
+	return really_simple_share ($content, 'the_excerpt');
+}
+
+
+function really_simple_share ($content, $filter) {
 	static $really_simple_share_js_loaded = false;
+	static $last_execution = '';
 
-	$option_string = get_option('really_simple_share');
-
-	if ($option_string=='above' or $option_string=='below') {
-		// Versions below 1.2.0 compatibility
-		$option = really_simple_share_get_default_options($option_string);
-	} else if(!is_array($option_string)) {
-		// Versions below 1.2.2 compatibility
-		$option = json_decode($option_string, true);
-	} else {
-		$option = $option_string;
+	// IF the_excerpt IS EXECUTED AFTER the_content MUST OVERRIDE ALL the_content CHANGES
+	if ($filter=='the_excerpt' and $last_execution=='the_content') {
+		remove_filter('the_content', 'really_simple_share_content');
+		$content = the_content();
+		$really_simple_share_js_loaded = false;
 	}
+
+	//GET ARRAY OF STORED VALUES
+	$option = really_simple_share_get_options_stored();
 
 	if (is_single()) {
 		if (!$option['show_in']['posts']) {
@@ -127,8 +140,10 @@ function really_simple_share ($content) {
 			$first_shown = true;
 			$padding = '';
 		}
+		// OPTION facebook_like_text FILTERING
+		$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$out .= '<div style="float:left; width:100px; '.$padding.'" class="really_simple_share_facebook_like"> 
-				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=lifdke&amp;colorscheme=light&amp;height=21" 
+				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=21" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90; height:21px;" allowTransparency="true"></iframe>
 			</div>';
 	}
@@ -210,7 +225,10 @@ function really_simple_share ($content) {
 
 	// AFTER THE FIRST EXECUTION, ALL NEEDED JS ARE LOADED
 	$really_simple_share_js_loaded = true;
-		
+
+	// REMEMBER LAST FILTER EXECUTION TO HANDLE the_excerpt VS the_content	
+	$last_execution = $filter;
+	
 	if ($option['position']=='below') {
 		return $content.$out;
 	} else {
@@ -250,6 +268,7 @@ function really_simple_share_options () {
 		$option['show_in']['authors']    = ($_POST['really_simple_share_show_authors']   =='on') ? true : false;
 		$option['show_in']['search']    = ($_POST['really_simple_share_show_search']   =='on') ? true : false;
 		
+		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
 		
 		update_option($option_name, $option);
@@ -257,29 +276,14 @@ function really_simple_share_options () {
 		$out .= '<div class="updated"><p><strong>'.__('Settings saved.', 'menu-test' ).'</strong></p></div>';
 	}
 	
-	//GET STORED VALUES
-	$option = array();
-	$option_string = get_option($option_name);
-	 
-	if ($option_string===false) {
-		//OPTION NOT IN DATABASE, SO WE INSERT DEFAULT VALUES
-		$option = really_simple_share_get_default_options();
-		add_option($option_name, 'above');
-		$option_string = get_option($option_name);
-	}
-	
-	if ($option_string=='above' or $option_string=='below') {
-		// Versions below 1.2.0 compatibility
-		$option = really_simple_share_get_default_options($option_string);
-	} else if(!is_array($option_string)) {
-		// Versions below 1.2.2 compatibility
-		$option = json_decode($option_string, true);
-	} else {
-		$option = $option_string;
-	}
+	//GET ARRAY OF STORED VALUES
+	$option = really_simple_share_get_options_stored();
 	
 	$sel_above = ($option['position']=='above') ? 'selected="selected"' : '';
 	$sel_below = ($option['position']=='below') ? 'selected="selected"' : '';
+
+	$sel_like      = ($option['facebook_like_text']=='like'     ) ? 'selected="selected"' : '';
+	$sel_recommend = ($option['facebook_like_text']=='recommend') ? 'selected="selected"' : '';
 
 	$active_buttons = array(
 		'facebook_like'=>'Facebook like',
@@ -310,6 +314,8 @@ function really_simple_share_options () {
 	<form name="form1" method="post" action="">
 
 	<table>
+
+	<tr><td valign="top" colspan="2"><h3>'.__("General options", 'menu-test' ).'</h3></td></tr>
 
 	<tr><td valign="top">'.__("Active share buttons", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">';
@@ -345,6 +351,15 @@ function really_simple_share_options () {
 		</select>
 	</td></tr>
 
+	<tr><td valign="top" colspan="2"><h3>'.__("Single buttons options", 'menu-test' ).'</h3></td></tr>
+
+	<tr><td valign="top">'.__("Facebook Like text", 'menu-test' ).':</td>
+	<td style="padding-bottom:20px;"><select name="really_simple_share_facebook_like_text">
+		<option value="like" '.$sel_like.' > '.__('like', 'menu-test' ).'</option>
+		<option value="recommend" '.$sel_recommend.' > '.__('recommend', 'menu-test' ).'</option>
+		</select>
+	</td></tr>
+
 	<tr><td valign="top">'.__("Twitter additional text", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
 		<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="100"><br />
@@ -367,11 +382,36 @@ function really_simple_share_options () {
 
 // PRIVATE FUNCTIONS
 
-function really_simple_share_get_default_options ($position='above') {
+function really_simple_share_get_options_stored () {
+	//GET ARRAY OF STORED VALUES
+	$option = get_option('really_simple_share');
+	 
+	if ($option===false) {
+		//OPTION NOT IN DATABASE, SO WE INSERT DEFAULT VALUES
+		$option = really_simple_share_get_options_default();
+		add_option('really_simple_share', $option);
+	} else if ($option=='above' or $option=='below') {
+		// Versions below 1.2.0 compatibility
+		$option = really_simple_share_get_options_default($option);
+	} else if(!is_array($option)) {
+		// Versions below 1.2.2 compatibility
+		$option = json_decode($option, true);
+	}
+	
+	// Versions below 1.4.1 compatibility
+	if (!isset($option['facebook_like_text'])) {
+		$option['facebook_like_text'] = 'like';
+	}
+	
+	return $option;
+}
+
+function really_simple_share_get_options_default ($position='above') {
 	$option = array();
 	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['twitter_text'] = '';
+	$option['facebook_like_text'] = 'like';
 	return $option;
 }
