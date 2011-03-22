@@ -27,7 +27,10 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 = What's the difference between Facebook Like and Share buttons? =
 Facebook Like's behaviour is similar to Facebook Share: it is a counter and if you click it a story is published inside your Wall on Facebook.
 We suggest you to use Facebook Like because it works better identifying title and text for the story to be published and it's the only one currently developed by Facebook.
-Unfortunately, using Facebook Like the user can't choose each time which image to share, but you can set the right image inside the code using the 
+
+= Why users can't choose which image to share when using Facebook Like button ? =
+This is an automated Facebook behaviour: clicking Facebook Like the user can't choose each time which image to share, 
+but you can set the right image inside the code using the 
 <a href="http://developers.facebook.com/docs/reference/plugins/like/">Open Graph Tag</a> og:image.
 
 = How about other social networks? =
