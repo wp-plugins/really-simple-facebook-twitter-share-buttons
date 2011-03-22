@@ -12,7 +12,7 @@ Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or
 This plugin shows Facebook, Twitter and other share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
-Facebook Like and Twitter Share buttons are loaded by default. Other buttons, including LinkedIn, Google Buzz and the deprecated Facebook Share button, can be put in through the `Settings->Really simple share` menu.
+Facebook Like and Twitter Share buttons are loaded by default. Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon and the deprecated Facebook Share button, can be added through the `Settings->Really simple share` menu.
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
