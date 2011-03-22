@@ -2,9 +2,9 @@
 /*
 Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
-Description: Puts Facebook, LinkedIn and Twitter share buttons above or below your posts.
+Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.1
+Version: 1.4.2
 Author URI: http://www.whiletrue.it
 */
 

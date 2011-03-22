@@ -33,6 +33,10 @@ This is an automated Facebook behaviour: clicking Facebook Like the user can't c
 but you can set the right image inside the code using the 
 <a href="http://developers.facebook.com/docs/reference/plugins/like/">Open Graph Tag</a> og:image.
 
+= When I activate the plugin it messes up with other plugins showing post excerpts in different ways (fade, carousel, sidebar). What can I do? =
+Try to uncheck all the "Show buttons in these pages" options in the `Settings->Really simple share` menu, except for "Single posts".
+This way all the share buttons should disappear, except the one displayed beside the post in every Single post page.
+
 = How about other social networks? =
 We'll see!
  
@@ -42,6 +46,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.4.2 =
+* Excerpt/content bugfix
 
 = 1.4.1 =
 * Facebook Like text choice (between the standards Like and Recommend)
