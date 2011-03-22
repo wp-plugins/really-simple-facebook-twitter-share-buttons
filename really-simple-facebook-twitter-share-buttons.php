@@ -22,6 +22,8 @@ Author URI: http://www.whiletrue.it
 
 // ACTION AND FILTERS
 
+add_action('init', 'really_simple_share_init');
+
 add_filter('the_content', 'really_simple_share_content');
 
 add_filter('the_excerpt', 'really_simple_share_excerpt');
@@ -32,6 +34,34 @@ add_action('admin_menu', 'really_simple_share_menu');
 
 
 // PUBLIC FUNCTIONS
+
+function really_simple_share_init() {
+	// DISABLED IN THE ADMIN PAGES
+	if (is_admin()) {
+		return;
+	}
+
+	//GET ARRAY OF STORED VALUES
+	$option = really_simple_share_get_options_stored();
+
+	if ($option['active_buttons']['facebook']==true) {
+		wp_enqueue_script('really_simple_share_facebook', 'http://static.ak.fbcdn.net/connect.php/js/FB.Share');
+	}
+	if ($option['active_buttons']['linkedin']==true) {
+		wp_enqueue_script('really_simple_share_linkedin', 'http://platform.linkedin.com/in.js');
+	}
+	
+	if ($option['active_buttons']['buzz']==true) {
+		wp_enqueue_script('really_simple_share_buzz', 'http://www.google.com/buzz/api/button.js');
+	}
+	if ($option['active_buttons']['digg']==true) {
+		wp_enqueue_script('really_simple_share_digg', 'http://widgets.digg.com/buttons.js');
+	}
+	if ($option['active_buttons']['twitter']==true) {
+		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js');
+	}
+}    
+
 
 function really_simple_share_menu() {
 	add_options_page('Really simple share Options', 'Really simple share', 'manage_options', 'really_simple_share_options', 'really_simple_share_options');
@@ -61,21 +91,18 @@ function really_simple_share_excerpt ($content) {
 
 
 function really_simple_share ($content, $filter) {
-	static $really_simple_share_js_loaded = false;
 	static $last_execution = '';
 
-	// IF the_excerpt IS EXECUTED AFTER the_content MUST OVERRIDE ALL the_content CHANGES
+	// IF the_excerpt IS EXECUTED AFTER the_content MUST DISCARD ANY CHANGE MADE BY the_content
 	if ($filter=='the_excerpt' and $last_execution=='the_content') {
+		// WE TEMPORARILY REMOVE CONTENT FILTERING, THEN CALL THE_EXCERPT
 		remove_filter('the_content', 'really_simple_share_content');
-/////////
 		$last_execution = 'the_excerpt';
-		$really_simple_share_js_loaded = false;
 		return the_excerpt();
-/////////
-/*
-		$content = the_content();
-		$really_simple_share_js_loaded = false;
-*/
+	}
+	if ($filter=='the_excerpt' and $last_execution=='the_excerpt') {
+		// WE RESTORE THE PREVOIUSLY REMOVED CONTENT FILTERING, FOR FURTHER EXECUTIONS (POSSIBLY NOT INVOLVING 
+		add_filter('the_content', 'really_simple_share_content');
 	}
 
 	//GET ARRAY OF STORED VALUES
@@ -130,13 +157,6 @@ function really_simple_share ($content, $filter) {
 		if (substr($facebook_link,0,7)=='http://') {
 			$facebook_link = substr($facebook_link,7);
 		}
-		
-		if (!$really_simple_share_js_loaded) {
-			$out .= '
-			<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> 
-			';
-		}
-		
 		$out .= '<div style="float:left; width:100px;" class="really_simple_share_facebook"> 
 				<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php" share_url="'.$facebook_link.'">Share</a> 
 			</div>';
@@ -160,11 +180,6 @@ function really_simple_share ($content, $filter) {
 			$first_shown = true;
 			$padding = '';
 		}
-		if (!$really_simple_share_js_loaded) {
-			$out .= '
-			<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
-			';
-		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_linkedin"> 
 				<script type="in/share" data-counter="right" data-url="'.get_permalink().'"></script>
 			</div>';
@@ -174,11 +189,6 @@ function really_simple_share ($content, $filter) {
 		if (!$first_shown) {
 			$first_shown = true;
 			$padding = '';
-		}
-		if (!$really_simple_share_js_loaded) {
-			$out .= '
-			<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
-			';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_buzz"> 
 				<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count" 
@@ -190,11 +200,6 @@ function really_simple_share ($content, $filter) {
 		if (!$first_shown) {
 			$first_shown = true;
 			$padding = '';
-		}
-		if (!$really_simple_share_js_loaded) {
-			$out .= '
-			<script type="text/javascript" src="http://widgets.digg.com/buttons.js"></script>
-			';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_digg"> 
 				<a class="DiggThisButton DiggCompact" href="http://digg.com/submit?url='.get_permalink().'&amp;title='.htmlentities(get_the_title()).'"></a>	
@@ -216,11 +221,6 @@ function really_simple_share ($content, $filter) {
 			$first_shown = true;
 			$padding = '';
 		}
-		if (!$really_simple_share_js_loaded) {
-			$out .= '
-			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
-			';
-		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
 					data-text="'.get_the_title().stripslashes($option['twitter_text']).'" data-url="'.get_permalink().'">Tweet</a> 
@@ -229,9 +229,6 @@ function really_simple_share ($content, $filter) {
 	
 	$out .= '</div>
 	<br style="clear:both;" />';
-
-	// AFTER THE FIRST EXECUTION, ALL NEEDED JS ARE LOADED
-	$really_simple_share_js_loaded = true;
 
 	// REMEMBER LAST FILTER EXECUTION TO HANDLE the_excerpt VS the_content	
 	$last_execution = $filter;

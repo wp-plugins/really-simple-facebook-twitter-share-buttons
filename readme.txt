@@ -34,7 +34,7 @@ but you can set the right image inside the code using the
 <a href="http://developers.facebook.com/docs/reference/plugins/like/">Open Graph Tag</a> og:image.
 
 = When I activate the plugin it messes up with other plugins showing post excerpts in different ways (fade, carousel, sidebar). What can I do? =
-Try to uncheck all the "Show buttons in these pages" options in the `Settings->Really simple share` menu, except for "Single posts".
+Uncheck all the "Show buttons in these pages" options in the `Settings->Really simple share` menu, except for "Single posts".
 This way all the share buttons should disappear, except the one displayed beside the post in every Single post page.
 
 = How about other social networks? =
