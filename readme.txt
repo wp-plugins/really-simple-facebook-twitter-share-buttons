@@ -51,7 +51,7 @@ We'll see!
 * Excerpt/Content and JavaScript loading bugfix
 
 = 1.4.1 =
-* Facebook Like text choice (between the standards Like and Recommend)
+* Facebook Like text customization (like/recommend)
 * "Show in Search results" bugfix
 
 = 1.4.0 =
@@ -93,7 +93,7 @@ We'll see!
 Initial version
 
 
-== Upgrade Notice == 
+== Upgrade Notice ==
 
 = 1.4.2 =
 Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Content and JavaScript loading bugfix
