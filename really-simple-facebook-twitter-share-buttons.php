@@ -67,8 +67,15 @@ function really_simple_share ($content, $filter) {
 	// IF the_excerpt IS EXECUTED AFTER the_content MUST OVERRIDE ALL the_content CHANGES
 	if ($filter=='the_excerpt' and $last_execution=='the_content') {
 		remove_filter('the_content', 'really_simple_share_content');
+/////////
+		$last_execution = 'the_excerpt';
+		$really_simple_share_js_loaded = false;
+		return the_excerpt();
+/////////
+/*
 		$content = the_content();
 		$really_simple_share_js_loaded = false;
+*/
 	}
 
 	//GET ARRAY OF STORED VALUES
