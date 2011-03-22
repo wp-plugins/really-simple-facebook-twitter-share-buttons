@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -48,7 +48,7 @@ We'll see!
 == Changelog ==
 
 = 1.4.2 =
-* Excerpt/content bugfix
+* Excerpt/Content and JavaScript loading bugfix
 
 = 1.4.1 =
 * Facebook Like text choice (between the standards Like and Recommend)
@@ -94,6 +94,9 @@ Initial version
 
 
 == Upgrade Notice == 
+
+= 1.4.2 =
+Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Content and JavaScript loading bugfix
 
 = 1.2.2 =
 Facebook Share button is deprecated in favor of Facebook Like button
