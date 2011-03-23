@@ -47,6 +47,9 @@ We'll see!
 
 == Changelog ==
 
+= 1.4.3 =
+* Hyves (the leading Duch social network) button added
+
 = 1.4.2 =
 * Excerpt/Content and JavaScript loading bugfix
 
