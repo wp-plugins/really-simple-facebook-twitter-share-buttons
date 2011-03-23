@@ -37,6 +37,10 @@ but you can set the right image inside the code using the
 Uncheck all the "Show buttons in these pages" options in the `Settings->Really simple share` menu, except for "Single posts".
 This way all the share buttons should disappear, except the one displayed beside the post in every Single post page.
 
+= Is it possible to modify the style/css of the buttons? =
+Yes, every button has its own div class (e.g. "really_simple_share_twitter") for easy customization inside the theme css files.
+Plus, the div surrounding all buttons has its own class "really_simple_share".
+
 = How about other social networks? =
 We'll see!
  
@@ -48,49 +52,50 @@ We'll see!
 == Changelog ==
 
 = 1.4.3 =
-* Hyves (the leading Duch social network) button added
+* Added: Hyves (the leading Duch social network) button
+* Fixed: Twitter button fixed-width style for WPtouch compatibility
 
 = 1.4.2 =
-* Excerpt/Content and JavaScript loading bugfix
+* Fixed: Excerpt/Content and JavaScript loading
 
 = 1.4.1 =
-* Facebook Like text customization (like/recommend)
-* "Show in Search results" bugfix
+* Added: Facebook Like text customization (like/recommend)
+* Fixed: Show in Search results
 
 = 1.4.0 =
-* Avoid multiple external JavaScript files loading when possible, for better performance
-* "Show in Search results" option added
-* Twitter title button bugfix
+* Changed: Avoid multiple external JavaScript files loading when possible, for better performance
+* Added: "Show in Search results" option
+* Fixed: Twitter title button
 
 = 1.3.1 =
-* Twitter additional text option added, e.g. ' (via @authorofblogentry)'
-* Settings display improvement
+* Added: Twitter additional text option, e.g. ' (via @authorofblogentry)'
+* Changed: Settings display improvement
 
 = 1.3.0 =
-* Digg and Stumbleupon share buttons added
-* CSS classes added for easy styling
+* Added: Digg and Stumbleupon share buttons
+* Added: CSS classes for easy styling
 
 = 1.2.3 =
-* Facebook share button bugfix
+* Fixed: Facebook share button
 
 = 1.2.2 =
-* Facebook like button added (Facebook share is still present but deprecated)
-* Google Buzz share button added
-* Positioning bugfix
-* Save/retrieve options standardization
+* Added: Facebook like button (Facebook share is still present but deprecated)
+* Added: Google Buzz share button
+* Fixed: Button positioning
+* Changed: Save/retrieve options standardization
 
 = 1.2.1 =
-* Links bugfix
+* Fixed: Button links
 
 = 1.2.0 =
-* Active buttons option added
-* Active locations (home page, single posts, pages, tags, categories, date based archives, author archives) option added
+* Added: Active buttons option
+* Added: Active locations (home page, single posts, pages, tags, categories, date based archives, author archives) option
 
 = 1.1.0 =
-* LinkedIn share button added
+* Added: LinkedIn share button
 
 = 1.0.1 =
-* Uninstall bugfix
+* Fixed: Uninstall
 
 = 1.0.0 =
 Initial version

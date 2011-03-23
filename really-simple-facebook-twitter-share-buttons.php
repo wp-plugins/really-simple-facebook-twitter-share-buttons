@@ -248,7 +248,7 @@ function really_simple_share ($content, $filter) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_twitter"> 
+		$out .= '<div style="float:left; width:110px; '.$padding.'" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
 					data-text="'.get_the_title().stripslashes($option['twitter_text']).'" data-url="'.get_permalink().'">Tweet</a> 
 			</div>';
