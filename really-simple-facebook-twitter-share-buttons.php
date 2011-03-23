@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.2
+Version: 1.4.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -215,6 +215,33 @@ function really_simple_share ($content, $filter) {
 				<script type="text/javascript" src="http://www.stumbleupon.com/hostedbadge.php?s=1&amp;r='.get_permalink().'"></script>
 			</div>';
 	}	
+	if ($option['active_buttons']['hyves']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
+				<iframe src="http://www.hyves.nl/respect/button?url='.get_permalink().'" 
+					style="border: medium none; overflow:hidden; width:150px; height:21px;" scrolling="no" 
+					frameborder="0" allowTransparency="true" ></iframe>
+			</div>';
+	}		
+	
+
+/*
+	if ($option['active_buttons']['email']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_email"> 
+				<a target="_blank" href="mailto:?subject='.htmlentities(get_the_title()).'?body='.htmlentities(get_the_title().' Link: '.get_permalink()).'">Email</a> 
+			</div>';
+	}
+*/
+
 	if ($option['active_buttons']['twitter']==true) {
 		$padding = 'padding-left:10px;';
 		if (!$first_shown) {
@@ -260,6 +287,7 @@ function really_simple_share_options () {
 		$option['active_buttons']['buzz']     = ($_POST['really_simple_share_active_buzz']    =='on') ? true : false;
 		$option['active_buttons']['digg']     = ($_POST['really_simple_share_active_digg']    =='on') ? true : false;
 		$option['active_buttons']['stumbleupon'] = ($_POST['really_simple_share_active_stumbleupon']=='on') ? true : false;
+		$option['active_buttons']['hyves'] = ($_POST['really_simple_share_active_hyves']=='on') ? true : false;
 
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		
@@ -297,6 +325,7 @@ function really_simple_share_options () {
 		'buzz'=>'Google Buzz',
 		'digg'=>'Digg',
 		'stumbleupon'=>'Stumbleupon',
+		'hyves'=>'Hyves (leading Duch social net)'
 	);	
 
 	$show_in = array(
@@ -412,7 +441,7 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default ($position='above') {
 	$option = array();
-	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true);
+	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['twitter_text'] = '';

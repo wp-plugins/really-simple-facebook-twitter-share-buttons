@@ -1,7 +1,7 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, links, post, page
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
 Stable tag: 1.4.2
@@ -12,7 +12,7 @@ Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or
 This plugin shows Facebook, Twitter and other share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
-Facebook Like and Twitter Share buttons are loaded by default. Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon and the deprecated Facebook Share button, can be added through the `Settings->Really simple share` menu.
+Facebook Like and Twitter Share buttons are loaded by default. Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves and the deprecated Facebook Share button, can be added through the `Settings->Really simple share` menu.
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
