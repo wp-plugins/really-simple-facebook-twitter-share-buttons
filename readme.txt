@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -12,7 +12,12 @@ Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or
 This plugin shows Facebook, Twitter and other share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
-Facebook Like and Twitter Share buttons are loaded by default. Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves and the deprecated Facebook Share button, can be added through the `Settings->Really simple share` menu.
+Facebook Like and Twitter Share buttons are loaded by default. 
+Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
+
+Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
+
+If you want to place the active buttons only in selected posts, use the [really_simple_share] shortcode.
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
@@ -50,6 +55,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.4.4 =
+* Added: [really_simple_share] shortcode, shows active share buttons inside post content
 
 = 1.4.3 =
 * Added: Hyves (the leading Duch social network) button
@@ -118,3 +126,4 @@ Initial version
 * Button text customization
 * Share buttons widget
 * Custom tag for hiding buttons inside selected posts
+* Shortcodes for single buttons

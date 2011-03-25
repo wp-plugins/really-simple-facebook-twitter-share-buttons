@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.3
+Version: 1.4.4
 Author URI: http://www.whiletrue.it
 */
 
@@ -32,6 +32,7 @@ add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2
 
 add_action('admin_menu', 'really_simple_share_menu');
 
+add_shortcode( 'really_simple_share', 'really_simple_share_shortcode' );
 
 // PUBLIC FUNCTIONS
 
@@ -108,44 +109,31 @@ function really_simple_share ($content, $filter) {
 	//GET ARRAY OF STORED VALUES
 	$option = really_simple_share_get_options_stored();
 
-	if (is_single()) {
-		if (!$option['show_in']['posts']) {
+	if ($filter!='shortcode') {
+		if (is_single()) {
+			if (!$option['show_in']['posts']) { return $content; }
+		} else if (is_singular()) {
+			if (!$option['show_in']['pages']) {
+				return $content;
+			}
+		} else if (is_home()) {
+			if (!$option['show_in']['home_page']) {	return $content; }
+		} else if (is_tag()) {
+			if (!$option['show_in']['tags']) { return $content; }
+		} else if (is_category()) {
+			if (!$option['show_in']['categories']) { return $content; }
+		} else if (is_date()) {
+			if (!$option['show_in']['dates']) { return $content; }
+		} else if (is_author()) {
+			//IF DISABLED INSIDE PAGES
+			if (!$option['show_in']['authors']) { return $content; }
+		} else if (is_search()) {
+			if (!$option['show_in']['search']) { return $content; }
+		} else {
+			// IF NONE OF PREVIOUS, IS DISABLED
 			return $content;
 		}
-	} else if (is_singular()) {
-		if (!$option['show_in']['pages']) {
-			return $content;
-		}
-	} else if (is_home()) {
-		if (!$option['show_in']['home_page']) {
-			return $content;
-		}
-	} else if (is_tag()) {
-		if (!$option['show_in']['tags']) {
-			return $content;
-		}
-	} else if (is_category()) {
-		if (!$option['show_in']['categories']) {
-			return $content;
-		}
-	} else if (is_date()) {
-		if (!$option['show_in']['dates']) {
-			return $content;
-		}
-	} else if (is_author()) {
-		//IF DISABLED INSIDE PAGES
-		if (!$option['show_in']['authors']) {
-			return $content;
-		}
-	} else if (is_search()) {
-		if (!$option['show_in']['search']) {
-			return $content;
-		}
-	} else {
-		// IF NONE OF PREVIOUS, IS DISABLED
-		return $content;
 	}
-	
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
 	$out = '<div style="height:21px; padding-top:2px;" class="really_simple_share">';
@@ -260,6 +248,10 @@ function really_simple_share ($content, $filter) {
 	// REMEMBER LAST FILTER EXECUTION TO HANDLE the_excerpt VS the_content	
 	$last_execution = $filter;
 	
+	if ($filter=='shortcode') {
+		return $out;
+	}
+
 	if ($option['position']=='below') {
 		return $content.$out;
 	} else {
@@ -411,6 +403,13 @@ function really_simple_share_options () {
 	';
 	echo $out; 
 }
+
+
+// SHORTCODE FOR ALL ACTIVE BUTTONS
+function really_simple_share_shortcode ($atts) {
+	return really_simple_share ('', 'shortcode');
+}
+
 
 
 // PRIVATE FUNCTIONS
