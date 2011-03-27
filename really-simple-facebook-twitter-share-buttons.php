@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.4
+Version: 1.4.5
 Author URI: http://www.whiletrue.it
 */
 
@@ -106,6 +106,12 @@ function really_simple_share ($content, $filter) {
 		add_filter('the_content', 'really_simple_share_content');
 	}
 
+	// IF THE "DISABLE" CUSTOM FIELD IS FOUND, BLOCK EXECUTION
+	$custom_field_disable = get_post_custom_values('really_simple_share_disable');
+	if ($custom_field_disable[0]=='yes') {
+		return $content;
+	}		
+
 	//GET ARRAY OF STORED VALUES
 	$option = really_simple_share_get_options_stored();
 
@@ -157,9 +163,9 @@ function really_simple_share ($content, $filter) {
 		}
 		// OPTION facebook_like_text FILTERING
 		$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
-		$out .= '<div style="float:left; width:100px; '.$padding.'" class="really_simple_share_facebook_like"> 
+		$out .= '<div style="float:left; width:'.$option['facebook_like_width'].'px; '.$padding.'" class="really_simple_share_facebook_like"> 
 				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=21" 
-					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90; height:21px;" allowTransparency="true"></iframe>
+					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:21px;" allowTransparency="true"></iframe>
 			</div>';
 	}
 	if ($option['active_buttons']['linkedin']==true) {
@@ -236,7 +242,7 @@ function really_simple_share ($content, $filter) {
 			$first_shown = true;
 			$padding = '';
 		}
-		$out .= '<div style="float:left; width:110px; '.$padding.'" class="really_simple_share_twitter"> 
+		$out .= '<div style="float:left; width:'.$option['twitter_width'].'px; '.$padding.'" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
 					data-text="'.get_the_title().stripslashes($option['twitter_text']).'" data-url="'.get_permalink().'">Tweet</a> 
 			</div>';
@@ -292,7 +298,9 @@ function really_simple_share_options () {
 		$option['show_in']['authors']    = ($_POST['really_simple_share_show_authors']   =='on') ? true : false;
 		$option['show_in']['search']    = ($_POST['really_simple_share_show_search']   =='on') ? true : false;
 		
+		$option['facebook_like_width'] = esc_html($_POST['really_simple_share_facebook_like_width']);
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
+		$option['twitter_width'] = esc_html($_POST['really_simple_share_twitter_width']);
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
 		
 		update_option($option_name, $option);
@@ -369,27 +377,48 @@ function really_simple_share_options () {
 
 	$out .= '</td></tr>
 
-	<tr><td valign="top">'.__("Position", 'menu-test' ).':</td>
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Position", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;"><select name="really_simple_share_position">
 		<option value="above" '.$sel_above.' > '.__('above the post', 'menu-test' ).'</option>
 		<option value="below" '.$sel_below.' > '.__('below the post', 'menu-test' ).'</option>
 		</select>
 	</td></tr>
 
-	<tr><td valign="top" colspan="2"><h3>'.__("Single buttons options", 'menu-test' ).'</h3></td></tr>
+	<tr><td valign="top" colspan="2"><h3>'.__("Facebook Like specific options", 'menu-test' ).'</h3></td></tr>
 
-	<tr><td valign="top">'.__("Facebook Like text", 'menu-test' ).':</td>
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button width", 'menu-test' ).':</td>
+	<td style="padding-bottom:20px;">
+		<input type="text" name="really_simple_share_facebook_like_width" value="'.stripslashes($option['facebook_like_width']).'" size="10"> px<br />
+		<span class="description">'.__("Default: 100", 'menu-test' ).'</span>
+	</td></tr>
+
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button text", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;"><select name="really_simple_share_facebook_like_text">
 		<option value="like" '.$sel_like.' > '.__('like', 'menu-test' ).'</option>
 		<option value="recommend" '.$sel_recommend.' > '.__('recommend', 'menu-test' ).'</option>
 		</select>
 	</td></tr>
 
-	<tr><td valign="top">'.__("Twitter additional text", 'menu-test' ).':</td>
+	<tr><td valign="top" colspan="2"><h3>'.__("Twitter specific options", 'menu-test' ).'</h3></td></tr>
+
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button width", 'menu-test' ).':</td>
+	<td style="padding-bottom:20px;">
+		<input type="text" name="really_simple_share_twitter_width" value="'.stripslashes($option['twitter_width']).'" size="10"> px<br />
+		<span class="description">'.__("Default: 110", 'menu-test' ).'</span>
+	</td></tr>
+
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Additional text", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
 		<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="100"><br />
 		<span class="description">'.__("Optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.<br />
 		If you use it, insert an initial space or puntuation mark.", 'menu-test' ).'</span>
+	</td></tr>
+
+	<tr><td valign="top" colspan="2"><h3>'.__("Additional info", 'menu-test' ).'</h3></td></tr>
+
+	<tr><td style="padding-bottom:20px;" valign="top" colspan="2">
+		If you want to place the active buttons only in selected posts, use the [really_simple_share] shortcode.<br /><br />
+		If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
 	</td></tr>
 
 	</table>
@@ -434,6 +463,14 @@ function really_simple_share_get_options_stored () {
 	if (!isset($option['facebook_like_text'])) {
 		$option['facebook_like_text'] = 'like';
 	}
+
+	// Versions below 1.4.5 compatibility
+	if (!isset($option['facebook_like_width'])) {
+		$option['facebook_like_width'] = '100';
+	}
+	if (!isset($option['twitter_width'])) {
+		$option['twitter_width'] = '110';
+	}
 	
 	return $option;
 }
@@ -445,5 +482,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['twitter_text'] = '';
 	$option['facebook_like_text'] = 'like';
+	$option['facebook_like_width'] = '100';
+	$option['twitter_width'] = '110';
 	return $option;
 }
