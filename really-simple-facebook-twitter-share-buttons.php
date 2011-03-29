@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.5
+Version: 1.4.6
 Author URI: http://www.whiletrue.it
 */
 
@@ -107,11 +107,14 @@ function really_simple_share ($content, $filter) {
 	}
 
 	// IF THE "DISABLE" CUSTOM FIELD IS FOUND, BLOCK EXECUTION
+	// unless the shortcode was used in which case assume the disable
+	// should be overridden, allowing us to disable general settings for a page
+	// but insert buttons in a particular content area
 	$custom_field_disable = get_post_custom_values('really_simple_share_disable');
-	if ($custom_field_disable[0]=='yes') {
+	if ($custom_field_disable[0]=='yes' and $filter!='shortcode') {
 		return $content;
-	}		
-
+	}
+	
 	//GET ARRAY OF STORED VALUES
 	$option = really_simple_share_get_options_stored();
 

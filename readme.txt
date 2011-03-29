@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -57,6 +57,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 1.4.6 =
+* Changed: [really_simple_share] shortcode works even when "really_simple_share_disable" is used (thanks to Chestel!)
 
 = 1.4.5 =
 * Added: "really_simple_share_disable" custom field, if set to "yes" hides share buttons inside post content
@@ -131,5 +134,5 @@ Initial version
 
 * Button text customization
 * Share buttons widget
-* Custom tag for hiding buttons inside selected posts
 * Shortcodes for single buttons
+* Support for more share buttons (flattr etc.)
