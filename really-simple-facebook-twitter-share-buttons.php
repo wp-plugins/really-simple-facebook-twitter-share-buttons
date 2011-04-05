@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.7
+Version: 1.4.8
 Author URI: http://www.whiletrue.it
 */
 
@@ -224,6 +224,16 @@ function really_simple_share ($content, $filter) {
 					frameborder="0" allowTransparency="true" ></iframe>
 			</div>';
 	}		
+	if ($option['active_buttons']['reddit']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
+				<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js?newwindow=1&amp;url='.get_permalink().'"></script>
+			</div>';
+	}	
 	if ($option['active_buttons']['email']==true) {
 		$padding = 'padding-left:10px;';
 		if (!$first_shown) {
@@ -282,7 +292,8 @@ function really_simple_share_options () {
 		'buzz'=>'Google Buzz',
 		'digg'=>'Digg',
 		'stumbleupon'=>'Stumbleupon',
-		'hyves'=>'Hyves (leading Duch social net)',
+		'hyves'=>'Hyves (Duch social net)',
+		'reddit'=>'Reddit',
 		'email'=>'Email'
 	);	
 
@@ -471,7 +482,7 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default ($position='above') {
 	$option = array();
-	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false);
+	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 'reddit'=>false);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['twitter_text'] = '';

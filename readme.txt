@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, shortcode
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.7
+Stable tag: 1.4.8
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -53,10 +53,13 @@ We'll see!
  
 
 == Screenshots ==
-1. Sample content, still no shared 
-
+1. Sample content, activating the Facebook Share and Twitter buttons  
+2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.4.8 =
+* Added: Reddit share button
 
 = 1.4.7 =
 * Added: Email share button
