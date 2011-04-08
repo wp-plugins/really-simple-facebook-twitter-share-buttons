@@ -13,7 +13,7 @@ This plugin shows Facebook, Twitter and other share buttons above or below your 
 Easy customization of active buttons and position in the Settings menu.
 
 Facebook Like and Twitter Share buttons are loaded by default. 
-Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves, Email, Reddit (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
