@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.9
+Version: 1.4.10
 Author URI: http://www.whiletrue.it
 */
 
@@ -54,9 +54,6 @@ function really_simple_share_init() {
 	
 	if ($option['active_buttons']['buzz']==true) {
 		wp_enqueue_script('really_simple_share_buzz', 'http://www.google.com/buzz/api/button.js');
-	}
-	if ($option['active_buttons']['digg']==true) {
-		wp_enqueue_script('really_simple_share_digg', 'http://widgets.digg.com/buttons.js');
 	}
 	if ($option['active_buttons']['twitter']==true) {
 		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js');
@@ -198,7 +195,9 @@ function really_simple_share ($content, $filter) {
 			$first_shown = true;
 			$padding = '';
 		}
+		// THE DIGG JS FILE DOES NOT ALWAYS WORK INSIDE THE <HEAD> SECTION, WE KEEP IT HERE
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_digg"> 
+				<script type="text/javascript" src="http://widgets.digg.com/buttons.js"></script>
 				<a class="DiggThisButton DiggCompact" href="http://digg.com/submit?url='.get_permalink().'&amp;title='.htmlentities(get_the_title()).'"></a>	
 			</div>';
 	}
