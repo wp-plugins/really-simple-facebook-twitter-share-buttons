@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.10
+Stable tag: 1.4.11
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -57,6 +57,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.4.11 =
+* Changed: removed redundant <br /> element
 
 = 1.4.10 =
 * Fixed: Digg button JS removed from the <head> section
