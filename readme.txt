@@ -132,7 +132,7 @@ We'll see!
 * Fixed: Uninstall
 
 = 1.0.0 =
-Initial version
+Initial release
 
 
 == Upgrade Notice ==
@@ -144,7 +144,7 @@ Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Co
 Facebook Share button is deprecated in favor of Facebook Like button
 
 = 1.0.0 =
-Initial version
+Initial release
 
 
 == Upcoming features ==
