@@ -58,6 +58,9 @@ We'll see!
 
 == Changelog ==
 
+= 1.4.12 =
+* Fixed: more vertical space (for the current Facebook Like button)
+
 = 1.4.11 =
 * Changed: removed redundant <br /> element
 

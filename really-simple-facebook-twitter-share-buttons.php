@@ -142,7 +142,7 @@ function really_simple_share ($content, $filter) {
 	}
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
-	$out = '<div style="height:21px; padding-top:2px; padding-bottom:5px;" class="really_simple_share">';
+	$out = '<div style="height:27px; padding-top:2px; padding-bottom:2px;" class="really_simple_share">';
 	if ($option['active_buttons']['facebook']==true) {
 		$first_shown = true;
 		
