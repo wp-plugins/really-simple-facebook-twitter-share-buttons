@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.12
+Version: 1.4.13
 Author URI: http://www.whiletrue.it
 */
 
@@ -142,7 +142,7 @@ function really_simple_share ($content, $filter) {
 	}
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
-	$out = '<div style="height:27px; padding-top:2px; padding-bottom:2px;" class="really_simple_share">';
+	$out = '<div style="height:27px; padding-top:2px; padding-bottom:2px; clear:both;" class="really_simple_share">';
 	if ($option['active_buttons']['facebook']==true) {
 		$first_shown = true;
 		
@@ -164,8 +164,8 @@ function really_simple_share ($content, $filter) {
 		// OPTION facebook_like_text FILTERING
 		$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$out .= '<div style="float:left; width:'.$option['facebook_like_width'].'px; '.$padding.'" class="really_simple_share_facebook_like"> 
-				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=21" 
-					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:21px;" allowTransparency="true"></iframe>
+				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=21" 
+					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:27px;" allowTransparency="true"></iframe>
 			</div>';
 	}
 	if ($option['active_buttons']['linkedin']==true) {
