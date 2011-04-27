@@ -415,7 +415,7 @@ function really_simple_share_options () {
 		</select>
 	</td></tr>
 
-	<tr><td style="padding-bottom:20px;" valign="top">'.__("Show Send Button", 'menu-test' ).':</td>
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Show Send button", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
 		<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
 	</td></tr>
