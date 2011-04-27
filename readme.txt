@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.14
+Stable tag: 1.4.15
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -58,9 +58,9 @@ We'll see!
 
 == Changelog ==
 
-= 1.4.14 =
+= 1.4.15 =
 * Added: Facebook Like button new "Send" option (currently via FBML)
-* Changet: admin css improvements
+* Changed: admin css improvements
 
 = 1.4.13 =
 * Fixed: css improvements

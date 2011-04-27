@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.14
+Version: 1.4.15
 Author URI: http://www.whiletrue.it
 */
 
@@ -167,6 +167,18 @@ function really_simple_share ($content, $filter) {
 				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=21" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:27px;" allowTransparency="true"></iframe>
 			</div>';
+		// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
+		if ($option['facebook_like_send']) {
+			static $facebook_like_send_script_inserted = false;
+			if (!$facebook_like_send_script_inserted) {
+				$out .= '<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>';
+				$facebook_like_send_script_inserted = true;
+			}
+			$out .= '<div style="float:left; width:50px; padding-left:10px;" class="really_simple_share_facebook_like_send">
+				
+				<fb:send href="'.get_permalink().'" font=""></fb:send>
+				</div>';
+		}	
 	}
 	if ($option['active_buttons']['linkedin']==true) {
 		$padding = 'padding-left:10px;';
@@ -321,6 +333,7 @@ function really_simple_share_options () {
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		$option['facebook_like_width'] = esc_html($_POST['really_simple_share_facebook_like_width']);
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
+		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
 		$option['twitter_width'] = esc_html($_POST['really_simple_share_twitter_width']);
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
 		
@@ -339,6 +352,8 @@ function really_simple_share_options () {
 	$sel_like      = ($option['facebook_like_text']=='like'     ) ? 'selected="selected"' : '';
 	$sel_recommend = ($option['facebook_like_text']=='recommend') ? 'selected="selected"' : '';
 	
+	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
+
 	// SETTINGS FORM
 
 	$out .= '
@@ -350,14 +365,14 @@ function really_simple_share_options () {
 
 	<tr><td valign="top" colspan="2"><h3>'.__("General options", 'menu-test' ).'</h3></td></tr>
 
-	<tr><td valign="top">'.__("Active share buttons", 'menu-test' ).':</td>
+	<tr><td valign="top" style="width:130px;">'.__("Active share buttons", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">';
 
 		
 	foreach ($active_buttons as $name => $text) {
 		$checked = ($option['active_buttons'][$name]) ? 'checked="checked"' : '';
 		$out .= '<div style="width:250px; float:left;">
-				<input type="checkbox" name="really_simple_share_active_'.$name.'" '.$checked.'> '
+				<input type="checkbox" name="really_simple_share_active_'.$name.'" '.$checked.' /> '
 				. __($text, 'menu-test' ).' &nbsp;&nbsp;</div>';
 
 	}
@@ -370,7 +385,7 @@ function really_simple_share_options () {
 	foreach ($show_in as $name => $text) {
 		$checked = ($option['show_in'][$name]) ? 'checked="checked"' : '';
 		$out .= '<div style="width:250px; float:left;">
-				<input type="checkbox" name="really_simple_share_show_'.$name.'" '.$checked.'> '
+				<input type="checkbox" name="really_simple_share_show_'.$name.'" '.$checked.' /> '
 				. __($text, 'menu-test' ).' &nbsp;&nbsp;</div>';
 
 	}
@@ -389,8 +404,8 @@ function really_simple_share_options () {
 
 	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button width", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
-		<input type="text" name="really_simple_share_facebook_like_width" value="'.stripslashes($option['facebook_like_width']).'" size="10"> px<br />
-		<span class="description">'.__("Default: 100", 'menu-test' ).'</span>
+		<input type="text" name="really_simple_share_facebook_like_width" value="'.stripslashes($option['facebook_like_width']).'" size="10"> px 
+		- <span class="description">'.__("Default: 100", 'menu-test' ).'</span>
 	</td></tr>
 
 	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button text", 'menu-test' ).':</td>
@@ -400,18 +415,23 @@ function really_simple_share_options () {
 		</select>
 	</td></tr>
 
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Show Send Button", 'menu-test' ).':</td>
+	<td style="padding-bottom:20px;">
+		<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
+	</td></tr>
+
 	<tr><td valign="top" colspan="2"><h3>'.__("Twitter specific options", 'menu-test' ).'</h3></td></tr>
 
 	<tr><td style="padding-bottom:20px;" valign="top">'.__("Button width", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
-		<input type="text" name="really_simple_share_twitter_width" value="'.stripslashes($option['twitter_width']).'" size="10"> px<br />
-		<span class="description">'.__("Default: 110", 'menu-test' ).'</span>
+		<input type="text" name="really_simple_share_twitter_width" value="'.stripslashes($option['twitter_width']).'" size="10"> px 
+		- <span class="description">'.__("Default: 110", 'menu-test' ).'</span>
 	</td></tr>
 
 	<tr><td style="padding-bottom:20px;" valign="top">'.__("Additional text", 'menu-test' ).':</td>
 	<td style="padding-bottom:20px;">
-		<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="100"><br />
-		<span class="description">'.__("Optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.<br />
+		<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="25"> 
+		- <span class="description">'.__("Optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.
 		If you use it, insert an initial space or puntuation mark.", 'menu-test' ).'</span>
 	</td></tr>
 
@@ -485,6 +505,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['twitter_text'] = '';
 	$option['facebook_like_text'] = 'like';
+	$option['facebook_like_send'] = false;
 	$option['facebook_like_width'] = '100';
 	$option['twitter_width'] = '110';
 	return $option;
