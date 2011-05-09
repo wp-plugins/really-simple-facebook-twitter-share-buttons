@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.4.16
+Version: 1.5.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -88,7 +88,7 @@ function really_simple_share_excerpt ($content) {
 }
 
 
-function really_simple_share ($content, $filter) {
+function really_simple_share ($content, $filter, $link='', $title='') {
 	static $last_execution = '';
 
 	// IF the_excerpt IS EXECUTED AFTER the_content MUST DISCARD ANY CHANGE MADE BY the_content
@@ -142,15 +142,18 @@ function really_simple_share ($content, $filter) {
 	}
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
+	// IF LINK AND TITLE ARE NOT SET, USE DEFAULT GET_PERMALINK AND GET_THE_TITLE FUNCTIONS
+	if ($link=='' and $title=='') {
+		$link = get_permalink();
+		$title = get_the_title();
+	}
+
 	$out = '<div style="height:33px; padding-top:2px; padding-bottom:2px; clear:both;" class="really_simple_share">';
 	if ($option['active_buttons']['facebook']==true) {
 		$first_shown = true;
 		
 		// REMOVE HTTP:// FROM STRING
-		$facebook_link = get_permalink();
-		if (substr($facebook_link,0,7)=='http://') {
-			$facebook_link = substr($facebook_link,7);
-		}
+		$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
 		$out .= '<div style="float:left; width:100px;" class="really_simple_share_facebook"> 
 				<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php" share_url="'.$facebook_link.'">Share</a> 
 			</div>';
@@ -164,7 +167,7 @@ function really_simple_share ($content, $filter) {
 		// OPTION facebook_like_text FILTERING
 		$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$out .= '<div style="float:left; width:'.$option['facebook_like_width'].'px; '.$padding.'" class="really_simple_share_facebook_like"> 
-				<iframe src="http://www.facebook.com/plugins/like.php?href='.get_permalink().'&amp;layout=button_count&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=27" 
+				<iframe src="http://www.facebook.com/plugins/like.php?href='.$link.'&amp;layout=button_count&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height=27" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:27px;" allowTransparency="true"></iframe>
 			</div>';
 		// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
@@ -175,8 +178,7 @@ function really_simple_share ($content, $filter) {
 				$facebook_like_send_script_inserted = true;
 			}
 			$out .= '<div style="float:left; width:50px; padding-left:10px;" class="really_simple_share_facebook_like_send">
-				
-				<fb:send href="'.get_permalink().'" font=""></fb:send>
+				<fb:send href="'.$link.'" font=""></fb:send>
 				</div>';
 		}	
 	}
@@ -187,7 +189,7 @@ function really_simple_share ($content, $filter) {
 			$padding = '';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_linkedin"> 
-				<script type="in/share" data-counter="right" data-url="'.get_permalink().'"></script>
+				<script type="in/share" data-counter="right" data-url="'.$link.'"></script>
 			</div>';
 	}
 	if ($option['active_buttons']['buzz']==true) {
@@ -198,7 +200,7 @@ function really_simple_share ($content, $filter) {
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_buzz"> 
 				<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count" 
-					data-url="'.get_permalink().'"></a>
+					data-url="'.$link.'"></a>
 			</div>';
 	}
 	if ($option['active_buttons']['digg']==true) {
@@ -210,7 +212,7 @@ function really_simple_share ($content, $filter) {
 		// THE DIGG JS FILE DOES NOT ALWAYS WORK INSIDE THE <HEAD> SECTION, WE KEEP IT HERE
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_digg"> 
 				<script type="text/javascript" src="http://widgets.digg.com/buttons.js"></script>
-				<a class="DiggThisButton DiggCompact" href="http://digg.com/submit?url='.get_permalink().'&amp;title='.htmlentities(get_the_title()).'"></a>	
+				<a class="DiggThisButton DiggCompact" href="http://digg.com/submit?url='.$link.'&amp;title='.htmlentities($title).'"></a>	
 			</div>';
 	}
 	if ($option['active_buttons']['stumbleupon']==true) {
@@ -220,7 +222,7 @@ function really_simple_share ($content, $filter) {
 			$padding = '';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_stumbleupon"> 
-				<script type="text/javascript" src="http://www.stumbleupon.com/hostedbadge.php?s=1&amp;r='.get_permalink().'"></script>
+				<script type="text/javascript" src="http://www.stumbleupon.com/hostedbadge.php?s=1&amp;r='.$link.'"></script>
 			</div>';
 	}	
 	if ($option['active_buttons']['hyves']==true) {
@@ -230,7 +232,7 @@ function really_simple_share ($content, $filter) {
 			$padding = '';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
-				<iframe src="http://www.hyves.nl/respect/button?url='.get_permalink().'" 
+				<iframe src="http://www.hyves.nl/respect/button?url='.$link.'" 
 					style="border: medium none; overflow:hidden; width:150px; height:21px;" scrolling="no" 
 					frameborder="0" allowTransparency="true" ></iframe>
 			</div>';
@@ -242,7 +244,7 @@ function really_simple_share ($content, $filter) {
 			$padding = '';
 		}
 		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
-				<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js?newwindow=1&amp;url='.get_permalink().'"></script>
+				<script type="text/javascript" src="http://www.reddit.com/static/button/button1.js?newwindow=1&amp;url='.$link.'"></script>
 			</div>';
 	}	
 	if ($option['active_buttons']['email']==true) {
@@ -252,7 +254,7 @@ function really_simple_share ($content, $filter) {
 			$padding = '';
 		}
 		$out .= '<div style="float:left; width:30px; '.$padding.'" class="really_simple_share_email"> 
-				<a href="mailto:?subject='.get_the_title().'&amp;body='.get_the_title().' - '.get_permalink().'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /></a> 
+				<a href="mailto:?subject='.$title.'&amp;body='.$title.' - '.$link.'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /></a> 
 			</div>';
 	}
 	if ($option['active_buttons']['twitter']==true) {
@@ -263,7 +265,7 @@ function really_simple_share ($content, $filter) {
 		}
 		$out .= '<div style="float:left; width:'.$option['twitter_width'].'px; '.$padding.'" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
-					data-text="'.get_the_title().stripslashes($option['twitter_text']).'" data-url="'.get_permalink().'">Tweet</a> 
+					data-text="'.$title.stripslashes($option['twitter_text']).'" data-url="'.$link.'">Tweet</a> 
 			</div>';
 	}
 	
@@ -461,6 +463,12 @@ function really_simple_share_options () {
 // SHORTCODE FOR ALL ACTIVE BUTTONS
 function really_simple_share_shortcode ($atts) {
 	return really_simple_share ('', 'shortcode');
+}
+
+
+//FUNCTION AVAILABLE FOR EXTERNAL INCLUDING INSIDE THEMES AND OTHER PLUGINS
+function really_simple_share_publish ($link='', $title='') {
+	return really_simple_share ('', 'shortcode', $link, $title);
 }
 
 

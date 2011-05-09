@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.4.16
+Stable tag: 1.5.0
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -48,6 +48,12 @@ This way all the share buttons should disappear, except the one displayed beside
 Yes, every button has its own div class (e.g. "really_simple_share_twitter") for easy customization inside the theme css files.
 Plus, the div surrounding all buttons has its own class "really_simple_share".
 
+= Is it possible to show the buttons anywhere inside my theme, using a PHP function? =
+Yes, you can call the really_simple_share_publish($link='', $title='') PHP function, passing it the link and the title used by the buttons.
+You shouldn't leave the parameters blank, unless the code is put inside the WP loop.
+For example, use this code to create buttons linking to the website home page:
+echo really_simple_share_publish(get_bloginfo('url'), get_bloginfo('name')); 
+
 = How about other social networks? =
 We'll see!
  
@@ -58,7 +64,11 @@ We'll see!
 
 == Changelog ==
 
-= 1.4.15 =
+= 1.5.0 =
+* Added: possibility to use the "really_simple_share_publish" PHP function to publish the buttons inside the PHP code, for themes and other plugins
+* Changed: single permalink and title loading, for better performance
+
+= 1.4.16 =
 * Fixed: css improvements
 
 = 1.4.15 =
