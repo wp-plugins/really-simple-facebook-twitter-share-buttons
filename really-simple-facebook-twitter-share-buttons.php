@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.5.0
+Version: 1.5.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -263,8 +263,9 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 			$first_shown = true;
 			$padding = '';
 		}
+		$data_count = ($option['twitter_count']) ? 'horizontal' : 'none';
 		$out .= '<div style="float:left; width:'.$option['twitter_width'].'px; '.$padding.'" class="really_simple_share_twitter"> 
-				<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" 
+				<a href="http://twitter.com/share" class="twitter-share-button" data-count="'.$data_count.'" 
 					data-text="'.$title.stripslashes($option['twitter_text']).'" data-url="'.$link.'">Tweet</a> 
 			</div>';
 	}
@@ -337,6 +338,7 @@ function really_simple_share_options () {
 		$option['facebook_like_width'] = esc_html($_POST['really_simple_share_facebook_like_width']);
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
 		$option['twitter_width'] = esc_html($_POST['really_simple_share_twitter_width']);
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
 		
@@ -356,6 +358,7 @@ function really_simple_share_options () {
 	$sel_recommend = ($option['facebook_like_text']=='recommend') ? 'selected="selected"' : '';
 	
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
+	$twitter_count = ($option['twitter_count']) ? 'checked="checked"' : '';
 
 	// SETTINGS FORM
 
@@ -438,6 +441,11 @@ function really_simple_share_options () {
 		If you use it, insert an initial space or puntuation mark.", 'menu-test' ).'</span>
 	</td></tr>
 
+	<tr><td style="padding-bottom:20px;" valign="top">'.__("Show counter", 'menu-test' ).':</td>
+	<td style="padding-bottom:20px;">
+		<input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />
+	</td></tr>
+
 	<tr><td valign="top" colspan="2">
 	<p class="submit">
 		<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
@@ -503,6 +511,11 @@ function really_simple_share_get_options_stored () {
 	if (!isset($option['twitter_width'])) {
 		$option['twitter_width'] = '110';
 	}
+
+	// Versions below 1.5.1 compatibility
+	if (!isset($option['twitter_count'])) {
+		$option['twitter_count'] = true;
+	}
 	
 	return $option;
 }
@@ -512,10 +525,11 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 'reddit'=>false);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
-	$option['twitter_text'] = '';
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['facebook_like_width'] = '100';
+	$option['twitter_count'] = true;
+	$option['twitter_text'] = '';
 	$option['twitter_width'] = '110';
 	return $option;
 }

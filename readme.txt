@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 
 Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 
@@ -63,6 +63,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.5.1 =
+* Added: possibility to hide the Twitter button counter 
 
 = 1.5.0 =
 * Added: possibility to use the "really_simple_share_publish" PHP function to publish the buttons inside the PHP code, for themes and other plugins
