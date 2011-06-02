@@ -4,16 +4,16 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.1
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 
-Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
+Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
 == Description ==
-This plugin shows Facebook, Twitter and other share buttons above or below your posts.
+This plugin shows Facebook, Twitter, LinkedIn, Google "+1" and other popular share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
 Facebook Like and Twitter Share buttons are loaded by default. 
-Other buttons, including Digg, LinkedIn, Google Buzz, Stumbleupon, Hyves, Email, Reddit (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, Facebook Send, LinkedIn, Google "+1", Google Buzz, Stumbleupon, Hyves, Email, Reddit (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -63,6 +63,10 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.6.0 =
+* Added: Google +1 share button
+* Changed: admin page restyle
 
 = 1.5.1 =
 * Added: possibility to hide the Twitter button counter 
