@@ -386,7 +386,7 @@ function really_simple_share_options () {
 	<h2>'.__( 'Really simple Facebook and Twitter share buttons', 'menu-test' ).'</h2>
 	<div id="poststuff" style="padding-top:10px; position:relative;">
 
-	<div style="position:absolute; left:0; right:270px;">
+	<div style="float:left; width:74%; padding-right:1%;">
 
 		<form id="really_simple_share_form" name="form1" method="post" action="">
 
@@ -484,7 +484,7 @@ function really_simple_share_options () {
 
 	</div>
 	
-	<div style="position:absolute; right:0; width:255px;">
+	<div style="float:right; width:25%;">
 		<div class="postbox">
 		<h3>'.__("PremiumPress Shopping Cart", 'menu-test' ).'</h3>
 		<div class="inside">
