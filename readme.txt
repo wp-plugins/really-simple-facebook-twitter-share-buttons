@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 
 Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
@@ -63,6 +63,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.6.3 =
+* Added: Box layout available for compatible buttons
 
 = 1.6.2 =
 * Fixed: Facebook Like button url encoded (thanks Radek Maciaszek)
