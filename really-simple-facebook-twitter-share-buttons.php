@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.7.1
+Version: 1.7.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -57,6 +57,9 @@ function really_simple_share_init() {
 	}
 	if ($option['active_buttons']['google1']==true) {
 		wp_enqueue_script('really_simple_share_google1', 'http://apis.google.com/js/plusone.js');
+	}
+	if ($option['active_buttons']['flattr']==true) {
+		wp_enqueue_script('really_simple_share_flattr', 'http://api.flattr.com/js/0.6/load.js?mode=auto&#038;ver=0.6');
 	}
 	if ($option['active_buttons']['twitter']==true) {
 		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js');
@@ -288,19 +291,10 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 			$first_shown = true;
 			$padding = '';
 		}
-		$tags_object = get_the_tags();
-		$tags_array = array();
-		if ($tags_object) {
-			foreach ($tags_object as $tag) {
-				$tags_array[] = $tag->name;
-			}
-		}
-		$tags = implode (',',$tags_array);
-		
 		$language = 'en_GB';
 		$option_layout = ($option['layout']=='button') ? 'button:compact' : '';
 		$out .= '<div style="float:left; width:120px; '.$padding.'" class="really_simple_share_flattr"> 
-				<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.$title.'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$language.';category:text;tags:'.$tags.';'.$option_layout.';">'.strip_tags($content).'</a>
+				<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.$title.'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$language.';category:text;tags:'.strip_tags(get_the_tag_list('', ',', '')).';'.$option_layout.';">'.$title.'</a>
 			</div>';
 	}
 	if ($option['active_buttons']['twitter']==true) {
