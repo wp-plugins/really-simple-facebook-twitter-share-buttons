@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
@@ -63,6 +63,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.7.1 =
+* Fixed: Flattr share button warning for posts without tags
 
 = 1.7.0 =
 * Added: Flattr share button
@@ -178,6 +181,9 @@ Initial release
 
 
 == Upgrade Notice ==
+
+= 1.7.1 =
+Users having version 1.7.0 and 1.6.3 are advised to upgrade due to bugfixes on general loading and on the Flattr button 
 
 = 1.4.2 =
 Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Content and JavaScript loading bugfix
