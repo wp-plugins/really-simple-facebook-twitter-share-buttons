@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.6.3
+Version: 1.7.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -282,6 +282,25 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 				<g:plusone size="'.$option_layout.'" href="'.$link.'" '.$data_count.'></g:plusone>
 			</div>';
 	}
+	if ($option['active_buttons']['flattr']==true) {
+		$padding = 'padding-left:10px;';
+		if (!$first_shown) {
+			$first_shown = true;
+			$padding = '';
+		}
+		$tags_object = get_the_tags();
+		$tags_array = array();
+		foreach ($tags_object as $tag) {
+			$tags_array[] = $tag->name;
+		}
+		$tags = implode (',',$tags_array);
+		
+		$language = 'en_GB';
+		$option_layout = ($option['layout']=='button') ? 'button:compact' : '';
+		$out .= '<div style="float:left; width:120px; '.$padding.'" class="really_simple_share_flattr"> 
+				<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.$title.'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$language.';category:text;tags:'.$tags.';'.$option_layout.';">'.strip_tags($content).'</a>
+			</div>';
+	}
 	if ($option['active_buttons']['twitter']==true) {
 		$padding = 'padding-left:10px;';
 		if (!$first_shown) {
@@ -335,6 +354,7 @@ function really_simple_share_options () {
 		'stumbleupon'=>'Stumbleupon',
 		'hyves'=>'Hyves (Duch social net)',
 		'reddit'=>'Reddit',
+		'flattr'=>'Flattr',
 		'email'=>'Email'
 	);	
 
@@ -366,6 +386,7 @@ function really_simple_share_options () {
 		$option['facebook_like_width'] = esc_html($_POST['really_simple_share_facebook_like_width']);
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['flattr_uid'] = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count'] = (isset($_POST['really_simple_share_google1_count']) and $_POST['really_simple_share_google1_count']=='on') ? true : false;
 		$option['google1_width'] = esc_html($_POST['really_simple_share_google1_width']);
 		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
@@ -422,7 +443,6 @@ function really_simple_share_options () {
 				$out .= '<div style="width:250px; float:left;">
 						<input type="checkbox" name="really_simple_share_active_'.$name.'" '.$checked.' /> '
 						. __($text, 'menu-test' ).' &nbsp;&nbsp;</div>';
-
 			}
 
 			$out .= '</td></tr>
@@ -434,7 +454,6 @@ function really_simple_share_options () {
 				$out .= '<div style="width:250px; float:left;">
 						<input type="checkbox" name="really_simple_share_show_'.$name.'" '.$checked.' /> '
 						. __($text, 'menu-test' ).' &nbsp;&nbsp;</div>';
-
 			}
 
 			$out .= '</td></tr>
@@ -453,73 +472,57 @@ function really_simple_share_options () {
 			</td></tr>
 			</table>
 		</div>
-		</div>
-
-		<div class="postbox">
-		<h3>'.__("Facebook Like specific options", 'menu-test' ).'</h3>
-		<div class="inside">
-			<table>
-			<tr><td>'.__("Button width", 'menu-test' ).':</td>
-			<td>
-				<input type="text" name="really_simple_share_facebook_like_width" value="'.stripslashes($option['facebook_like_width']).'" size="10"> px<br />
-				<span class="description">'.__("default: 100", 'menu-test' ).'</span>
-			</td></tr>
-			<tr><td>'.__("Button text", 'menu-test' ).':</td>
-			<td>
-				<select name="really_simple_share_facebook_like_text">
-					<option value="like" '.$sel_like.' > '.__('like', 'menu-test' ).'</option>
-					<option value="recommend" '.$sel_recommend.' > '.__('recommend', 'menu-test' ).'</option>
-				</select>
-			</td></tr>
-			<tr><td>'.__("Show Send button", 'menu-test' ).':</td>
-			<td>
-				<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
-			</td></tr>
-			</table>
-		</div>
-		</div>
-
-		<div class="postbox">
-		<h3>'.__("Google +1 specific options", 'menu-test' ).'</h3>
-		<div class="inside">
-			<table>
-			<tr><td>'.__("Button width", 'menu-test' ).':</td>
-			<td>
-				<input type="text" name="really_simple_share_google1_width" value="'.stripslashes($option['google1_width']).'" size="10"> px<br />
-				<span class="description">'.__("default: 90", 'menu-test' ).'</span>
-			</td></tr>
-			<tr><td>'.__("Show counter", 'menu-test' ).':</td>
-			<td>
-				<input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />
-			</td></tr>
-			</table>
-		</div>
-		</div>
-	
-		<div class="postbox">
-		<h3>'.__("Twitter specific options", 'menu-test' ).'</h3>
-		<div class="inside">
-			<table>
-			<tr><td style="width:130px;">'.__("Button width", 'menu-test' ).':</td>
-			<td>
-				<input type="text" name="really_simple_share_twitter_width" value="'.stripslashes($option['twitter_width']).'" size="10"> px<br />
-				<span class="description">'.__("default: 110", 'menu-test' ).'</span>
-			</td></tr>
-			<tr><td>'.__("Additional text", 'menu-test' ).':</td>
-			<td>
-				<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="25"><br />
-				<span class="description">'.__("optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.
-				If you use it, insert an initial space or puntuation mark.", 'menu-test' ).'</span>
-			</td></tr>
-			<tr><td>'.__("Show counter", 'menu-test' ).':</td>
-			<td>
-				<input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />
-			</td></tr>
-			</table>
-		</div>
-		</div>
-
-		<p class="submit">
+		</div>'
+		.really_simple_share_box_content('Facebook Like button options', 
+			array(
+				'Button width'=>'
+					<input type="text" name="really_simple_share_facebook_like_width" value="'.stripslashes($option['facebook_like_width']).'" size="10"> px<br />
+					<span class="description">'.__("default: 100", 'menu-test' ).'</span>
+				',
+				'Button text'=>'
+					<select name="really_simple_share_facebook_like_text">
+						<option value="like" '.$sel_like.' > '.__('like', 'menu-test' ).'</option>
+						<option value="recommend" '.$sel_recommend.' > '.__('recommend', 'menu-test' ).'</option>
+					</select>
+				',
+				'Show Send button'=>'
+					<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
+				'
+			)
+		)
+		.really_simple_share_box_content('Flattr button options', 
+			array('Flattr UID'=>'
+					<input type="text" name="really_simple_share_flattr_uid" value="'.stripslashes($option['flattr_uid']).'" size="10"><br />
+					<span class="description">'.__("this field is mandatory if you want to use the Flattr button", 'menu-test' ).'</span>
+				'
+			)
+		)
+		.really_simple_share_box_content('Google +1 button options', 
+			array(
+				'Button width'=>'
+					<input type="text" name="really_simple_share_google1_width" value="'.stripslashes($option['google1_width']).'" size="10"> px<br />
+					<span class="description">'.__("default: 90", 'menu-test' ).'</span>
+				',
+				'Show counter'=>'
+					<input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />
+				'
+			)
+		)
+		.really_simple_share_box_content('Twitter button options', 
+			array(
+				'Button width'=>'
+					<input type="text" name="really_simple_share_twitter_width" value="'.stripslashes($option['twitter_width']).'" size="10"> px<br />
+					<span class="description">'.__("default: 110", 'menu-test' ).'</span>				
+				',
+				'Additional text'=>'
+					<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="25"><br />
+					<span class="description">'.__("optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.
+					If you use it, insert an initial space or puntuation mark.", 'menu-test' ).'</span>
+				',
+				'Show counter'=>'<input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />'
+			)
+		)
+		.'<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
 		</p>
 
@@ -527,29 +530,19 @@ function really_simple_share_options () {
 
 	</div>
 	
-	<div style="float:right; width:25%;">
-		<div class="postbox">
-		<h3>'.__("PremiumPress Shopping Cart", 'menu-test' ).'</h3>
-		<div class="inside">
+	<div style="float:right; width:25%;">'
+		.really_simple_share_box_content('PremiumPress Shopping Cart', '
 			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
 				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
 			</a>
-		</div>
-		</div>
-
-		<div class="postbox">
-		<h3>'.__("Additional info", 'menu-test' ).'</h3>
-		<div class="inside">
+		')
+		.really_simple_share_box_content('Additional info', '
 			<b>Selective use</b><br />
 			If you want to place the active buttons only in selected posts, put the [really_simple_share] shortcode inside the post text.<br /><br />
 			<b>Selective hide</b><br />
 			If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
-		</div>
-		</div>
-
-		<div class="postbox">
-		<h3>'.__("Really simple, isn't it?", 'menu-test' ).'</h3>
-		<div class="inside">
+		')
+		.really_simple_share_box_content('Really simple, isn\'t it?', '
 			Most of the actual plugin features were requested by users and developed for the sake of doing it.<br /><br />
 			If you want to be sure this passion lasts centuries, please consider donating some cents!<br /><br />
 			<div style="text-align: center;">
@@ -560,9 +553,8 @@ function really_simple_share_options () {
 			<img height="1" width="1" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/it_IT/i/scr/pixel.gif" border="0"> 
 			</form>
 			</div>
-		</div>
-		</div>
-	</div>
+		')
+	.'</div>
 
 	</div>
 	</div>
@@ -585,6 +577,29 @@ function really_simple_share_publish ($link='', $title='') {
 
 
 // PRIVATE FUNCTIONS
+
+function really_simple_share_box_content ($title, $content) {
+	if (is_array($content)) {
+		$content_string = '<table>';
+		foreach ($content as $name=>$value) {
+			$content_string .= '<tr>
+				<td style="width:130px;">'.__($name, 'menu-test' ).':</td>	
+				<td>'.$value.'</td>
+				</tr>';
+		}
+		$content_string .= '</table>';
+	} else {
+		$content_string = $content;
+	}
+
+	$out = '
+		<div class="postbox">
+			<h3>'.__($title, 'menu-test' ).'</h3>
+			<div class="inside">'.$content_string.'</div>
+		</div>
+		';
+	return $out;
+}
 
 function really_simple_share_get_options_stored () {
 	//GET ARRAY OF STORED VALUES
@@ -637,13 +652,16 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default ($position='above') {
 	$option = array();
-	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 'reddit'=>false, 'google1'=>false);
+	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
+		'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 
+		'reddit'=>false, 'google1'=>false, 'flattr'=>false);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['facebook_like_width'] = '100';
+	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
 	$option['google1_width'] = '90';
 	$option['twitter_count'] = true;
