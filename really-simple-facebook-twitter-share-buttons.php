@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.7.3
+Version: 1.8.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -23,9 +23,9 @@ Author URI: http://www.whiletrue.it
 // ACTION AND FILTERS
 
 add_action('init', 'really_simple_share_init');
+add_action('wp_print_styles', 'really_simple_share_style');
 
 add_filter('the_content', 'really_simple_share_content');
-
 add_filter('the_excerpt', 'really_simple_share_excerpt');
 
 add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2 );
@@ -42,7 +42,7 @@ function really_simple_share_init() {
 		return;
 	}
 
-	//GET ARRAY OF STORED VALUES
+	// GET ARRAY OF STORED VALUES
 	$option = really_simple_share_get_options_stored();
 
 	if ($option['active_buttons']['facebook']==true) {
@@ -65,6 +65,23 @@ function really_simple_share_init() {
 		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js');
 	}
 }    
+
+
+function really_simple_share_style() {
+	// GET ARRAY OF STORED VALUES
+	$option = really_simple_share_get_options_stored();
+	// CHECK IF IT'S DISABLED BY AN OPTION
+	if ($option['disable_default_styles']) {
+		return;
+	}
+
+    $myStyleUrl = WP_PLUGIN_URL  .'/really-simple-facebook-twitter-share-buttons/style.css';
+    $myStyleFile = WP_PLUGIN_DIR .'/really-simple-facebook-twitter-share-buttons/style.css';
+    if ( file_exists($myStyleFile) ) {
+        wp_register_style('really_simple_share_style', $myStyleUrl);
+        wp_enqueue_style ('really_simple_share_style');
+    }
+}
 
 
 function really_simple_share_menu() {
@@ -156,28 +173,22 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 	
 	$height = ($option['layout']=='button') ? 33 : 66;
 
-	$out = '<div style="height:'.$height.'px; padding-top:2px; padding-bottom:2px; clear:both;" class="really_simple_share">';
+	$out = '<div style="height:'.$height.'px;" class="really_simple_share">';
 	if ($option['active_buttons']['facebook']==true) {
-		$first_shown = true;
 		
 		$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 		// REMOVE HTTP:// FROM STRING
 		$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-		$out .= '<div style="float:left; width:100px;" class="really_simple_share_facebook"> 
+		$out .= '<div class="really_simple_share_facebook"> 
 				<a name="fb_share" type="'.$option_layout.'" href="http://www.facebook.com/sharer.php" share_url="'.$facebook_link.'">Share</a> 
 			</div>';
 	}
 	if ($option['active_buttons']['facebook_like']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 		$option_height = ($option['layout']=='button') ? 27 : 60;
 		// OPTION facebook_like_text FILTERING
 		$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
-		$out .= '<div style="float:left; width:'.$option['facebook_like_width'].'px; '.$padding.'" class="really_simple_share_facebook_like"> 
+		$out .= '<div style="width:'.$option['facebook_like_width'].'px;" class="really_simple_share_facebook_like"> 
 				<iframe src="http://www.facebook.com/plugins/like.php?href='.urlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'" 
 					scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>
 			</div>';
@@ -194,118 +205,68 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 		}	
 	}
 	if ($option['active_buttons']['linkedin']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'right' : 'top';
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_linkedin"> 
+		$out .= '<div class="really_simple_share_linkedin"> 
 				<script type="in/share" data-counter="'.$option_layout.'" data-url="'.$link.'"></script>
 			</div>';
 	}
 	if ($option['active_buttons']['buzz']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'small-count' : 'normal-count';
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_buzz"> 
+		$out .= '<div class="really_simple_share_buzz"> 
 				<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="'.$option_layout.'" 
 					data-url="'.$link.'"></a>
 			</div>';
 	}
 	if ($option['active_buttons']['digg']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'DiggCompact' : 'DiggMedium';
 		// THE DIGG JS FILE DOES NOT ALWAYS WORK INSIDE THE <HEAD> SECTION, WE KEEP IT HERE
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_digg"> 
+		$out .= '<div class="really_simple_share_digg"> 
 				<script type="text/javascript" src="http://widgets.digg.com/buttons.js"></script>
 				<a class="DiggThisButton '.$option_layout.'" href="http://digg.com/submit?url='.$link.'&amp;title='.htmlentities($title).'"></a>	
 			</div>';
 	}
 	if ($option['active_buttons']['stumbleupon']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? '1' : '5';
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_stumbleupon"> 
+		$out .= '<div class="really_simple_share_stumbleupon"> 
 				<script type="text/javascript" src="http://www.stumbleupon.com/hostedbadge.php?s='.$option_layout.'&amp;r='.$link.'"></script>
 			</div>';
 	}	
 	if ($option['active_buttons']['hyves']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
+		$out .= '<div class="really_simple_share_hyves"> 
 				<iframe src="http://www.hyves.nl/respect/button?url='.$link.'" 
 					style="border: medium none; overflow:hidden; width:150px; height:21px;" scrolling="no" 
 					frameborder="0" allowTransparency="true" ></iframe>
 			</div>';
 	}		
 	if ($option['active_buttons']['reddit']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? '1' : '3';
-		$out .= '<div style="float:left; '.$padding.'" class="really_simple_share_hyves"> 
+		$out .= '<div class="really_simple_share_hyves"> 
 				<script type="text/javascript" src="http://www.reddit.com/static/button/button'.$option_layout.'.js?newwindow=1&amp;url='.$link.'"></script>
 			</div>';
 	}	
 	if ($option['active_buttons']['email']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
-		$out .= '<div style="float:left; width:30px; '.$padding.'" class="really_simple_share_email"> 
+		$out .= '<div class="really_simple_share_email"> 
 				<a href="mailto:?subject='.$title.'&amp;body='.$title.' - '.$link.'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /></a> 
 			</div>';
 	}
 	if ($option['active_buttons']['google1']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'medium' : 'tall';
 		$data_count = ($option['google1_count']) ? '' : 'count="false"';
-		$out .= '<div style="float:left; width:'.$option['google1_width'].'px; '.$padding.'" class="really_simple_share_google1"> 
+		$out .= '<div style="width:'.$option['google1_width'].'px;" class="really_simple_share_google1"> 
 				<g:plusone size="'.$option_layout.'" href="'.$link.'" '.$data_count.'></g:plusone>
 			</div>';
 	}
 	if ($option['active_buttons']['flattr']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$language = 'en_GB';
 		$option_layout = ($option['layout']=='button') ? 'button:compact' : '';
-		$out .= '<div style="float:left; width:120px; '.$padding.'" class="really_simple_share_flattr"> 
+		$out .= '<div class="really_simple_share_flattr"> 
 				<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.strip_tags($title).'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$language.';category:text;tags:'.strip_tags(get_the_tag_list('', ',', '')).';'.$option_layout.';">'.$title.'</a>
 			</div>';
 	}
 	if ($option['active_buttons']['twitter']==true) {
-		$padding = 'padding-left:10px;';
-		if (!$first_shown) {
-			$first_shown = true;
-			$padding = '';
-		}
 		$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
 		$data_count = ($option['twitter_count']) ? $option_layout : 'none';
-		$out .= '<div style="float:left; width:'.$option['twitter_width'].'px; '.$padding.'" class="really_simple_share_twitter"> 
+		$out .= '<div style="width:'.$option['twitter_width'].'px;" class="really_simple_share_twitter"> 
 				<a href="http://twitter.com/share" class="twitter-share-button" data-count="'.$data_count.'" 
 					data-text="'.$title.stripslashes($option['twitter_text']).'" data-url="'.$link.'">Tweet</a> 
 			</div>';
@@ -379,6 +340,7 @@ function really_simple_share_options () {
 		}
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		$option['layout'] = esc_html($_POST['really_simple_share_layout']);
+		$option['disable_default_styles'] = (isset($_POST['really_simple_share_disable_default_styles']) and $_POST['really_simple_share_disable_default_styles']=='on') ? true : false;
 		$option['facebook_like_width'] = esc_html($_POST['really_simple_share_facebook_like_width']);
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
@@ -407,6 +369,7 @@ function really_simple_share_options () {
 	$sel_like      = ($option['facebook_like_text']=='like'     ) ? 'selected="selected"' : '';
 	$sel_recommend = ($option['facebook_like_text']=='recommend') ? 'selected="selected"' : '';
 	
+	$disable_default_styles = ($option['disable_default_styles']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$twitter_count = ($option['twitter_count']) ? 'checked="checked"' : '';
@@ -465,6 +428,9 @@ function really_simple_share_options () {
 				<option value="button" '.$sel_button.' > '.__('button', 'menu-test' ).'</option>
 				<option value="box" '.$sel_box.' > '.__('box', 'menu-test' ).'</option>
 				</select>
+			</td></tr>
+			<tr><td>'.__("Disable default styles", 'menu-test' ).':</td>
+			<td><input type="checkbox" name="really_simple_share_disable_default_styles" '.$disable_default_styles.' />
 			</td></tr>
 			</table>
 		</div>
@@ -643,6 +609,11 @@ function really_simple_share_get_options_stored () {
 	if (!isset($option['layout'])) {
 		$option['layout'] = 'button';
 	}	
+	
+	// Versions below 1.8.0 compatibility
+	if (!isset($option['disable_default_styles'])) {
+		$option['disable_default_styles'] = false;
+	}	
 	return $option;
 }
 
@@ -654,6 +625,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
+	$option['disable_default_styles'] = false;
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['facebook_like_width'] = '100';

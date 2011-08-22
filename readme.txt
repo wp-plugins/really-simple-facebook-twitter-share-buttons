@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 1.7.3
+Stable tag: 1.8.0
 
 Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
@@ -46,7 +46,8 @@ This way all the share buttons should disappear, except the one displayed beside
 
 = Is it possible to modify the style/css of the buttons? =
 Yes, every button has its own div class (e.g. "really_simple_share_twitter") for easy customization inside the theme css files.
-Plus, the div surrounding all buttons has its own class "really_simple_share".
+Plus, the div surrounding all buttons has its own class "really_simple_share". 
+If you want to override default styling of the buttons, check the `disable default styles` option add your style rules inside your css theme file.
 
 = Is it possible to show the buttons anywhere inside my theme, using a PHP function? =
 Yes, you can call the really_simple_share_publish($link='', $title='') PHP function, passing it the link and the title used by the buttons.
@@ -63,6 +64,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.8.0 =
+* Added: Separate stylesheet added, with an option to disable it
 
 = 1.7.3 =
 * Fixed: Flattr share button title cleaning (thanks Harald)
