@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.8.0
+Version: 1.8.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -205,9 +205,10 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 		}	
 	}
 	if ($option['active_buttons']['linkedin']==true) {
-		$option_layout = ($option['layout']=='button') ? 'right' : 'top';
+		$option_layout = ($option['layout']=='button') ? 'data-counter="right"' : 'data-counter="top"';
+		$option_layout = ($option['linkedin_count']) ? $option_layout : '';
 		$out .= '<div class="really_simple_share_linkedin"> 
-				<script type="in/share" data-counter="'.$option_layout.'" data-url="'.$link.'"></script>
+				<script type="IN/Share" '.$option_layout.' data-url="'.$link.'"></script>
 			</div>';
 	}
 	if ($option['active_buttons']['buzz']==true) {
@@ -347,6 +348,7 @@ function really_simple_share_options () {
 		$option['flattr_uid'] = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count'] = (isset($_POST['really_simple_share_google1_count']) and $_POST['really_simple_share_google1_count']=='on') ? true : false;
 		$option['google1_width'] = esc_html($_POST['really_simple_share_google1_width']);
+		$option['linkedin_count'] = (isset($_POST['really_simple_share_linkedin_count']) and $_POST['really_simple_share_linkedin_count']=='on') ? true : false;
 		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
 		$option['twitter_width'] = esc_html($_POST['really_simple_share_twitter_width']);
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
@@ -372,6 +374,7 @@ function really_simple_share_options () {
 	$disable_default_styles = ($option['disable_default_styles']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
+	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
 	$twitter_count = ($option['twitter_count']) ? 'checked="checked"' : '';
 
 	// SETTINGS FORM
@@ -467,6 +470,13 @@ function really_simple_share_options () {
 				',
 				'Show counter'=>'
 					<input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />
+				'
+			)
+		)
+		.really_simple_share_box_content('Linkedin button options', 
+			array(
+				'Show counter'=>'
+					<input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />
 				'
 			)
 		)
@@ -614,6 +624,11 @@ function really_simple_share_get_options_stored () {
 	if (!isset($option['disable_default_styles'])) {
 		$option['disable_default_styles'] = false;
 	}	
+
+	// Versions below 1.8.1 compatibility
+	if (!isset($option['linkedin_count'])) {
+		$option['linkedin_count'] = true;
+	}	
 	return $option;
 }
 
@@ -632,6 +647,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
 	$option['google1_width'] = '90';
+	$option['linkedin_count'] = true;
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';
 	$option['twitter_width'] = '110';
