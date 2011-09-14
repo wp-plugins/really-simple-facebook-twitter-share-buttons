@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, shortcode
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 
 Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
@@ -13,7 +13,7 @@ This plugin shows Facebook, Twitter, LinkedIn, Google "+1" and other popular sha
 Easy customization of active buttons and position in the Settings menu.
 
 Facebook Like and Twitter Share buttons are loaded by default. 
-Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Google Buzz, Stumbleupon, Hyves, Email, Reddit (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -64,6 +64,10 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 1.8.2 =
+* Added: Tipy button
+* Changed: better email icon (thanks Jml from Argentina)
 
 = 1.8.1 =
 * Added: Linkedin button counter customization

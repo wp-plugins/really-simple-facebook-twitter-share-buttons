@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 1.8.1
+Version: 1.8.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -264,6 +264,22 @@ function really_simple_share ($content, $filter, $link='', $title='') {
 				<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.strip_tags($title).'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$language.';category:text;tags:'.strip_tags(get_the_tag_list('', ',', '')).';'.$option_layout.';">'.$title.'</a>
 			</div>';
 	}
+	if ($option['active_buttons']['tipy']==true) {
+		$option_layout = ($option['layout']=='button') ? 'tipy_button_compact' : 'tipy_button';
+		$option_image  = ($option['layout']=='button') ? 'button_compact' : 'button';
+		$out .= '<div class="really_simple_share_tipy">
+				<script type="text/javascript">
+					(function() {
+					var s = document.createElement("script"), s1 = document.getElementsByTagName("script")[0];
+					s.type = "text/javascript";
+					s.async = true;
+					s.src = "http://www.tipy.com/button.js";
+					s1.parentNode.insertBefore(s, s1);
+					})();
+				</script> 
+				<a href="http://www.tipy.com/s/'.$option['tipy_uid'].'" class="'.$option_layout.'"><img src="http://www.tipy.com/'.$option_image.'.gif" border="0"></a>
+			</div>';
+	}
 	if ($option['active_buttons']['twitter']==true) {
 		$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
 		$data_count = ($option['twitter_count']) ? $option_layout : 'none';
@@ -313,7 +329,8 @@ function really_simple_share_options () {
 		'hyves'=>'Hyves (Duch social net)',
 		'reddit'=>'Reddit',
 		'flattr'=>'Flattr',
-		'email'=>'Email'
+		'email'=>'Email',
+		'tipy'=>'Tipy'
 	);	
 
 	$show_in = array(
@@ -349,6 +366,7 @@ function really_simple_share_options () {
 		$option['google1_count'] = (isset($_POST['really_simple_share_google1_count']) and $_POST['really_simple_share_google1_count']=='on') ? true : false;
 		$option['google1_width'] = esc_html($_POST['really_simple_share_google1_width']);
 		$option['linkedin_count'] = (isset($_POST['really_simple_share_linkedin_count']) and $_POST['really_simple_share_linkedin_count']=='on') ? true : false;
+		$option['tipy_uid'] = esc_html($_POST['really_simple_share_tipy_uid']);
 		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
 		$option['twitter_width'] = esc_html($_POST['really_simple_share_twitter_width']);
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
@@ -477,6 +495,13 @@ function really_simple_share_options () {
 			array(
 				'Show counter'=>'
 					<input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />
+				'
+			)
+		)
+		.really_simple_share_box_content('Tipy button options', 
+			array('Tipy Website ID'=>'
+					<input type="text" name="really_simple_share_tipy_uid" value="'.stripslashes($option['tipy_uid']).'" size="10"><br />
+					<span class="description">'.__("this numeric field is mandatory if you want to use the Tipy button", 'menu-test' ).'</span>
 				'
 			)
 		)
@@ -636,7 +661,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option = array();
 	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
 		'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 
-		'reddit'=>false, 'google1'=>false, 'flattr'=>false);
+		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'tipy'=>false);
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
@@ -648,6 +673,7 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['google1_count'] = true;
 	$option['google1_width'] = '90';
 	$option['linkedin_count'] = true;
+	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';
 	$option['twitter_width'] = '110';
