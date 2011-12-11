@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 2.0
+Stable tag: 2.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
 
@@ -82,6 +82,11 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.1 =
+* Added: Option to put scripts at the bottom of the body, to increase page loading speed
+* Added: Option to enable/disable adding the author of the post to the Twitter follow list
+* Added: Little performance improvements
 
 = 2.0 =
 * Added: Button arbitrary positioning via drag&drop
