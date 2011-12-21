@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.1
+Version: 2.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -173,10 +173,19 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		$author = get_the_author_meta('nickname');
 	}
 	
+
+	// PREPEND ABOVE TEXT
+	if ($option['prepend_above']!='') {
+		$out .= '<div style="height:33px;" class="really_simple_share_prepend_above robots-nocontent snap_nopreview">'.stripslashes($option['prepend_above']).'</div>';
+	}
+
 	$height = ($option['layout']=='button') ? 33 : 66;
+	$out .= '<div style="height:'.$height.'px;" class="really_simple_share robots-nocontent snap_nopreview">';
 
-	$out = '<div style="height:'.$height.'px;" class="really_simple_share robots-nocontent snap_nopreview">';
-
+	// PREPEND INLINE TEXT
+	if ($option['prepend_inline']!='') {
+		$out .= '<div class="really_simple_share_prepend_inline">'.stripslashes($option['prepend_inline']).'</div>';
+	}
 
 	foreach (explode(',',$option['sort']) as $name) {
 		if (!$option['active_buttons'][$name]) {
@@ -379,6 +388,8 @@ function really_simple_share_options () {
 		$option['sort'] = esc_html($_POST['really_simple_share_sort']);
 		$option['position'] = esc_html($_POST['really_simple_share_position']);
 		$option['layout'] = esc_html($_POST['really_simple_share_layout']);
+		$option['prepend_above']  = esc_html($_POST['really_simple_share_prepend_above']);
+		$option['prepend_inline'] = esc_html($_POST['really_simple_share_prepend_inline']);
 		$option['disable_default_styles'] = (isset($_POST['really_simple_share_disable_default_styles']) and $_POST['really_simple_share_disable_default_styles']=='on') ? true : false;
 		$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
 		$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
@@ -499,6 +510,14 @@ function really_simple_share_options () {
 				<option value="button" '.$sel_button.' > '.__('button', 'menu-test' ).'</option>
 				<option value="box" '.$sel_box.' > '.__('box', 'menu-test' ).'</option>
 				</select>
+			</td></tr>
+			<tr><td>'.__("Prepend text on the above line", 'menu-test' ).':</td>
+			<td><input type="text" name="really_simple_share_prepend_above" value="'.stripslashes($option['prepend_above']).'" size="50" /><br />
+				<span class="description">'.__("Optional text shown above the buttons, e.g. 'If you liked this post, say thanks by sharing it:'", 'menu-test' ).'</span>
+			</td></tr>
+			<tr><td>'.__("Prepend text inline", 'menu-test' ).':</td>
+			<td><input type="text" name="really_simple_share_prepend_inline" value="'.stripslashes($option['prepend_inline']).'" size="25" /><br />
+				<span class="description">'.__("Optional text shown inline before the buttons, e.g. 'Share this:'", 'menu-test' ).'</span>
 			</td></tr>
 			<tr><td>'.__("Disable default styles", 'menu-test' ).':</td>
 			<td><input type="checkbox" name="really_simple_share_disable_default_styles" '.$disable_default_styles.' />
@@ -691,6 +710,8 @@ function really_simple_share_get_options_default ($position='above') {
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
+	$option['prepend_above']  = '';
+	$option['prepend_inline'] = '';
 	$option['disable_default_styles'] = false;
 	$option['use_shortlink'] = false;
 	$option['scripts_at_bottom'] = false;
