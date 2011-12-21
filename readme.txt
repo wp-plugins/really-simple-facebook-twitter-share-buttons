@@ -27,7 +27,7 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 
 * Possibility to put some text beside the buttons
 
-*New* in version 2.2:
+*New* in version 2.1:
 
 * Speed improvements and possibility to put the scripts at the bottom of the page
 
