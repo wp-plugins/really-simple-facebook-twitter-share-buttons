@@ -1,19 +1,19 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.2.1
-Stable tag: 2.2
+Stable tag: 2.3
 
-Puts Facebook, Twitter, LinkedIn, Google "+1" and other share buttons of your choice above or below your posts.
+Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
 == Description ==
-This plugin shows Facebook, Twitter, LinkedIn, Google "+1" and other popular share buttons above or below your posts.
+This plugin shows Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other popular share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
 Facebook Like and Twitter Share buttons are loaded by default. 
-Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Pinterest, Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy (and the deprecated Facebook Share button), can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -23,23 +23,23 @@ If you want to hide the share buttons inside selected posts, set the "really_sim
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
-*New* in version 2.2:
+*New* in version 2.3:
+
+* Pinterest button (basic support: only shows if there is some media, links to the thumbnail or to the first media attachment)
+* Language basic support for some buttons
+* More compact and effective Settings page
+* Update on Google +1 button code
+
+*New* in version 2.0 - 2.2:
 
 * Possibility to put some text beside the buttons
-
-*New* in version 2.1:
-
 * Speed improvements and possibility to put the scripts at the bottom of the page
-
-*New* in version 2.0:
-
 * Button arbitrary positioning via drag&drop
 * Arbitrary spacing for every button
 * Twitter post author customization (thanks Vincent Oord - Springest.com)
 * Wordpress link customization (default permalink and shortlink available)
 * Email button label
 * Class "robots-nocontent" and "snap_nopreview" given to the element surrounding the buttons
-* Some code cleaning
 
 Do you like this plugin? Give a chance to our other works:
 
@@ -90,6 +90,12 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.3 =
+* Added: Pinterest button (basic support: only shows if there is some media, links to the thumbnail or to the first media attachment)
+* Added: Language basic support for some buttons
+* Changed: More compact and effective Settings page
+* Changed: Update on Google +1 button code
 
 = 2.2 =
 * Added: Option to put a line of text above the buttons, e.g. 'If you liked this post, say thanks sharing it:'
