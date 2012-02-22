@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.3.1
-Stable tag: 2.4
+Stable tag: 2.4.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
@@ -91,6 +91,10 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.4.1 =
+* Changed: Little code redundancy cleaning
+* Fixed: Google+ and Pinterest issue on header javascript loading
 
 = 2.4 =
 * Added: Facebook share button counter customization
@@ -264,6 +268,9 @@ Initial release
 
 
 == Upgrade Notice ==
+
+= 2.4.1 =
+Users having version 2.4 should upgrade due to a bugfix on the Google+ and Pinterest buttons 
 
 = 1.7.3 =
 Users having version from 1.6.3 to 1.7.2 should upgrade due to a bugfix on the Flattr button 

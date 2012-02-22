@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.4
+Version: 2.4.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -23,7 +23,7 @@ Author URI: http://www.whiletrue.it
 // ACTION AND FILTERS
 
 add_action('init', 'really_simple_share_init');
-add_action('wp_header', 'really_simple_share_header');
+add_action('wp_head', 'really_simple_share_head');
 add_action('wp_footer', 'really_simple_share_footer');
 add_action('wp_print_styles', 'really_simple_share_style');
 
@@ -42,23 +42,14 @@ $really_simple_share_option = really_simple_share_get_options_stored();
 
 // PUBLIC FUNCTIONS
 
-function really_simple_share_header() {
+function really_simple_share_head() {
 	global $really_simple_share_option;
 
 	// CHECK FOR SCRIPTS IN HEADER
 	if ($really_simple_share_option['scripts_at_bottom']) {
 		return;
 	}
-	if ($really_simple_share_option['active_buttons']['google1']) {
-		$out .= '<script type="text/javascript">
-		  window.___gcfg = {lang: "'.substr($option['locale'],0,2).'"};
-		  (function() {
-		    var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;
-		    po.src = "https://apis.google.com/js/plusone.js";
-		    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);
-		  })();
-		</script>';
-	}
+	$out = really_simple_share_scripts();
 	echo $out;
 }
 
@@ -70,7 +61,15 @@ function really_simple_share_footer() {
 	if (!$really_simple_share_option['scripts_at_bottom']) {
 		return;
 	}
-	
+	$out = really_simple_share_scripts();
+
+	echo $out;
+}
+
+function really_simple_share_scripts () {
+	global $really_simple_share_option;
+
+	$out = '';
 	if ($really_simple_share_option['active_buttons']['google1']) {
 		$out .= '<script type="text/javascript">
 		  window.___gcfg = {lang: "'.substr($option['locale'],0,2).'"};
@@ -81,9 +80,33 @@ function really_simple_share_footer() {
 		  })();
 		</script>';
 	}
-	echo $out;
-}
 
+	if ($really_simple_share_option['active_buttons']['pinterest']) {
+		$out .= '<script type="text/javascript">
+			(function() {
+			    window.PinIt = window.PinIt || { loaded:false };
+			    if (window.PinIt.loaded) return;
+			    window.PinIt.loaded = true;
+			    function async_load(){
+			        var s = document.createElement("script");
+			        s.type = "text/javascript";
+			        s.async = true;
+			        if (window.location.protocol == "https:")
+			            s.src = "https://assets.pinterest.com/js/pinit.js";
+			        else
+			            s.src = "http://assets.pinterest.com/js/pinit.js";
+			        var x = document.getElementsByTagName("script")[0];
+			        x.parentNode.insertBefore(s, x);
+			    }
+			    if (window.attachEvent)
+			        window.attachEvent("onload", async_load);
+			    else
+			        window.addEventListener("load", async_load, false);
+			})();
+		</script>';
+	}
+	return $out;
+}
 
 function really_simple_share_init() {
 	// DISABLED IN THE ADMIN PAGES
@@ -338,32 +361,6 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			}
 			// IF NO MEDIA IS FOUND, DON'T SHOW THE BUTTON
 			if ($media!='') {
-				static $pinterest_script_inserted = false;
-				if (!$pinterest_script_inserted) {
-					$out .= '<script type="text/javascript">
-						(function() {
-						    window.PinIt = window.PinIt || { loaded:false };
-						    if (window.PinIt.loaded) return;
-						    window.PinIt.loaded = true;
-						    function async_load(){
-						        var s = document.createElement("script");
-						        s.type = "text/javascript";
-						        s.async = true;
-						        if (window.location.protocol == "https:")
-						            s.src = "https://assets.pinterest.com/js/pinit.js";
-						        else
-						            s.src = "http://assets.pinterest.com/js/pinit.js";
-						        var x = document.getElementsByTagName("script")[0];
-						        x.parentNode.insertBefore(s, x);
-						    }
-						    if (window.attachEvent)
-						        window.attachEvent("onload", async_load);
-						    else
-						        window.addEventListener("load", async_load, false);
-						})();
-					</script>';
-					$pinterest_script_inserted = true;
-				}
 				$out .= '<a href="http://pinterest.com/pin/create/button/?url='.urlencode($link).'&media='.urlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
 			}
 		}
