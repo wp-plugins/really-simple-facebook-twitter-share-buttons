@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.4.1
+Version: 2.4.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -344,7 +344,8 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
 					$media = wp_get_attachment_url($post_thumbnail_id);
 				}
-			} else {
+			}
+			if ($media=='') {
 				$args = array(
 					'post_type'   => 'attachment',
 					'numberposts' => 1,
