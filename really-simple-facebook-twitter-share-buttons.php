@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.4.2
+Version: 2.4.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -20,51 +20,34 @@ Author URI: http://www.whiletrue.it
 */
 
 
+// RETRIEVE OPTIONS
+
+$really_simple_share_option = really_simple_share_get_options_stored();
+
+
 // ACTION AND FILTERS
 
 add_action('init', 'really_simple_share_init');
-add_action('wp_head', 'really_simple_share_head');
-add_action('wp_footer', 'really_simple_share_footer');
-add_action('wp_print_styles', 'really_simple_share_style');
-
-add_filter('the_content', 'really_simple_share_content');
-add_filter('the_excerpt', 'really_simple_share_excerpt');
-
-add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2 );
-
 add_action('admin_menu', 'really_simple_share_menu');
-
+add_filter('plugin_action_links', 'really_simple_share_add_settings_link', 10, 2);
 add_shortcode( 'really_simple_share', 'really_simple_share_shortcode' );
 
+if ($really_simple_share_option['scripts_at_bottom']) {
+	add_action('wp_footer', 'really_simple_share_scripts');
+} else {
+	add_action('wp_head',   'really_simple_share_scripts');
+}
+if (!$really_simple_share_option['disable_default_styles']) {
+	add_action('wp_print_styles', 'really_simple_share_style');
+}
 
-//GET ARRAY OF STORED VALUES
-$really_simple_share_option = really_simple_share_get_options_stored();
+add_filter('the_content', 'really_simple_share_content');
+if (!$really_simple_share_option['disable_excerpts']) {
+	add_filter('the_excerpt', 'really_simple_share_excerpt');
+}
+
 
 // PUBLIC FUNCTIONS
-
-function really_simple_share_head() {
-	global $really_simple_share_option;
-
-	// CHECK FOR SCRIPTS IN HEADER
-	if ($really_simple_share_option['scripts_at_bottom']) {
-		return;
-	}
-	$out = really_simple_share_scripts();
-	echo $out;
-}
-
-
-function really_simple_share_footer() {
-	global $really_simple_share_option;
-	
-	// CHECK FOR SCRIPTS IN FOOTER
-	if (!$really_simple_share_option['scripts_at_bottom']) {
-		return;
-	}
-	$out = really_simple_share_scripts();
-
-	echo $out;
-}
 
 function really_simple_share_scripts () {
 	global $really_simple_share_option;
@@ -137,18 +120,12 @@ function really_simple_share_init() {
 
 
 function really_simple_share_style() {
-	global $really_simple_share_option;
-	// CHECK IF IT'S DISABLED BY AN OPTION
-	if ($really_simple_share_option['disable_default_styles']) {
-		return;
+	$myStyleUrl  = WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/style.css';
+	$myStyleFile = WP_PLUGIN_DIR.'/really-simple-facebook-twitter-share-buttons/style.css';
+	if ( file_exists($myStyleFile) ) {
+	    wp_register_style('really_simple_share_style', $myStyleUrl);
+	    wp_enqueue_style ('really_simple_share_style');
 	}
-
-    $myStyleUrl  = WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/style.css';
-    $myStyleFile = WP_PLUGIN_DIR.'/really-simple-facebook-twitter-share-buttons/style.css';
-    if ( file_exists($myStyleFile) ) {
-        wp_register_style('really_simple_share_style', $myStyleUrl);
-        wp_enqueue_style ('really_simple_share_style');
-    }
 }
 
 
@@ -175,10 +152,7 @@ function really_simple_share_content ($content) {
 
 
 function really_simple_share_excerpt ($content) {
-	global $really_simple_share_option;
-	if (!$really_simple_share_option['disable_excerpts']) {
-		return really_simple_share ($content, 'the_excerpt');
-	}
+	return really_simple_share ($content, 'the_excerpt');
 }
 
 
@@ -276,7 +250,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		}
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
-			$option_height = ($option['layout']=='button') ? 27 : 60;
+			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
 			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 			$out .= '<iframe src="http://www.facebook.com/plugins/like.php?href='.urlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'" 

@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.3.1
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
@@ -91,6 +91,11 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.4.3 =
+* Changed: Little code cleaning
+* Fixed: The option to disable buttons on excerpts now correctly disables only the plugin  
+* Fixed: Facebook Like box height
 
 = 2.4.2 =
 * Fixed: Pinterest button broken in 2.4 and 2.4.1 while recognizing images in posts 
