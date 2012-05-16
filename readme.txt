@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
-Tested up to: 3.3.1
-Stable tag: 2.4.4
+Tested up to: 3.3.2
+Stable tag: 2.5.0
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
@@ -23,14 +23,12 @@ If you want to hide the share buttons inside selected posts, set the "really_sim
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
-*New* in version 2.4:
+*New* in version 2.5:
 
-* Facebook share button counter customization
-* New option to disable buttons on excerpts
-* CSS Style improvements, removed redundant spaces, Button default width fixed
-* Fixes for Pinterest and Google+ buttons
+* Buffer button (basic support: no twitter user mention, no image support)
+* CSS Style improvements
 
-*New* in version 2.0 - 2.3:
+*New* in version 2.0 - 2.4:
 
 * Pinterest button (basic support: only shows if there is some media, links to the thumbnail or to the first media attachment)
 * Language basic support for some buttons
@@ -41,6 +39,8 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 * Arbitrary spacing for every button
 * Wordpress link customization (default permalink and shortlink available)
 * Email button label
+* Facebook share button counter customization
+* New option to disable buttons on excerpts
 
 Do you like this plugin? Give a chance to our other works:
 
@@ -51,10 +51,7 @@ Do you like this plugin? Give a chance to our other works:
 * [Tilted Twitter Cloud Widget](http://www.whiletrue.it/en/projects/wordpress/26-tilted-twitter-cloud-widget-per-wordpress.html "Tilted Twitter Cloud Widget")
 
 == Installation ==
-1. Upload the `really-simple-facebook-twitter-share-buttons` directory into the `/wp-content/plugins/` directory
-2. Set your favourite values in the `Settings->Really simple share` menu in Wordpress
-3. Activate the plugin through the `Plugins` menu in WordPress
-4. Enjoy!
+Best is to install directly from WordPress. If manual installation is required, please make sure to put all of the plugin files in a folder named `really-simple-facebook-twitter-share-buttons` (not two nested folders) in the plugin directory, then activate the plugin through the `Plugins` menu in WordPress.
 
 == Frequently Asked Questions ==
 
@@ -91,6 +88,11 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.5.0 =
+* Added: Buffer button
+* Fixed: Style cleaning for the prepend_above box
+* Changed: Pinterest button is shown if some image is found in the post content, even if it's not a thumbnail or an attachment
 
 = 2.4.4 =
 * Fixed: Google+ and Pinterest buttons broken in previous updates

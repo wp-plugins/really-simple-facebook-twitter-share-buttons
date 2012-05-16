@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.4.4
+Version: 2.5.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -106,7 +106,10 @@ function really_simple_share_init() {
 	if ($really_simple_share_option['active_buttons']['linkedin']) {
 		wp_enqueue_script('really_simple_share_linkedin', 'http://platform.linkedin.com/in.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
-	
+	// BUFFER JS ONLY WORKS ON BOTTOM
+	if ($really_simple_share_option['active_buttons']['buffer'] and $really_simple_share_option['scripts_at_bottom']) {
+		wp_enqueue_script('really_simple_share_buffer', 'http://static.bufferapp.com/js/button.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
+	}
 	if ($really_simple_share_option['active_buttons']['buzz']) {
 		wp_enqueue_script('really_simple_share_buzz', 'http://www.google.com/buzz/api/button.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
@@ -221,7 +224,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 
 	// PREPEND ABOVE TEXT
 	if ($option['prepend_above']!='') {
-		$out .= '<div style="height:33px;" class="really_simple_share_prepend_above robots-nocontent snap_nopreview">'.stripslashes($option['prepend_above']).'</div>';
+		$out .= '<div class="really_simple_share_prepend_above robots-nocontent snap_nopreview">'.stripslashes($option['prepend_above']).'</div>';
 	}
 
 	$height = ($option['layout']=='button') ? 33 : 66;
@@ -272,6 +275,15 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_layout = ($option['linkedin_count']) ? $option_layout : '';
 			$out .= '<script type="IN/Share" '.$option_layout.' data-url="'.$link.'"></script>';
 		}
+		else if ($name == 'buffer') {
+			$option_layout = ($option['layout']=='button') ? 'data-count="horizontal"' : 'data-count="vertical"';
+			$option_layout = ($option['buffer_count']) ? $option_layout : 'data-count="none"';
+			$out .= '<a href="http://bufferapp.com/add" class="buffer-add-button" data-text="'.$title.'" data-url="'.$link.'" '.$option_layout.'>Buffer</a>';
+			// BUFFER JS ONLY WORKS ON BOTTOM
+			if (!$really_simple_share_option['scripts_at_bottom']) {
+				$out .= '<script type="text/javascript" src="http://static.bufferapp.com/js/button.js"></script>';
+			}
+		}
 		else if ($name == 'buzz') {
 			$option_layout = ($option['layout']=='button') ? 'small-count' : 'normal-count';
 			$out .= '<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="'.$option_layout.'" 
@@ -313,12 +325,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$media = '';
 			// TRY TO USE THE THUMBNAIL, OTHERWHISE TRY TO USE THE FIRST ATTACHMENT
 			$the_post_id = get_the_ID();
-			if ( function_exists('has_post_thumbnail') ) {
-				if ( has_post_thumbnail($the_post_id) ) {
-					$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
-					$media = wp_get_attachment_url($post_thumbnail_id);
-				}
+			if ( function_exists('has_post_thumbnail') and has_post_thumbnail($the_post_id) ) {
+				$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
+				$media = wp_get_attachment_url($post_thumbnail_id);
 			}
+			// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
 			if ($media=='') {
 				$args = array(
 					'post_type'   => 'attachment',
@@ -333,6 +344,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					$attachment = $attachments[0];
 					$media = wp_get_attachment_url( $attachment->ID);
 				}
+			}
+			// IF NO MEDIA IS FOUND, LOOK INSIDE THE CONTENT
+			if ($media=='') {
+				$output = @preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
+				$media = $matches [1] [0];
 			}
 			// IF NO MEDIA IS FOUND, DON'T SHOW THE BUTTON
 			if ($media!='') {
@@ -409,7 +425,8 @@ function really_simple_share_options () {
 		'flattr'=>'Flattr',
 		'email'=>'Email',
 		'pinterest'=>'Pinterest',
-		'tipy'=>'Tipy'
+		'tipy'=>'Tipy',
+		'buffer'=>'Buffer'
 	);	
 
 	$show_in = array(
@@ -451,10 +468,11 @@ function really_simple_share_options () {
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
-		$option['flattr_uid'] = esc_html($_POST['really_simple_share_flattr_uid']);
-		$option['google1_count'] = (isset($_POST['really_simple_share_google1_count']) and $_POST['really_simple_share_google1_count']=='on') ? true : false;
-		$option['linkedin_count'] = (isset($_POST['really_simple_share_linkedin_count']) and $_POST['really_simple_share_linkedin_count']=='on') ? true : false;
+		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
+		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
+		$option['linkedin_count']  = (isset($_POST['really_simple_share_linkedin_count'])  and $_POST['really_simple_share_linkedin_count'] =='on') ? true : false;
 		$option['pinterest_count'] = (isset($_POST['really_simple_share_pinterest_count']) and $_POST['really_simple_share_pinterest_count']=='on') ? true : false;
+		$option['buffer_count']    = (isset($_POST['really_simple_share_buffer_count'])    and $_POST['really_simple_share_buffer_count']   =='on') ? true : false;
 		$option['tipy_uid'] = esc_html($_POST['really_simple_share_tipy_uid']);
 		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
@@ -488,6 +506,7 @@ function really_simple_share_options () {
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
 	$pinterest_count = ($option['pinterest_count']) ? 'checked="checked"' : '';
+	$buffer_count = ($option['buffer_count']) ? 'checked="checked"' : '';
 	$twitter_count = ($option['twitter_count']) ? 'checked="checked"' : '';
 	$twitter_author = ($option['twitter_author']) ? 'checked="checked"' : '';
 	
@@ -554,6 +573,9 @@ function really_simple_share_options () {
 						break;
 					case 'pinterest': 
 						$options = 'Show counter: <input type="checkbox" name="really_simple_share_pinterest_count" '.$pinterest_count.' />';
+						break;
+					case 'buffer': 
+						$options = 'Show counter: <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
 						break;
 					case 'tipy': 
 						$options = 'Tipy site id: 
@@ -884,6 +906,10 @@ function really_simple_share_get_options_stored () {
 		// Versions below 2.3 compatibility
 		$option['width_buttons']['pinterest'] = '100'; 
 		$option['sort'] .= ',pinterest';
+	} else if (strpos($option['sort'], 'buffer')===false) {
+		// Versions below 2.5 compatibility
+		$option['width_buttons']['buffer'] = '100'; 
+		$option['sort'] .= ',buffer';
 	}	
 	
 	// MERGE DEFAULT AND STORED OPTIONS
@@ -903,12 +929,12 @@ function really_simple_share_get_options_default () {
 	$option = array();
 	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
 		'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 
-		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false);
+		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false);
 	$option['width_buttons'] = array('facebook'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 'buzz'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'facebook_like'=>'100', 'hyves'=>'100', 'email'=>'40', 
-		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120');
+		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100');
 	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'buzz', 'digg', 'stumbleupon', 'hyves', 'email', 
-		'reddit', 'flattr', 'tipy', 'facebook', 'twitter'));
+		'reddit', 'flattr', 'tipy', 'buffer', 'facebook', 'twitter'));
 	$option['position'] = $position;
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
