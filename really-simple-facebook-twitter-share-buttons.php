@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.0
+Version: 2.5.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -372,11 +372,23 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		else if ($name == 'twitter') {
 			$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
 			$data_count = ($option['twitter_count']) ? $option_layout : 'none';
-			$twitter_author = ($option['twitter_author']) ? ' data-related="'.stripslashes($author).':The author of this post" ' : '';
+
+			$related = array();
+			if ($option['twitter_author']) {
+				$related[] = stripslashes($author).':The author of this post';
+			}
+			if ($option['twitter_follow']!='') {
+				$follow_array = array_filter(explode(',',$option['twitter_follow']));
+				foreach ($follow_array as $name) {
+					$related[] = trim($name);
+				}
+			}
+			$data_related = (count($related)>0) ? ' data-related="'.implode(',',$related).'"' : '';
+			
 			$locale = ($option['locale']!='en_US') ? 'data-lang="'.substr($option['locale'],0,2).'"' : '';
 			$out .= '<a href="http://twitter.com/share" class="twitter-share-button" data-count="'.$data_count.'" 
 						data-text="'.strip_tags($title).stripslashes($option['twitter_text']).'" data-url="'.$link.'" 
-						data-via="'.stripslashes($option['twitter_via']).'" '.$locale.' '.$twitter_author.'></a>';
+						data-via="'.stripslashes($option['twitter_via']).'" '.$locale.' '.$data_related.'></a>';
 		}
 		
 		// CLOSE THE BUTTON DIV
@@ -477,6 +489,7 @@ function really_simple_share_options () {
 		$option['twitter_count'] = (isset($_POST['really_simple_share_twitter_count']) and $_POST['really_simple_share_twitter_count']=='on') ? true : false;
 		$option['twitter_text'] = esc_html($_POST['really_simple_share_twitter_text']);
 		$option['twitter_author'] = (isset($_POST['really_simple_share_twitter_author']) and $_POST['really_simple_share_twitter_author']=='on') ? true : false;
+		$option['twitter_follow'] = esc_html($_POST['really_simple_share_twitter_follow']);
 		$option['twitter_via'] = esc_html($_POST['really_simple_share_twitter_via']);
 		
 		update_option($option_name, $option);
@@ -804,11 +817,15 @@ function really_simple_share_options () {
 				',
 				'Add author to follow list'=>'
 					<input type="checkbox" name="really_simple_share_twitter_author" '.$twitter_author.' />
-					<span class="description">'.__("If checked, the nickname of the author of the post is always added to the follow list.", 'menu-test' ).'</span>
+					<span class="description">'.__("If checked, the (wordpress) nickname of the author of the post is always added to the follow list.", 'menu-test' ).'</span>
+				',
+				'Add user to follow list'=>'
+					<input type="text" name="really_simple_share_twitter_follow" value="'.stripslashes($option['twitter_follow']).'" size="25" /><br />
+					<span class="description">'.__("Optional related Twitter usernames (comma separated) added to the follow list", 'menu-test' ).'</span>
 				',
 				'Via this user'=>'
 					<input type="text" name="really_simple_share_twitter_via" value="'.stripslashes($option['twitter_via']).'" size="25" /><br />
-					<span class="description">'.__("Optional user to follow after tweeting", 'menu-test' ).'</span>
+					<span class="description">'.__("Optional Twitter username attributed as the tweet author", 'menu-test' ).'</span>
 				',
 			)
 		)
@@ -821,9 +838,9 @@ function really_simple_share_options () {
 	</div>
 	
 	<div style="float:right; width:25%;">'
-		.really_simple_share_box_content('PremiumPress Shopping Cart', '
-			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
-				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
+		.really_simple_share_box_content('ThemeFuse', '
+			<a target="_blank" href="http://themefuse.com/wp-themes-shop/?plugin=really-simple-facebook-twitter-share-buttons">
+				<img border="0" src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/themefuse_220x220.jpg" style="display: block; margin-left: auto; margin-right: auto;">
 			</a>
 		')
 		.really_simple_share_box_content('Additional info', '
@@ -831,6 +848,11 @@ function really_simple_share_options () {
 			If you want to place the active buttons only in selected posts, put the [really_simple_share] shortcode inside the post text.<br /><br />
 			<b>Selective hide</b><br />
 			If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
+		')
+		.really_simple_share_box_content('PremiumPress Shopping Cart', '
+			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
+				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
+			</a>
 		')
 		.really_simple_share_box_content('Really simple, isn\'t it?', '
 			Most of the actual plugin features were requested by users and developed for the sake of doing it.<br /><br />
@@ -958,6 +980,7 @@ function really_simple_share_get_options_default () {
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';
 	$option['twitter_author'] = false;
+	$option['twitter_follow'] = '';
 	$option['twitter_via'] = '';
 	return $option;
 }

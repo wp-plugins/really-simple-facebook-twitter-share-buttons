@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
 Tested up to: 3.3.2
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
@@ -27,6 +27,7 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 
 * Buffer button (basic support: no twitter user mention, no image support)
 * CSS Style improvements
+* Optional related Twitter usernames (comma separated) added to the follow list
 
 *New* in version 2.0 - 2.4:
 
@@ -88,6 +89,9 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.5.1 =
+* Added: Optional related Twitter usernames (comma separated) added to the follow list
 
 = 2.5.0 =
 * Added: Buffer button
