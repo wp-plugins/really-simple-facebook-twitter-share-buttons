@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, shortcode
 Requires at least: 2.9+
-Tested up to: 3.3.2
-Stable tag: 2.5.1
+Tested up to: 3.4.1
+Stable tag: 2.5.2
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 
@@ -19,7 +19,7 @@ Please be careful when selecting the `Show buttons in these pages` options : it 
 
 If you want to place the active buttons only in selected posts, use the [really_simple_share] shortcode.
 
-If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
+If you want to hide the share buttons inside selected posts, set a "really_simple_share_disable" custom field with value "yes".
 
 For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
 
@@ -89,6 +89,11 @@ We'll see!
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.5.2 =
+* Changed: Possibility to set a custom title in the publish function, leaving the default link (thanks Arvid Janson)
+* Changed: Facebook Send button code update and style cleaning
+* Fixed: Little php code cleaning
 
 = 2.5.1 =
 * Added: Optional related Twitter usernames (comma separated) added to the follow list

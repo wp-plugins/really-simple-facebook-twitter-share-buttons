@@ -28,6 +28,9 @@ div.really_simple_share div:first-child {
 div.really_simple_share_facebook_like {
 	margin-top: 1px !important;
 }
+div.really_simple_share_facebook_like_send {
+	width:50px;
+}
 div.really_simple_share_facebook {
 	margin-top: -3px !important;
 }

@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.1
+Version: 2.5.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -214,14 +214,15 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 	}
 	$first_shown = false; // NO PADDING FOR THE FIRST BUTTON
 	
-	// IF LINK AND TITLE ARE NOT SET, USE DEFAULT FUNCTIONS
-	if ($link=='' and $title=='') {
+	// IF LINK OR TITLE ARE NOT SET, USE DEFAULT FUNCTIONS
+	if ($link=='') {
 		$link = ($option['use_shortlink']) ? wp_get_shortlink() : get_permalink();
+	}
+	if ($title=='') {
 		$title = get_the_title();
 		$author = get_the_author_meta('nickname');
-	}
+	}	
 	
-
 	// PREPEND ABOVE TEXT
 	if ($option['prepend_above']!='') {
 		$out .= '<div class="really_simple_share_prepend_above robots-nocontent snap_nopreview">'.stripslashes($option['prepend_above']).'</div>';
@@ -260,15 +261,27 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
 			// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
 			if ($option['facebook_like_send']) {
+				$out .= '</div>';
 				static $facebook_like_send_script_inserted = false;
 				if (!$facebook_like_send_script_inserted) {
-					$out .= '<script src="http://connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1"></script>';
+					// OLD IMPLEMENTATION
+					//$out .= '<script src="http://connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1"></script>';
+					
+					$out .= '<div id="fb-root"></div>
+						<script>(function(d, s, id) {
+						  var js, fjs = d.getElementsByTagName(s)[0];
+						  if (d.getElementById(id)) return;
+						  js = d.createElement(s); js.id = id;
+						  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1"; //&appId=1234567890
+						  fjs.parentNode.insertBefore(js, fjs);
+						}(document, "script", "facebook-jssdk"));</script>';
 					$facebook_like_send_script_inserted = true;
 				}
-				$out .= '</div>
-					<div style="float:left; width:50px; padding-left:10px;" class="really_simple_share_facebook_like_send">
-					<fb:send href="'.$link.'" font=""></fb:send>';
-			}	
+				$out .= '
+					<div class="really_simple_share_facebook_like_send">
+					<div class="fb-send" data-href="'.$link.'"></div>';
+				//<fb:send href="'.$link.'" font=""></fb:send>';
+			}
 		}
 		else if ($name == 'linkedin') {
 			$option_layout = ($option['layout']=='button') ? 'data-counter="right"' : 'data-counter="top"';
@@ -957,7 +970,7 @@ function really_simple_share_get_options_default () {
 		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100');
 	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'buzz', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'facebook', 'twitter'));
-	$option['position'] = $position;
+	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
 	$option['locale'] = 'en_US';
