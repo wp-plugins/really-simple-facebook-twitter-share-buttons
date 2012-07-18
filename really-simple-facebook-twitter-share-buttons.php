@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.2
+Version: 2.5.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -100,9 +100,6 @@ function really_simple_share_init() {
 
 	global $really_simple_share_option;
 
-	if ($really_simple_share_option['active_buttons']['facebook']) {
-		wp_enqueue_script('really_simple_share_facebook', 'http://static.ak.fbcdn.net/connect.php/js/FB.Share', array(), false, $really_simple_share_option['scripts_at_bottom']);
-	}
 	if ($really_simple_share_option['active_buttons']['linkedin']) {
 		wp_enqueue_script('really_simple_share_linkedin', 'http://platform.linkedin.com/in.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
@@ -244,15 +241,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		// OPEN THE BUTTON DIV
 		$out .= '<div class="really_simple_share_'.$name.'" style="width:'.$option['width_buttons'][$name].'px;">';
 		
-		if ($name == 'facebook') {
-		
-			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
-			$option_layout = ($option['facebook_count']) ? $option_layout : 'button';
-			// REMOVE HTTP:// FROM STRING
-			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-			$out .= '<a name="fb_share" type="'.$option_layout.'" href="http://www.facebook.com/sharer.php" share_url="'.$facebook_link.'">Share</a>';
-		}
-		else if ($name == 'facebook_like') {
+		if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
@@ -272,7 +261,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 						  var js, fjs = d.getElementsByTagName(s)[0];
 						  if (d.getElementById(id)) return;
 						  js = d.createElement(s); js.id = id;
-						  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1"; //&appId=1234567890
+						  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1"; //&appId=1234567890
 						  fjs.parentNode.insertBefore(js, fjs);
 						}(document, "script", "facebook-jssdk"));</script>';
 					$facebook_like_send_script_inserted = true;
@@ -438,7 +427,6 @@ function really_simple_share_options () {
 
 	$active_buttons = array(
 		'facebook_like'=>'Facebook like',
-		'facebook'=>'(old) Facebook share',
 		'twitter'=>'Twitter',
 		'linkedin'=>'Linkedin',
 		'google1'=>'Google "+1"',
@@ -489,7 +477,6 @@ function really_simple_share_options () {
 		$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
 		$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
 
-		$option['facebook_count'] = (isset($_POST['really_simple_share_facebook_count']) and $_POST['really_simple_share_facebook_count']=='on') ? true : false;
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
@@ -527,7 +514,6 @@ function really_simple_share_options () {
 	$disable_excerpts = ($option['disable_excerpts']) ? 'checked="checked"' : '';
 	$use_shortlink = ($option['use_shortlink']) ? 'checked="checked"' : '';
 	$scripts_at_bottom = ($option['scripts_at_bottom']) ? 'checked="checked"' : '';
-	$facebook_count = ($option['facebook_count']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
@@ -582,9 +568,6 @@ function really_simple_share_options () {
 				$checked = ($option['active_buttons'][$name]) ? 'checked="checked"' : '';
 				$options = '';
 				switch ($name) {
-					case 'facebook': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_facebook_count" '.$facebook_count.' />';
-						break;
 					case 'flattr': 
 						$options = 'Flattr UID:
 							<input type="text" name="really_simple_share_flattr_uid" value="'.stripslashes($option['flattr_uid']).'" style="width:80px; margin:0; padding:0;" />
@@ -945,6 +928,12 @@ function really_simple_share_get_options_stored () {
 		// Versions below 2.5 compatibility
 		$option['width_buttons']['buffer'] = '100'; 
 		$option['sort'] .= ',buffer';
+	} else if ($option['active_buttons']['facebook']==true) {
+		// Versions below 2.5.3 compatibility - Remove Facebook Share button
+		$option['active_buttons']['facebook'] = false;
+	} else if (in_array('facebook',explode(',',$option['sort']))) {
+		// Versions below 2.5.3 compatibility - Remove Facebook Share button
+		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('facebook')));
 	}	
 	
 	// MERGE DEFAULT AND STORED OPTIONS
@@ -962,14 +951,14 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default () {
 	$option = array();
-	$option['active_buttons'] = array('facebook'=>false, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
-		'digg'=>false, 'stumbleupon'=>false, 'facebook_like'=>true, 'hyves'=>false, 'email'=>false, 
+	$option['active_buttons'] = array('facebook_like'=>true, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
+		'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false);
-	$option['width_buttons'] = array('facebook'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 'buzz'=>'100', 
-		'digg'=>'100', 'stumbleupon'=>'100', 'facebook_like'=>'100', 'hyves'=>'100', 'email'=>'40', 
+	$option['width_buttons'] = array('facebook_like'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 'buzz'=>'100', 
+		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100');
 	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'buzz', 'digg', 'stumbleupon', 'hyves', 'email', 
-		'reddit', 'flattr', 'tipy', 'buffer', 'facebook', 'twitter'));
+		'reddit', 'flattr', 'tipy', 'buffer', 'twitter'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
@@ -981,7 +970,6 @@ function really_simple_share_get_options_default () {
 	$option['use_shortlink'] = false;
 	$option['scripts_at_bottom'] = false;
 
-	$option['facebook_count'] = true;
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['flattr_uid'] = '';
