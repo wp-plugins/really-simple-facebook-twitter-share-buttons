@@ -79,7 +79,11 @@ We'll see!
 
 == Changelog ==
 
-= 2.5.3 =
+= 2.5.5 =
+* Fixed: Email button url cleaning
+* Fixed: Better special characters in url handling
+
+= 2.5.4 =
 * Added: Tumblr button (basic support: no display option)
 * Added: Facebook Share button back again in a new limited version (no counter, no style), facing its dropped support by Facebook
 

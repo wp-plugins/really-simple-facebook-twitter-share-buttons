@@ -247,14 +247,14 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		if ($name == 'facebook_share') {
 			// REMOVE HTTP:// FROM STRING
 			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-			$out .= '<a name="fb_share" rel="nofollow" href="http://www.facebook.com/sharer.php?u='.urlencode($facebook_link).'&amp;t='.urlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
+			$out .= '<a name="fb_share" rel="nofollow" href="http://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
 		}
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
 			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
-			$out .= '<iframe src="http://www.facebook.com/plugins/like.php?href='.urlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'" 
+			$out .= '<iframe src="http://www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'" 
 						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
 			// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
 			if ($option['facebook_like_send']) {
@@ -318,7 +318,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$out .= '<script type="text/javascript" src="http://www.reddit.com/static/button/button'.$option_layout.'.js?newwindow=1&amp;url='.$link.'"></script>';
 		}	
 		else if ($name == 'email') {
-			$out .= '<a href="mailto:?subject='.$title.'&amp;body='.$title.' - '.$link.'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /> '.stripslashes($option['email_label']).'</a>';
+			$out .= '<a href="mailto:?subject='.rawurlencode($title).'&amp;body='.rawurlencode($title.' - '.$link).'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /> '.stripslashes($option['email_label']).'</a>';
 		}
 		else if ($name == 'google1') {
 			$option_layout = ($option['layout']=='button') ? 'medium' : 'tall';
@@ -362,7 +362,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			}
 			// IF NO MEDIA IS FOUND, DON'T SHOW THE BUTTON
 			if ($media!='') {
-				$out .= '<a href="http://pinterest.com/pin/create/button/?url='.urlencode($link).'&media='.urlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
+				$out .= '<a href="http://pinterest.com/pin/create/button/?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
 			}
 		}
 		else if ($name == 'tipy') {
@@ -380,7 +380,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					<a href="http://www.tipy.com/s/'.$option['tipy_uid'].'" class="'.$option_layout.'"><img src="http://www.tipy.com/'.$option_image.'.gif" border="0"></a>';
 		}
 		else if ($name == 'tumblr') {
-			$out .= '<a href="http://www.tumblr.com/share/link?url='.urlencode($link).'&name='.urlencode($title).'" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:61px; height:20px; background:url(\'http://platform.tumblr.com/v1/share_2.png\') top left no-repeat transparent;">Share on Tumblr</a>';
+			$out .= '<a href="http://www.tumblr.com/share/link?url='.rawurlencode($link).'&name='.rawurlencode($title).'" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:61px; height:20px; background:url(\'http://platform.tumblr.com/v1/share_2.png\') top left no-repeat transparent;">Share on Tumblr</a>';
 		}
 		else if ($name == 'twitter') {
 			$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
