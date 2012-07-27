@@ -21,7 +21,7 @@ If you want to place the active buttons only in selected posts, use the [really_
 
 If you want to hide the share buttons inside selected posts, set a "really_simple_share_disable" custom field with value "yes".
 
-For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html
+For more informations: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html "www.whiletrue.it")
 
 *New* in version 2.5:
 
