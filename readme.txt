@@ -31,26 +31,13 @@ For more informations: http://www.whiletrue.it/en/projects/wordpress/22-really-s
 * Optional related Twitter usernames (comma separated) added to the follow list
 * Facebook Share button new limited version (no counter, no style), facing its dropped support by Facebook 
 
-*New* in version 2.0 - 2.4:
-
-* Pinterest button (basic support: only shows if there is some media, links to the thumbnail or to the first media attachment)
-* Language basic support for some buttons
-* More compact and effective Settings page
-* Possibility to put some text beside the buttons
-* Speed improvements and possibility to put the scripts at the bottom of the page
-* Button arbitrary positioning via drag&drop
-* Arbitrary spacing for every button
-* Wordpress link customization (default permalink and shortlink available)
-* Email button label
-* Facebook share button counter customization
-* New option to disable buttons on excerpts
-
 Do you like this plugin? Give a chance to our other works:
 
 * [Most and Least Read Posts](http://www.whiletrue.it/en/projects/wordpress/29-most-and-least-read-posts-widget-per-wordpress.html "Most and Least Read Posts")
 * [Random Tweet Widget](http://www.whiletrue.it/en/projects/wordpress/33-random-tweet-widget-per-wordpress.html "Random Tweet Widget")
 * [Reading Time](http://www.whiletrue.it/en/projects/wordpress/17-reading-time-per-wordpress.html "Reading Time")
 * [Really Simple Twitter Feed Widget](http://www.whiletrue.it/en/projects/wordpress/25-really-simple-twitter-feed-widget-per-wordpress.html "Really Simple Twitter Feed Widget")
+* [Tilted Tag Cloud Widget](http://www.whiletrue.it/en/projects/wordpress/36-tilted-tag-cloud-widget-per-wordpress.html "Tilted Tag Cloud Widget")
 * [Tilted Twitter Cloud Widget](http://www.whiletrue.it/en/projects/wordpress/26-tilted-twitter-cloud-widget-per-wordpress.html "Tilted Twitter Cloud Widget")
 
 == Installation ==
