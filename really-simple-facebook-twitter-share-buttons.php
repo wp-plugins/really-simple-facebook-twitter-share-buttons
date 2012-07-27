@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.3
+Version: 2.5.4
 Author URI: http://www.whiletrue.it
 */
 
@@ -112,6 +112,9 @@ function really_simple_share_init() {
 	}
 	if ($really_simple_share_option['active_buttons']['flattr']) {
 		wp_enqueue_script('really_simple_share_flattr', 'http://api.flattr.com/js/0.6/load.js?mode=auto&#038;ver=0.6', array(), false, $really_simple_share_option['scripts_at_bottom']);
+	}
+	if ($really_simple_share_option['active_buttons']['tumblr']) {
+		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 	if ($really_simple_share_option['active_buttons']['twitter']) {
 		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
@@ -241,7 +244,12 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		// OPEN THE BUTTON DIV
 		$out .= '<div class="really_simple_share_'.$name.'" style="width:'.$option['width_buttons'][$name].'px;">';
 		
-		if ($name == 'facebook_like') {
+		if ($name == 'facebook_share') {
+			// REMOVE HTTP:// FROM STRING
+			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
+			$out .= '<a name="fb_share" rel="nofollow" href="http://www.facebook.com/sharer.php?u='.urlencode($facebook_link).'&amp;t='.urlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
+		}
+		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
@@ -371,6 +379,9 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					</script> 
 					<a href="http://www.tipy.com/s/'.$option['tipy_uid'].'" class="'.$option_layout.'"><img src="http://www.tipy.com/'.$option_image.'.gif" border="0"></a>';
 		}
+		else if ($name == 'tumblr') {
+			$out .= '<a href="http://www.tumblr.com/share/link?url='.urlencode($link).'&name='.urlencode($title).'" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:61px; height:20px; background:url(\'http://platform.tumblr.com/v1/share_2.png\') top left no-repeat transparent;">Share on Tumblr</a>';
+		}
 		else if ($name == 'twitter') {
 			$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
 			$data_count = ($option['twitter_count']) ? $option_layout : 'none';
@@ -439,7 +450,9 @@ function really_simple_share_options () {
 		'email'=>'Email',
 		'pinterest'=>'Pinterest',
 		'tipy'=>'Tipy',
-		'buffer'=>'Buffer'
+		'buffer'=>'Buffer',
+		'tumblr'=>'Tumblr',
+		'facebook_share'=>'(old) Facebook Share',
 	);	
 
 	$show_in = array(
@@ -934,6 +947,10 @@ function really_simple_share_get_options_stored () {
 	} else if (in_array('facebook',explode(',',$option['sort']))) {
 		// Versions below 2.5.3 compatibility - Remove Facebook Share button
 		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('facebook')));
+	} else if (strpos($option['sort'], 'facebook_share')===false) {
+		$option['sort'] .= ',tumblr,facebook_share';
+		$option['width_buttons']['tumblr'] = '100'; 
+		$option['width_buttons']['facebook_share'] = '100'; 
 	}	
 	
 	// MERGE DEFAULT AND STORED OPTIONS
@@ -953,12 +970,12 @@ function really_simple_share_get_options_default () {
 	$option = array();
 	$option['active_buttons'] = array('facebook_like'=>true, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
 		'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
-		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false);
+		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 'tumblr'=>false, 'facebook_share'=>false);
 	$option['width_buttons'] = array('facebook_like'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 'buzz'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
-		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100');
+		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100');
 	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'buzz', 'digg', 'stumbleupon', 'hyves', 'email', 
-		'reddit', 'flattr', 'tipy', 'buffer', 'twitter'));
+		'reddit', 'flattr', 'tipy', 'buffer', 'twitter', 'tumblr', 'facebook_share'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
