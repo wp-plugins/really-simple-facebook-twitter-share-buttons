@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.1
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -77,11 +77,13 @@ We'll see!
 1. Sample content, activating the Facebook Share and Twitter buttons  
 2. Options available in the Settings menu 
 
+
 == Changelog ==
 
 = 2.5.5 =
 * Fixed: Email button url cleaning
 * Fixed: Better special characters in url handling
+* Fixed: Facebook Like foreign languages support
 
 = 2.5.4 =
 * Added: Tumblr button (basic support: no display option)
