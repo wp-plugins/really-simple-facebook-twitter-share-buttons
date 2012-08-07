@@ -941,7 +941,7 @@ function really_simple_share_get_options_stored () {
 		// Versions below 2.5 compatibility
 		$option['width_buttons']['buffer'] = '100'; 
 		$option['sort'] .= ',buffer';
-	} else if ($option['active_buttons']['facebook']==true) {
+	} else if (isset($option['active_buttons']['facebook']) and $option['active_buttons']['facebook']==true) {
 		// Versions below 2.5.3 compatibility - Remove Facebook Share button
 		$option['active_buttons']['facebook'] = false;
 	} else if (in_array('facebook',explode(',',$option['sort']))) {
