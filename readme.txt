@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.1
-Stable tag: 2.5.5
+Stable tag: 2.6.0
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -22,6 +22,12 @@ If you want to place the active buttons only in selected posts, use the [really_
 If you want to hide the share buttons inside selected posts, set a "really_simple_share_disable" custom field with value "yes".
 
 For more informations: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html "www.whiletrue.it")
+
+*New* in version 2.6:
+
+* Pinterest multiple image selector (thanks Stephen Baugh)
+* Google Buzz button removed (Google dropped support to it)
+* Fixes and code cleaning, as always 
 
 *New* in version 2.5:
 
@@ -79,6 +85,13 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.6.0 =
+* Added: Pinterest multiple image selector (thanks Stephen Baugh)
+* Changed: Google Buzz button removed (Google dropped support to it)
+* Fixed: apply shortcode to content before adding the buttons (thanks Stephen Baugh)
+* Fixed: Force https protocol whenever possible
+* Fixed: better style file inclusion and small code cleaning
 
 = 2.5.5 =
 * Fixed: Email button url cleaning
