@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.6
+Version: 2.5.7
 Author URI: http://www.whiletrue.it
 */
 
@@ -66,37 +66,37 @@ function really_simple_share_scripts () {
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
 	
-	/*$out .= '<script type="text/javascript">
-			(function() {
-			    window.PinIt = window.PinIt || { loaded:false };
-			    if (window.PinIt.loaded) return;
-			    window.PinIt.loaded = true;
-			    function async_load(){
-			        var s = document.createElement("script");
-			        s.type = "text/javascript";
-			        s.async = true;
-			        if (window.location.protocol == "https:")
-			            s.src = "https://assets.pinterest.com/js/pinit.js";
-			        else
-			            s.src = "http://assets.pinterest.com/js/pinit.js";
-			        var x = document.getElementsByTagName("script")[0];
-			        x.parentNode.insertBefore(s, x);
-			    }
-			    if (window.attachEvent)
-			        window.attachEvent("onload", async_load);
-			    else
-			        window.addEventListener("load", async_load, false);
-			})();
-		</script>';
-		*/
-		
-		$out .= '<script type="text/javascript">' .
-            'var iFrameBtnUrl = "' . plugins_url( '/inc/pin-it-button-user-selects-image-iframe.html', __FILE__ ) . '"; ' .
-            '</script>' . "\n";
+		if ($really_simple_share_option['pinterest_multi_image']) {
+			$out .= '<script type="text/javascript">' .
+	            'var iFrameBtnUrl = "' . plugins_url( '/inc/pin-it-button-user-selects-image-iframe.html', __FILE__ ) . '"; ' .
+	            '</script>' . "\n";
         
-        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image.js', __FILE__ ) . '"></script>' . "\n";
-        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image-assets.js', __FILE__ ) . '"></script>' . "\n";
-        
+	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image.js', __FILE__ ) . '"></script>' . "\n";
+	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image-assets.js', __FILE__ ) . '"></script>' . "\n";
+		} else {
+			$out .= '<script type="text/javascript">
+				(function() {
+				    window.PinIt = window.PinIt || { loaded:false };
+				    if (window.PinIt.loaded) return;
+				    window.PinIt.loaded = true;
+				    function async_load(){
+				        var s = document.createElement("script");
+				        s.type = "text/javascript";
+				        s.async = true;
+				        if (window.location.protocol == "https:")
+				            s.src = "https://assets.pinterest.com/js/pinit.js";
+				        else
+				            s.src = "http://assets.pinterest.com/js/pinit.js";
+				        var x = document.getElementsByTagName("script")[0];
+				        x.parentNode.insertBefore(s, x);
+				    }
+				    if (window.attachEvent)
+				        window.attachEvent("onload", async_load);
+				    else
+				        window.addEventListener("load", async_load, false);
+				})();
+			</script>';
+		}
 	}
 	echo $out;
 }
@@ -495,6 +495,7 @@ function really_simple_share_options () {
 
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
 		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
@@ -531,6 +532,7 @@ function really_simple_share_options () {
 	$use_shortlink = ($option['use_shortlink']) ? 'checked="checked"' : '';
 	$scripts_at_bottom = ($option['scripts_at_bottom']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
+	$pinterest_multi_image = ($option['pinterest_multi_image']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
 	$pinterest_count = ($option['pinterest_count']) ? 'checked="checked"' : '';
@@ -820,6 +822,13 @@ function really_simple_share_options () {
 				'
 			)
 		)
+		.really_simple_share_box_content('Pinterest button options', 
+			array('Use multiple image selector'=>'
+					<input type="checkbox" name="really_simple_share_pinterest_multi_image" '.$pinterest_multi_image.' /> 
+					<span class="description">'.__("Warning: uses additional JS code, doesn't work in any environment", 'menu-test' ).'</span>
+				'
+			)
+		)
 		.really_simple_share_box_content('Twitter button options', 
 			array(
 				'Additional text'=>'
@@ -1003,6 +1012,7 @@ function really_simple_share_get_options_default () {
 	$option['email_label'] = '';
 	$option['linkedin_count'] = true;
 	$option['pinterest_count'] = true;
+	$option['pinterest_multi_image'] = false;
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';

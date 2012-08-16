@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.1
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -81,6 +81,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.5.7 =
+* Changed: Pinterest multiple image selector made optional (doesn't work in some environments)
 
 = 2.5.6 =
 * Added: Pinterest multiple image selector (thanks Stephen Baugh)
