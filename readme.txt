@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.1
-Stable tag: 2.5.5
+Stable tag: 2.5.7
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -25,11 +25,13 @@ For more informations: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wo
 
 *New* in version 2.5:
 
+* Pinterest multiple image selector (thanks Stephen Baugh)
+* Google Buzz button removed (Google dropped support to it)
 * Buffer button (basic support: no twitter user mention, no image support)
 * Tumblr button (basic support: no display option)
-* CSS Style improvements
 * Optional related Twitter usernames (comma separated) added to the follow list
 * Facebook Share button new limited version (no counter, no style), facing its dropped support by Facebook 
+* Fixes and code cleaning, as always 
 
 Do you like this plugin? Give a chance to our other works:
 
@@ -79,6 +81,16 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.5.7 =
+* Changed: Pinterest multiple image selector made optional (doesn't work in some environments)
+
+= 2.5.6 =
+* Added: Pinterest multiple image selector (thanks Stephen Baugh)
+* Changed: Google Buzz button removed (Google dropped support to it)
+* Fixed: apply shortcode to content before adding the buttons (thanks Stephen Baugh)
+* Fixed: Force https protocol whenever possible
+* Fixed: better style file inclusion and small code cleaning
 
 = 2.5.5 =
 * Fixed: Email button url cleaning

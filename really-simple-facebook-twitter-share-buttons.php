@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.5
+Version: 2.5.7
 Author URI: http://www.whiletrue.it
 */
 
@@ -65,28 +65,38 @@ function really_simple_share_scripts () {
 	}
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
-		$out .= '<script type="text/javascript">
-			(function() {
-			    window.PinIt = window.PinIt || { loaded:false };
-			    if (window.PinIt.loaded) return;
-			    window.PinIt.loaded = true;
-			    function async_load(){
-			        var s = document.createElement("script");
-			        s.type = "text/javascript";
-			        s.async = true;
-			        if (window.location.protocol == "https:")
-			            s.src = "https://assets.pinterest.com/js/pinit.js";
-			        else
-			            s.src = "http://assets.pinterest.com/js/pinit.js";
-			        var x = document.getElementsByTagName("script")[0];
-			        x.parentNode.insertBefore(s, x);
-			    }
-			    if (window.attachEvent)
-			        window.attachEvent("onload", async_load);
-			    else
-			        window.addEventListener("load", async_load, false);
-			})();
-		</script>';
+	
+		if ($really_simple_share_option['pinterest_multi_image']) {
+			$out .= '<script type="text/javascript">' .
+	            'var iFrameBtnUrl = "' . plugins_url( '/inc/pin-it-button-user-selects-image-iframe.html', __FILE__ ) . '"; ' .
+	            '</script>' . "\n";
+        
+	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image.js', __FILE__ ) . '"></script>' . "\n";
+	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image-assets.js', __FILE__ ) . '"></script>' . "\n";
+		} else {
+			$out .= '<script type="text/javascript">
+				(function() {
+				    window.PinIt = window.PinIt || { loaded:false };
+				    if (window.PinIt.loaded) return;
+				    window.PinIt.loaded = true;
+				    function async_load(){
+				        var s = document.createElement("script");
+				        s.type = "text/javascript";
+				        s.async = true;
+				        if (window.location.protocol == "https:")
+				            s.src = "https://assets.pinterest.com/js/pinit.js";
+				        else
+				            s.src = "http://assets.pinterest.com/js/pinit.js";
+				        var x = document.getElementsByTagName("script")[0];
+				        x.parentNode.insertBefore(s, x);
+				    }
+				    if (window.attachEvent)
+				        window.attachEvent("onload", async_load);
+				    else
+				        window.addEventListener("load", async_load, false);
+				})();
+			</script>';
+		}
 	}
 	echo $out;
 }
@@ -101,30 +111,27 @@ function really_simple_share_init() {
 	global $really_simple_share_option;
 
 	if ($really_simple_share_option['active_buttons']['linkedin']) {
-		wp_enqueue_script('really_simple_share_linkedin', 'http://platform.linkedin.com/in.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
+		wp_enqueue_script('really_simple_share_linkedin', 'https://platform.linkedin.com/in.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 	// BUFFER JS ONLY WORKS ON BOTTOM
 	if ($really_simple_share_option['active_buttons']['buffer'] and $really_simple_share_option['scripts_at_bottom']) {
 		wp_enqueue_script('really_simple_share_buffer', 'http://static.bufferapp.com/js/button.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
-	if ($really_simple_share_option['active_buttons']['buzz']) {
-		wp_enqueue_script('really_simple_share_buzz', 'http://www.google.com/buzz/api/button.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
-	}
 	if ($really_simple_share_option['active_buttons']['flattr']) {
-		wp_enqueue_script('really_simple_share_flattr', 'http://api.flattr.com/js/0.6/load.js?mode=auto&#038;ver=0.6', array(), false, $really_simple_share_option['scripts_at_bottom']);
+		wp_enqueue_script('really_simple_share_flattr', 'https://api.flattr.com/js/0.6/load.js?mode=auto&#038;ver=0.6', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 	if ($really_simple_share_option['active_buttons']['tumblr']) {
 		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 	if ($really_simple_share_option['active_buttons']['twitter']) {
-		wp_enqueue_script('really_simple_share_twitter', 'http://platform.twitter.com/widgets.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
+		wp_enqueue_script('really_simple_share_twitter', 'https://platform.twitter.com/widgets.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 }    
 
 
 function really_simple_share_style() {
-	$myStyleUrl  = WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/style.css';
-	$myStyleFile = WP_PLUGIN_DIR.'/really-simple-facebook-twitter-share-buttons/style.css';
+	$myStyleUrl  = plugins_url( 'style.css', __FILE__ );
+	$myStyleFile = plugin_dir_path(__FILE__).'style.css';
 	if ( file_exists($myStyleFile) ) {
 	    wp_register_style('really_simple_share_style', $myStyleUrl);
 	    wp_enqueue_style ('really_simple_share_style');
@@ -162,6 +169,8 @@ function really_simple_share_excerpt ($content) {
 function really_simple_share ($content, $filter, $link='', $title='', $author='') {
 	static $last_execution = '';
 
+	$content = do_shortcode( $content );
+	
 	// IF the_excerpt IS EXECUTED AFTER the_content MUST DISCARD ANY CHANGE MADE BY the_content
 	if ($filter=='the_excerpt' and $last_execution=='the_content') {
 		// WE TEMPORARILY REMOVE CONTENT FILTERING, THEN CALL THE_EXCERPT
@@ -247,14 +256,14 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		if ($name == 'facebook_share') {
 			// REMOVE HTTP:// FROM STRING
 			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-			$out .= '<a name="fb_share" rel="nofollow" href="http://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
+			$out .= '<a name="fb_share" rel="nofollow" href="https://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
 		}
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
 			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
-			$out .= '<iframe src="http://www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'&amp;locale='.$option['locale'].'" 
+			$out .= '<iframe src="https://www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'&amp;locale='.$option['locale'].'" 
 						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
 			// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
 			if ($option['facebook_like_send']) {
@@ -288,16 +297,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		else if ($name == 'buffer') {
 			$option_layout = ($option['layout']=='button') ? 'data-count="horizontal"' : 'data-count="vertical"';
 			$option_layout = ($option['buffer_count']) ? $option_layout : 'data-count="none"';
-			$out .= '<a href="http://bufferapp.com/add" class="buffer-add-button" data-text="'.$title.'" data-url="'.$link.'" '.$option_layout.'>Buffer</a>';
+			$out .= '<a href="https://bufferapp.com/add" class="buffer-add-button" data-text="'.$title.'" data-url="'.$link.'" '.$option_layout.'>Buffer</a>';
 			// BUFFER JS ONLY WORKS ON BOTTOM
 			if (!$really_simple_share_option['scripts_at_bottom']) {
 				$out .= '<script type="text/javascript" src="http://static.bufferapp.com/js/button.js"></script>';
 			}
-		}
-		else if ($name == 'buzz') {
-			$option_layout = ($option['layout']=='button') ? 'small-count' : 'normal-count';
-			$out .= '<a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="'.$option_layout.'" 
-						data-url="'.$link.'"></a>';
 		}
 		else if ($name == 'digg') {
 			$option_layout = ($option['layout']=='button') ? 'DiggCompact' : 'DiggMedium';
@@ -307,7 +311,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		}
 		else if ($name == 'stumbleupon') {
 			$option_layout = ($option['layout']=='button') ? '1' : '5';
-			$out .= '<script type="text/javascript" src="http://www.stumbleupon.com/hostedbadge.php?s='.$option_layout.'&amp;r='.$link.'"></script>';
+			$out .= '<script type="text/javascript" src="https://www.stumbleupon.com/hostedbadge.php?s='.$option_layout.'&amp;r='.$link.'"></script>';
 		}	
 		else if ($name == 'hyves') {
 			$out .= '<iframe src="http://www.hyves.nl/respect/button?url='.$link.'" 
@@ -362,7 +366,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			}
 			// IF NO MEDIA IS FOUND, DON'T SHOW THE BUTTON
 			if ($media!='') {
-				$out .= '<a href="http://pinterest.com/pin/create/button/?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
+				$out .= '<a href="https://pinterest.com/pin/create/button/?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
 			}
 		}
 		else if ($name == 'tipy') {
@@ -373,14 +377,14 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 						var s = document.createElement("script"), s1 = document.getElementsByTagName("script")[0];
 						s.type = "text/javascript";
 						s.async = true;
-						s.src = "http://www.tipy.com/button.js";
+						s.src = "https://www.tipy.com/button.js";
 						s1.parentNode.insertBefore(s, s1);
 						})();
 					</script> 
-					<a href="http://www.tipy.com/s/'.$option['tipy_uid'].'" class="'.$option_layout.'"><img src="http://www.tipy.com/'.$option_image.'.gif" border="0"></a>';
+					<a href="https://www.tipy.com/s/'.$option['tipy_uid'].'" class="'.$option_layout.'"><img src="http://www.tipy.com/'.$option_image.'.gif" border="0"></a>';
 		}
 		else if ($name == 'tumblr') {
-			$out .= '<a href="http://www.tumblr.com/share/link?url='.rawurlencode($link).'&name='.rawurlencode($title).'" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:61px; height:20px; background:url(\'http://platform.tumblr.com/v1/share_2.png\') top left no-repeat transparent;">Share on Tumblr</a>';
+			$out .= '<a href="https://www.tumblr.com/share/link?url='.rawurlencode($link).'&name='.rawurlencode($title).'" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:61px; height:20px; background:url(\'http://platform.tumblr.com/v1/share_2.png\') top left no-repeat transparent;">Share on Tumblr</a>';
 		}
 		else if ($name == 'twitter') {
 			$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
@@ -399,7 +403,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$data_related = (count($related)>0) ? ' data-related="'.implode(',',$related).'"' : '';
 			
 			$locale = ($option['locale']!='en_US') ? 'data-lang="'.substr($option['locale'],0,2).'"' : '';
-			$out .= '<a href="http://twitter.com/share" class="twitter-share-button" data-count="'.$data_count.'" 
+			$out .= '<a href="https://twitter.com/share" class="twitter-share-button" data-count="'.$data_count.'" 
 						data-text="'.strip_tags($title).stripslashes($option['twitter_text']).'" data-url="'.$link.'" 
 						data-via="'.stripslashes($option['twitter_via']).'" '.$locale.' '.$data_related.'></a>';
 		}
@@ -441,7 +445,6 @@ function really_simple_share_options () {
 		'twitter'=>'Twitter',
 		'linkedin'=>'Linkedin',
 		'google1'=>'Google "+1"',
-		'buzz'=>'Google Buzz',
 		'digg'=>'Digg',
 		'stumbleupon'=>'Stumbleupon',
 		'hyves'=>'Hyves (Duch social)',
@@ -492,6 +495,7 @@ function really_simple_share_options () {
 
 		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
 		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
 		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
@@ -528,6 +532,7 @@ function really_simple_share_options () {
 	$use_shortlink = ($option['use_shortlink']) ? 'checked="checked"' : '';
 	$scripts_at_bottom = ($option['scripts_at_bottom']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
+	$pinterest_multi_image = ($option['pinterest_multi_image']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
 	$pinterest_count = ($option['pinterest_count']) ? 'checked="checked"' : '';
@@ -817,6 +822,13 @@ function really_simple_share_options () {
 				'
 			)
 		)
+		.really_simple_share_box_content('Pinterest button options', 
+			array('Use multiple image selector'=>'
+					<input type="checkbox" name="really_simple_share_pinterest_multi_image" '.$pinterest_multi_image.' /> 
+					<span class="description">'.__("Warning: uses additional JS code, doesn't work in any environment", 'menu-test' ).'</span>
+				'
+			)
+		)
 		.really_simple_share_box_content('Twitter button options', 
 			array(
 				'Additional text'=>'
@@ -941,7 +953,7 @@ function really_simple_share_get_options_stored () {
 		// Versions below 2.5 compatibility
 		$option['width_buttons']['buffer'] = '100'; 
 		$option['sort'] .= ',buffer';
-	} else if ($option['active_buttons']['facebook']==true) {
+	} else if (isset($option['active_buttons']['facebook']) and $option['active_buttons']['facebook']==true) {
 		// Versions below 2.5.3 compatibility - Remove Facebook Share button
 		$option['active_buttons']['facebook'] = false;
 	} else if (in_array('facebook',explode(',',$option['sort']))) {
@@ -951,6 +963,12 @@ function really_simple_share_get_options_stored () {
 		$option['sort'] .= ',tumblr,facebook_share';
 		$option['width_buttons']['tumblr'] = '100'; 
 		$option['width_buttons']['facebook_share'] = '100'; 
+	} else if (isset($option['active_buttons']['buzz']) and $option['active_buttons']['buzz']==true) {
+		// Versions below 2.5.6 compatibility - Remove Google Buzz button
+		$option['active_buttons']['buzz'] = false;
+	} else if (in_array('buzz',explode(',',$option['sort']))) {
+		// Versions below 2.5.6 compatibility - Remove Google Buzz button
+		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('buzz')));
 	}	
 	
 	// MERGE DEFAULT AND STORED OPTIONS
@@ -968,13 +986,13 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default () {
 	$option = array();
-	$option['active_buttons'] = array('facebook_like'=>true, 'twitter'=>true, 'linkedin'=>false, 'buzz'=>false, 
+	$option['active_buttons'] = array('facebook_like'=>true, 'twitter'=>true, 'linkedin'=>false, 
 		'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'google1'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 'tumblr'=>false, 'facebook_share'=>false);
-	$option['width_buttons'] = array('facebook_like'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 'buzz'=>'100', 
+	$option['width_buttons'] = array('facebook_like'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100');
-	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'buzz', 'digg', 'stumbleupon', 'hyves', 'email', 
+	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'twitter', 'tumblr', 'facebook_share'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
@@ -994,6 +1012,7 @@ function really_simple_share_get_options_default () {
 	$option['email_label'] = '';
 	$option['linkedin_count'] = true;
 	$option['pinterest_count'] = true;
+	$option['pinterest_multi_image'] = false;
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';
