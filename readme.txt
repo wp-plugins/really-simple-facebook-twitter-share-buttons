@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
-Tested up to: 3.4.1
-Stable tag: 2.5.7
+Tested up to: 3.4.2
+Stable tag: 2.5.8
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -17,21 +17,43 @@ Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Pin
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
+= Shortcode =
+
 If you want to place the active buttons only in selected posts, use the [really_simple_share] shortcode.
+
+If you want to place only one share button, add the *button* attribute to the shortcode, e.g.:
+
+* [really_simple_share button="facebook_like"]
+* [really_simple_share button="twitter"]
+* [really_simple_share button="linkedin"]
+* [really_simple_share button="pinterest"] (only displays if there is at least one picture in the post or page)
+* [really_simple_share button="google1"]
+* [really_simple_share button="digg"]
+* [really_simple_share button="stumbleupon"]
+* [really_simple_share button="reddit"]
+* [really_simple_share button="flattr"]
+* [really_simple_share button="tumblr"]
+* [really_simple_share button="facebook_share"]
+* and so on...
+
+Please note that in order to place single share buttons, they have to be active in the plugin settings page.
+
+= Selective disable =
 
 If you want to hide the share buttons inside selected posts, set a "really_simple_share_disable" custom field with value "yes".
 
-For more informations: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html "www.whiletrue.it")
+= News =
 
 *New* in version 2.5:
 
-* Pinterest multiple image selector (thanks Stephen Baugh)
-* Google Buzz button removed (Google dropped support to it)
-* Buffer button (basic support: no twitter user mention, no image support)
-* Tumblr button (basic support: no display option)
-* Optional related Twitter usernames (comma separated) added to the follow list
-* Facebook Share button new limited version (no counter, no style), facing its dropped support by Facebook 
+* Shortcode single button options 
+* Pinterest multiple image selector
+* New buttons: Buffer and Tumblr
 * Fixes and code cleaning, as always 
+
+= Reference =
+
+For more informations on this plugin: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html "www.whiletrue.it")
 
 Do you like this plugin? Give a chance to our other works:
 
@@ -81,6 +103,11 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.5.8 =
+* Added: shortcode single button options 
+* Changed: screenshots moved outside, reducing the size of the plugin and allowing for faster updates
+* Changed: separate images folder, for plugin structure cleaning
 
 = 2.5.7 =
 * Changed: Pinterest multiple image selector made optional (doesn't work in some environments)

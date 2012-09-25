@@ -26,7 +26,7 @@ div.really_simple_share div:first-child {
 
 /* BUTTON SPECIFIC STYLES */
 div.really_simple_share_facebook_share a {
-	background: url('facebook-share.png') no-repeat center left;
+	background: url('images/facebook-share.png') no-repeat center left;
 	padding-left: 20px;
 }
 div.really_simple_share_facebook_like {

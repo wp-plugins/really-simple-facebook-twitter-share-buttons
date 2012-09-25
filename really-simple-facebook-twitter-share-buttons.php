@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.7
+Version: 2.5.8
 Author URI: http://www.whiletrue.it
 */
 
@@ -166,7 +166,7 @@ function really_simple_share_excerpt ($content) {
 }
 
 
-function really_simple_share ($content, $filter, $link='', $title='', $author='') {
+function really_simple_share ($content, $filter, $link='', $title='', $author='', $force_button='') {
 	static $last_execution = '';
 
 	$content = do_shortcode( $content );
@@ -250,6 +250,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			continue;
 		}
 		
+		// IF A SINGLE BUTTON IS FORCED (E.G. BY SHORTCODE, SKIP ALL OTHERS)
+		if ($force_button!='' and $force_button!=$name) {
+			continue;
+		}
+		
 		// OPEN THE BUTTON DIV
 		$out .= '<div class="really_simple_share_'.$name.'" style="width:'.$option['width_buttons'][$name].'px;">';
 		
@@ -322,7 +327,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$out .= '<script type="text/javascript" src="http://www.reddit.com/static/button/button'.$option_layout.'.js?newwindow=1&amp;url='.$link.'"></script>';
 		}	
 		else if ($name == 'email') {
-			$out .= '<a href="mailto:?subject='.rawurlencode($title).'&amp;body='.rawurlencode($title.' - '.$link).'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/email.png" alt="Email" title="Email" /> '.stripslashes($option['email_label']).'</a>';
+			$out .= '<a href="mailto:?subject='.rawurlencode($title).'&amp;body='.rawurlencode($title.' - '.$link).'"><img src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/images/email.png" alt="Email" title="Email" /> '.stripslashes($option['email_label']).'</a>';
 		}
 		else if ($name == 'google1') {
 			$option_layout = ($option['layout']=='button') ? 'medium' : 'tall';
@@ -861,7 +866,7 @@ function really_simple_share_options () {
 	<div style="float:right; width:25%;">'
 		.really_simple_share_box_content('ThemeFuse', '
 			<a target="_blank" href="http://themefuse.com/wp-themes-shop/?plugin=really-simple-facebook-twitter-share-buttons">
-				<img border="0" src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/themefuse_220x220.jpg" style="display: block; margin-left: auto; margin-right: auto;">
+				<img border="0" src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/images/themefuse_220x220.jpg" style="display: block; margin-left: auto; margin-right: auto;">
 			</a>
 		')
 		.really_simple_share_box_content('Additional info', '
@@ -898,7 +903,11 @@ function really_simple_share_options () {
 
 // SHORTCODE FOR ALL ACTIVE BUTTONS
 function really_simple_share_shortcode ($atts) {
-	return really_simple_share ('', 'shortcode');
+	extract( shortcode_atts( array(
+		'button' => '',
+	), $atts ) );
+	
+	return really_simple_share ('', 'shortcode', '', '', '', $button);
 }
 
 
