@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.8
+Version: 2.5.9
 Author URI: http://www.whiletrue.it
 */
 
@@ -68,11 +68,11 @@ function really_simple_share_scripts () {
 	
 		if ($really_simple_share_option['pinterest_multi_image']) {
 			$out .= '<script type="text/javascript">' .
-	            'var iFrameBtnUrl = "' . plugins_url( '/inc/pin-it-button-user-selects-image-iframe.html', __FILE__ ) . '"; ' .
+	            'var iFrameBtnUrl = "'.plugin_dir_url(__FILE__).'inc/pin-it-button-user-selects-image-iframe.html"; ' .
 	            '</script>' . "\n";
         
-	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image.js', __FILE__ ) . '"></script>' . "\n";
-	        $out .= '<script type="text/javascript" src="' . plugins_url( '/js/pin-it-button-user-selects-image-assets.js', __FILE__ ) . '"></script>' . "\n";
+	        $out .= '<script type="text/javascript" src="'.plugin_dir_url(__FILE__).'js/pin-it-button-user-selects-image.js"></script>' . "\n";
+	        $out .= '<script type="text/javascript" src="'.plugin_dir_url(__FILE__).'js/pin-it-button-user-selects-image-assets.js"></script>' . "\n";
 		} else {
 			$out .= '<script type="text/javascript">
 				(function() {
@@ -130,7 +130,7 @@ function really_simple_share_init() {
 
 
 function really_simple_share_style() {
-	$myStyleUrl  = plugins_url( 'style.css', __FILE__ );
+	$myStyleUrl  = plugin_dir_url (__FILE__).'style.css';
 	$myStyleFile = plugin_dir_path(__FILE__).'style.css';
 	if ( file_exists($myStyleFile) ) {
 	    wp_register_style('really_simple_share_style', $myStyleUrl);
@@ -268,8 +268,9 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 			// OPTION facebook_like_text FILTERING
 			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
-			$out .= '<iframe src="https://www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;layout='.$option_layout.'&amp;show_faces=false&amp;width='.$option['facebook_like_width'].'&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;send=false&amp;height='.$option_height.'&amp;locale='.$option['locale'].'" 
-						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['facebook_like_width'].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
+
+			$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].'" 
+						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['width_buttons'][$name].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
 			// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
 			if ($option['facebook_like_send']) {
 				$out .= '</div>';
@@ -864,9 +865,9 @@ function really_simple_share_options () {
 	</div>
 	
 	<div style="float:right; width:25%;">'
-		.really_simple_share_box_content('ThemeFuse', '
-			<a target="_blank" href="http://themefuse.com/wp-themes-shop/?plugin=really-simple-facebook-twitter-share-buttons">
-				<img border="0" src="'.WP_PLUGIN_URL.'/really-simple-facebook-twitter-share-buttons/images/themefuse_220x220.jpg" style="display: block; margin-left: auto; margin-right: auto;">
+		.really_simple_share_box_content('PremiumPress Shopping Cart', '
+			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
+				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
 			</a>
 		')
 		.really_simple_share_box_content('Additional info', '
@@ -874,11 +875,6 @@ function really_simple_share_options () {
 			If you want to place the active buttons only in selected posts, put the [really_simple_share] shortcode inside the post text.<br /><br />
 			<b>Selective hide</b><br />
 			If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
-		')
-		.really_simple_share_box_content('PremiumPress Shopping Cart', '
-			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
-				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
-			</a>
 		')
 		.really_simple_share_box_content('Really simple, isn\'t it?', '
 			Most of the actual plugin features were requested by users and developed for the sake of doing it.<br /><br />

@@ -4,13 +4,16 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.2
-Stable tag: 2.5.8
+Stable tag: 2.5.9
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
 == Description ==
 This plugin shows Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other popular share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
+
+In contrast to several other sharing plugin, this one aims to use only original code provided by any social network.
+There is no other service in the middle, you are not required to register or get a key to use it. Enjoy!
 
 Facebook Like and Twitter Share buttons are loaded by default. 
 Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Pinterest, Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy, Tumblr and Buffer can be added through the `Settings->Really simple share` menu.
@@ -103,6 +106,11 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.5.9 =
+* Changed: different file inclusion code
+* Fixed: Facebook Like button width fix
+* Fixed: "Missing Title Tags" error solved for the PinIt image selection iframe
 
 = 2.5.8 =
 * Added: shortcode single button options 
