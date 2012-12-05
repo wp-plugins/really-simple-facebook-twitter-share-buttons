@@ -262,7 +262,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		if ($name == 'facebook_share') {
 			// REMOVE HTTP:// FROM STRING
 			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-			$out .= '<a name="fb_share" rel="nofollow" href="https://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">'.$option['facebook_share_text'].'</a>';
+			$out .= '<a name="fb_share" rel="nofollow" href="https://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">'.stripslashes($option['facebook_share_text']).'</a>';
 		}
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
@@ -596,6 +596,11 @@ function really_simple_share_options () {
 				$checked = ($option['active_buttons'][$name]) ? 'checked="checked"' : '';
 				$options = '';
 				switch ($name) {
+					case 'facebook_share': 
+						$options = __('Button text').':
+							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />
+						';
+						break;
 					case 'flattr': 
 						$options = 'Flattr UID:
 							<input type="text" name="really_simple_share_flattr_uid" value="'.stripslashes($option['flattr_uid']).'" style="width:80px; margin:0; padding:0;" />
