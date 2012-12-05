@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.5.10
+Version: 2.5.11
 Author URI: http://www.whiletrue.it
 */
 
@@ -262,7 +262,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		if ($name == 'facebook_share') {
 			// REMOVE HTTP:// FROM STRING
 			$facebook_link = (substr($link,0,7)=='http://') ? substr($link,7) : $link;
-			$out .= '<a name="fb_share" rel="nofollow" href="https://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">Facebook</a>';
+			$out .= '<a name="fb_share" rel="nofollow" href="https://www.facebook.com/sharer.php?u='.rawurlencode($facebook_link).'&amp;t='.rawurlencode($title).'" title="Share on Facebook" target="_blank">'.$option['facebook_share_text'].'</a>';
 		}
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
@@ -502,8 +502,9 @@ function really_simple_share_options () {
 		$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
 		$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
 
-		$option['facebook_like_text'] = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
-		$option['facebook_like_send'] = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['facebook_like_text']  = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
+		$option['facebook_like_send']  = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+		$option['facebook_share_text'] = esc_html($_POST['really_simple_share_facebook_share_text']);
 		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
 		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
@@ -1015,6 +1016,7 @@ function really_simple_share_get_options_default () {
 
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
+	$option['facebook_share_text'] = 'Share';
 	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
 	$option['email_label'] = '';
