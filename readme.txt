@@ -104,6 +104,9 @@ We'll see!
 
 == Changelog ==
 
+= Working copy =
+* Changed: improved CSS file with iframe border cleaning
+
 = 2.5.11 =
 * Added: Facebook Share button text customization
 
