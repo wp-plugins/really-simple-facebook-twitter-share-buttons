@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, shortcode
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.2
-Stable tag: 2.5.11
+Stable tag: 2.6
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -15,8 +15,8 @@ Easy customization of active buttons and position in the Settings menu.
 In contrast to several other sharing plugin, this one aims to use only original code provided by any social network.
 There is no other service in the middle, you are not required to register or get a key to use it. Enjoy!
 
-Facebook Like and Twitter Share buttons are loaded by default. 
-Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Google "+1", Pinterest, Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy, Tumblr and Buffer can be added through the `Settings->Really simple share` menu.
+Facebook Like, Twitter and Google +1 share buttons are loaded by default. 
+Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Pinterest, Google Buzz, Stumbleupon, Hyves, Email, Reddit, Tipy, Tumblr, Buffer, Pinzout (and the deprecated Facebook Share button) can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -47,12 +47,14 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.5:
+*New* in version 2.6:
 
-* Shortcode single button options 
-* Pinterest multiple image selector
-* New buttons: Buffer and Tumblr
-* Fixes and code cleaning, as always 
+* Pinzout button
+* Comments RSS Feed button
+* Improved CSS style
+* New default options
+* Code cleaning
+* Happy new year 2013!
 
 = Reference =
 
@@ -104,8 +106,13 @@ We'll see!
 
 == Changelog ==
 
-= Working copy =
+= 2.6 =
+* Added: Pinzout button
+* Added: Comments RSS Feed button
 * Changed: improved CSS file with iframe border cleaning
+* Changed: new default options (Google +1 enabled by default)
+* Fixed: code cleaning and better assets inclusion
+* Happy new year 2013!
 
 = 2.5.11 =
 * Added: Facebook Share button text customization
@@ -373,6 +380,6 @@ Initial release
 
 * Reset default options
 * Share buttons widget
-* Shortcodes for single buttons
+* Multilanguage support
 * New "report" button
 * Counter for the "mail" button
