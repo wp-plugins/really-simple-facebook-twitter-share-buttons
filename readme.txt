@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.4.2
-Stable tag: 2.6
+Stable tag: 2.6.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -49,6 +49,7 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 *New* in version 2.6:
 
+* Pinterest button update
 * Pinzout button
 * Comments RSS Feed button
 * Improved CSS style
@@ -105,6 +106,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.6.1 =
+* Pinterest button update (please clear cache on update)
 
 = 2.6 =
 * Added: Pinzout button
