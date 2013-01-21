@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
-Tested up to: 3.4.2
-Stable tag: 2.6.1
+Tested up to: 3.5
+Stable tag: 2.6.2
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -59,13 +59,13 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = Reference =
 
-For more informations on this plugin: [www.whiletrue.it](http://www.whiletrue.it/en/projects/wordpress/22-really-simple-facebook-twitter-share-buttons-per-wordpress.html "www.whiletrue.it")
+For more info on this plugin: [www.whiletrue.it](http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/ "www.whiletrue.it")
 
 Do you like this plugin? Give a chance to our other works:
 
-* [Most and Least Read Posts](http://www.whiletrue.it/en/projects/wordpress/29-most-and-least-read-posts-widget-per-wordpress.html "Most and Least Read Posts")
-* [Tilted Tag Cloud Widget](http://www.whiletrue.it/en/projects/wordpress/36-tilted-tag-cloud-widget-per-wordpress.html "Tilted Tag Cloud Widget")
-* [Reading Time](http://www.whiletrue.it/en/projects/wordpress/17-reading-time-per-wordpress.html "Reading Time")
+* [Most and Least Read Posts](http://www.whiletrue.it/most-and-least-read-posts-widget-for-wordpress/ "Most and Least Read Posts")
+* [Tilted Tag Cloud Widget](http://www.whiletrue.it/tilted-tag-cloud-widget-per-wordpress/ "Tilted Tag Cloud Widget")
+* [Reading Time](http://www.whiletrue.it/reading-time-for-wordpress/ "Reading Time")
 
 == Installation ==
 Best is to install directly from WordPress. If manual installation is required, please make sure to put all of the plugin files in a folder named `really-simple-facebook-twitter-share-buttons` (not two nested folders) in the plugin directory, then activate the plugin through the `Plugins` menu in WordPress.
@@ -107,8 +107,11 @@ We'll see!
 
 == Changelog ==
 
+= 2.6.2 =
+* Added: Multi language support: if the WPML plugin is active, language is set automatically for each button
+
 = 2.6.1 =
-* Pinterest button update (please clear cache on update)
+* Changed: Pinterest button update (please clear cache on update)
 
 = 2.6 =
 * Added: Pinzout button

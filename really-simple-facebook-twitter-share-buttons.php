@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.6.1
+Version: 2.6.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -50,6 +50,8 @@ if (!$really_simple_share_option['disable_excerpts']) {
 // PUBLIC FUNCTIONS
 
 function really_simple_share_scripts () {
+	really_simple_share_adjust_locale();
+	
 	global $really_simple_share_option;
 
 	$out = '';
@@ -193,6 +195,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 	}
 	
 	//GET ARRAY OF STORED VALUES
+	really_simple_share_adjust_locale();
 	global $really_simple_share_option;
 	$option = $really_simple_share_option;
 
@@ -450,6 +453,17 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		return $out.$content;
 	}
 }
+
+
+function really_simple_share_adjust_locale () {
+	if (defined("ICL_LANGUAGE_CODE") and ICL_LANGUAGE_CODE!='') {
+		global $really_simple_share_option, $wpdb, $table_prefix;
+		$full_locale = $wpdb->get_var("select default_locale from ".$table_prefix."icl_languages where code = '".ICL_LANGUAGE_CODE."'");
+		// FULL LOCALE IS SOMETIMES UNDEFINED, USE ICL_LANGUAGE_CODE AS FALLBACK
+		$really_simple_share_option['locale'] = ($full_locale!='') ? $full_locale : ICL_LANGUAGE_CODE;
+	}
+}
+
 
 function really_simple_share_options () {
 
@@ -806,7 +820,7 @@ function really_simple_share_options () {
 					<option value="ps_AF" '. ($option['locale'] == 'ps_AF' ? 'selected="1"' : '') . '>Pashto</option>
 					<option value="tl_ST" '. ($option['locale'] == 'tl_ST' ? 'selected="1"' : '') . '>Klingon</option>						
 				</select><br />
-				<span class="description">'.__("Please note that not all languages are available for every button", 'really-simple-share' ).'
+				<span class="description">'.__("Please note that not all languages are available for every button. If the WPML plugin is active, language is set automatically", 'really-simple-share' ).'
 			</td></tr>
 			<tr><td>'.__("Prepend text on the above line", 'really-simple-share' ).':</td>
 			<td><input type="text" name="really_simple_share_prepend_above" value="'.stripslashes($option['prepend_above']).'" size="50" /><br />
