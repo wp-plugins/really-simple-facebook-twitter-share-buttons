@@ -49,6 +49,7 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 *New* in version 2.6:
 
+* WPML Multi language support: language is set automatically for each button
 * Pinterest button update
 * Pinzout button
 * Comments RSS Feed button
