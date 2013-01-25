@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
-Tested up to: 3.5
-Stable tag: 2.6.2
+Tested up to: 3.5.1
+Stable tag: 2.6.3
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -113,6 +113,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.6.3 =
+* Changed: CSS improvement on the block surrounding the buttons
 
 = 2.6.2 =
 * Added: Multi language support: if the WPML plugin is active, language is set automatically for each button
