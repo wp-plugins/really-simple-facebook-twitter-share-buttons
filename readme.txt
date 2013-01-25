@@ -97,6 +97,12 @@ You shouldn't leave the parameters blank, unless the code is put inside the WP l
 For example, use this code to create buttons linking to the website home page:
 echo really_simple_share_publish(get_bloginfo('url'), get_bloginfo('name')); 
 
+= Sometimes the Pinterest PinIt button doesn't appear in some posts. =
+The PinIt button requires some media to share, so it only shows up when the post contains at least one image.
+
+= I've cheched the "show counter" option in the Settings page, but sometimes the Pinterest PinIt button's counter doesn't appear. =
+The PinIt counter only appear if the post has been shared at least once. Also, the refresh time for the PinIt counter could be long. 
+
 = How about other social networks? =
 We'll see!
  
