@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.6.3
+Version: 2.7
 Author URI: http://www.whiletrue.it
 */
 
@@ -104,7 +104,9 @@ function really_simple_share_scripts () {
 }
 
 function really_simple_share_init() {
-	// DISABLED IN THE ADMIN PAGES
+	load_plugin_textdomain('really-simple-share', false, basename(dirname(__FILE__)).'/lang');
+
+	// THE REST IS DISABLED IN THE ADMIN PAGES
 	if (is_admin()) {
 		wp_enqueue_script('jquery-ui-sortable');
 		return;
@@ -643,25 +645,25 @@ function really_simple_share_options () {
 						';
 						break;
 					case 'google1': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />';
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />';
 						break;
 					case 'linkedin': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />';
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />';
 						break;
 					case 'pinterest': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_pinterest_count" '.$pinterest_count.' />';
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_pinterest_count" '.$pinterest_count.' />';
 						break;
 					case 'buffer': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
 						break;
 					case 'tipy': 
-						$options = 'Tipy site id: 
+						$options = __('Tipy site id', 'really-simple-share').': 
 							<input type="text" name="really_simple_share_tipy_uid" value="'.stripslashes($option['tipy_uid']).'" style="width:80px; margin:0; padding:0;" />
 							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>
 						';
 						break;
 					case 'twitter': 
-						$options = 'Show counter: <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
 						break;
 				}
 				$li_class = ($checked) ? 'button_active' : 'button_inactive';
@@ -671,7 +673,7 @@ function really_simple_share_options () {
 							<b>'.$active_buttons[$name].'</b>
 						</div>
 						<div style="float:left; width:120px;">
-							Width: <input type="text" name="really_simple_share_width_'.$name.'" value="'.stripslashes($option['width_buttons'][$name]).'" style="width:35px; margin:0; padding:0; text-align:right;" />px	
+							'.__('Width', 'really-simple-share').': <input type="text" name="really_simple_share_width_'.$name.'" value="'.stripslashes($option['width_buttons'][$name]).'" style="width:35px; margin:0; padding:0; text-align:right;" />px	
 						</div>
 						<div style="float:left; width:260px;">
 							'.$options.'

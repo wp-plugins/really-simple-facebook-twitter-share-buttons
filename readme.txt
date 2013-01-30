@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.5.1
-Stable tag: 2.6.3
+Stable tag: 2.7
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -47,16 +47,10 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.6:
+*New* in version 2.7:
 
-* WPML Multi language support: language is set automatically for each button
-* Pinterest button update
-* Pinzout button
-* Comments RSS Feed button
-* Improved CSS style
-* New default options
-* Code cleaning
-* Happy new year 2013!
+* Support for translations
+* Italian translation
 
 = Reference =
 
@@ -113,6 +107,10 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.7 =
+* Added: support for translations
+* Added: Italian translation
 
 = 2.6.3 =
 * Changed: CSS improvement on the block surrounding the buttons
