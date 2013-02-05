@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.7
+Version: 2.8
 Author URI: http://www.whiletrue.it
 */
 
@@ -37,6 +37,11 @@ if ($really_simple_share_option['scripts_at_bottom']) {
 } else {
 	add_action('wp_head',   'really_simple_share_scripts');
 }
+
+if ($really_simple_share_option['active_buttons']['facebook_like'] and $really_simple_share_option['facebook_like_html5']) {
+	add_action('wp_footer', 'really_simple_share_facebook_like_html5_bottom_scripts');
+}
+
 if (!$really_simple_share_option['disable_default_styles']) {
 	add_action('wp_print_styles', 'really_simple_share_style');
 }
@@ -102,6 +107,24 @@ function really_simple_share_scripts () {
 	}
 	echo $out;
 }
+
+
+function really_simple_share_facebook_like_html5_bottom_scripts () {
+	global $really_simple_share_option;
+
+	$app_id = ($really_simple_share_option['facebook_like_appid']!='') ? '&amp;appId='.$really_simple_share_option['facebook_like_appid'] : '';
+	$out = '
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1'.$app_id.'";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, "script", "facebook-jssdk"));</script>';
+	echo $out;
+}
+
 
 function really_simple_share_init() {
 	load_plugin_textdomain('really-simple-share', false, basename(dirname(__FILE__)).'/lang');
@@ -275,30 +298,36 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			// OPTION facebook_like_text FILTERING
 			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 
-			$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].'" 
-						scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['width_buttons'][$name].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
-			// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
-			if ($option['facebook_like_send']) {
-				$out .= '</div>';
-				static $facebook_like_send_script_inserted = false;
-				if (!$facebook_like_send_script_inserted) {
-					// OLD IMPLEMENTATION
-					//$out .= '<script src="http://connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1"></script>';
+			$appid = ($option['facebook_like_appid']!='') ? '&amp;appId='.$option['facebook_like_appid'] : '';
+
+			if ($option['facebook_like_html5']) {
+				// HTML5 VERSION
+				$option_data_send = ($option['facebook_like_send']) ? 'true"' : 'false';
+				$out .= '<div class="fb-like" data-href="'.$link.'" data-send="'.$option_data_send.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" ></div>';
+			} else {
+				// IFRAME VERSION
+				$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].$appid.'" 
+							scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['width_buttons'][$name].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
+				// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
+				if ($option['facebook_like_send']) {
+					$out .= '</div>';
+					static $facebook_like_send_script_inserted = false;
+					if (!$facebook_like_send_script_inserted) {
 					
-					$out .= '<div id="fb-root"></div>
-						<script>(function(d, s, id) {
-						  var js, fjs = d.getElementsByTagName(s)[0];
-						  if (d.getElementById(id)) return;
-						  js = d.createElement(s); js.id = id;
-						  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1"; //&appId=1234567890
-						  fjs.parentNode.insertBefore(js, fjs);
-						}(document, "script", "facebook-jssdk"));</script>';
-					$facebook_like_send_script_inserted = true;
+						$out .= '<div id="fb-root"></div>
+							<script>(function(d, s, id) {
+							  var js, fjs = d.getElementsByTagName(s)[0];
+							  if (d.getElementById(id)) return;
+							  js = d.createElement(s); js.id = id;
+							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1'.$app_id.'";
+							  fjs.parentNode.insertBefore(js, fjs);
+							}(document, "script", "facebook-jssdk"));</script>';
+						$facebook_like_send_script_inserted = true;
+					}
+					$out .= '
+						<div class="really_simple_share_facebook_like_send">
+						<div class="fb-send" data-href="'.$link.'"></div>';
 				}
-				$out .= '
-					<div class="really_simple_share_facebook_like_send">
-					<div class="fb-send" data-href="'.$link.'"></div>';
-				//<fb:send href="'.$link.'" font=""></fb:send>';
 			}
 		}
 		else if ($name == 'linkedin') {
@@ -531,7 +560,9 @@ function really_simple_share_options () {
 		$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
 		$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
 
+		$option['facebook_like_appid']  = esc_html($_POST['really_simple_share_facebook_like_appid']);
 		$option['facebook_like_text']  = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
+		$option['facebook_like_html5']  = (isset($_POST['really_simple_share_facebook_like_html5']) and $_POST['really_simple_share_facebook_like_html5']=='on') ? true : false;
 		$option['facebook_like_send']  = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
 		$option['facebook_share_text'] = esc_html($_POST['really_simple_share_facebook_share_text']);
 		$option['rss_text'] = esc_html($_POST['really_simple_share_rss_text']);
@@ -572,6 +603,7 @@ function really_simple_share_options () {
 	$disable_excerpts = ($option['disable_excerpts']) ? 'checked="checked"' : '';
 	$use_shortlink = ($option['use_shortlink']) ? 'checked="checked"' : '';
 	$scripts_at_bottom = ($option['scripts_at_bottom']) ? 'checked="checked"' : '';
+	$facebook_like_html5 = ($option['facebook_like_html5']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
 	$pinterest_multi_image = ($option['pinterest_multi_image']) ? 'checked="checked"' : '';
 	$pinterest_old_include = ($option['pinterest_old_include']) ? 'checked="checked"' : '';
@@ -628,6 +660,11 @@ function really_simple_share_options () {
 				$checked = ($option['active_buttons'][$name]) ? 'checked="checked"' : '';
 				$options = '';
 				switch ($name) {
+					case 'facebook_like': 
+						$options = 'Facebook app ID:
+							<input type="text" name="really_simple_share_facebook_like_appid" value="'.stripslashes($option['facebook_like_appid']).'" style="width:120px; margin:0; padding:0;" />
+						';
+						break;
 					case 'facebook_share': 
 						$options = __('Button text').':
 							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />
@@ -864,6 +901,10 @@ function really_simple_share_options () {
 				',
 				'Show Send button'=>'
 					<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
+				',
+				'Use Html5 code instead of iFrame'=>'
+					<input type="checkbox" name="really_simple_share_facebook_like_html5" '.$facebook_like_html5.' />
+					<span class="description">'.__("Warning: this requires the theme to have the wp_footer() hook in the appropriate place; if unsure, leave it unchecked", 'really-simple-share' ).'</span>
 				'
 			)
 		)
@@ -1067,6 +1108,8 @@ function really_simple_share_get_options_default () {
 	$option['use_shortlink'] = false;
 	$option['scripts_at_bottom'] = false;
 
+	$option['facebook_like_appid'] = '';
+	$option['facebook_like_html5'] = false;
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['facebook_share_text'] = 'Share';
