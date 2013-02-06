@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.8
+Version: 2.8.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -110,6 +110,8 @@ function really_simple_share_scripts () {
 
 
 function really_simple_share_facebook_like_html5_bottom_scripts () {
+	really_simple_share_adjust_locale();
+
 	global $really_simple_share_option;
 
 	$app_id = ($really_simple_share_option['facebook_like_appid']!='') ? '&amp;appId='.$really_simple_share_option['facebook_like_appid'] : '';
@@ -119,7 +121,7 @@ function really_simple_share_facebook_like_html5_bottom_scripts () {
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1'.$app_id.'";
+		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1'.$app_id.'";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, "script", "facebook-jssdk"));</script>';
 	echo $out;
@@ -295,20 +297,22 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		else if ($name == 'facebook_like') {
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
-			// OPTION facebook_like_text FILTERING
-			$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 
 			$appid = ($option['facebook_like_appid']!='') ? '&amp;appId='.$option['facebook_like_appid'] : '';
 
 			if ($option['facebook_like_html5']) {
 				// HTML5 VERSION
 				$option_data_send = ($option['facebook_like_send']) ? 'true"' : 'false';
-				$out .= '<div class="fb-like" data-href="'.$link.'" data-send="'.$option_data_send.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" ></div>';
+				$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'data-action="recommend"' : '';
+
+				$out .= '<div class="fb-like" data-href="'.$link.'" data-send="'.$option_data_send.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" '.$option_facebook_like_text.'></div>';
 			} else {
+				$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
+			
 				// IFRAME VERSION
 				$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].$appid.'" 
 							scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['width_buttons'][$name].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
-				// FACEBOOK LIKE SEND BUTTON CURRENTLY IN FBML MODE - WILL BE MERGED IN THE LIKE BUTTON WHEN FACEBOOK RELEASES IT	
+				// FACEBOOK LIKE SEND BUTTON ONLY AVAILABLE IN FBML MODE	
 				if ($option['facebook_like_send']) {
 					$out .= '</div>';
 					static $facebook_like_send_script_inserted = false;

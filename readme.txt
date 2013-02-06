@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.5.1
-Stable tag: 2.8
+Stable tag: 2.8.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -107,6 +107,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.8.1 =
+* Fixed: Facebook Like button Html5 code locale and action (like/recommend)
 
 = 2.8 =
 * Added: Facebook app ID setting for the Facebook Like button (recommended)
