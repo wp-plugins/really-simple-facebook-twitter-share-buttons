@@ -15,7 +15,7 @@
 
 .really_simple_share iframe {
 	border: 0;
-	height: 25px;
+	min-height: 25px;
 }
 
 /* ALL DIVS ARE FLOATING LEFT WITH PADDING */
