@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.5.1
-Stable tag: 2.8.2
+Stable tag: 2.9
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -47,10 +47,11 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.8:
+*New* in version 2.9:
 
-* Facebook app ID setting for the Facebook Like button (recommended)
-* Facebook Like button Html5 code (recommended if your theme supports it)
+* Pinterest button complete rewrite
+* Pinterest button fallback: when no media is found, shows the multiple image selector
+* Code cleaning
 
 = Reference =
 
@@ -107,6 +108,11 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.9 =
+* Changed: Pinterest button complete rewrite
+* Changed: Pinterest button fallback: when no media is found, shows the multiple image selector
+* Changed: Code cleaning
 
 = 2.8.2 =
 * Fixed: Flattr button height issue while showing in box size

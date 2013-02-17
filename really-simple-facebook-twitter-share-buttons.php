@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.8.2
+Version: 2.9
 Author URI: http://www.whiletrue.it
 */
 
@@ -72,38 +72,7 @@ function really_simple_share_scripts () {
 	}
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
-	
-		if ($really_simple_share_option['pinterest_multi_image']) {
-			$out .= '<script type="text/javascript">' .
-	            'var iFrameBtnUrl = "'.plugin_dir_url(__FILE__).'inc/pin-it-button-user-selects-image-iframe.html"; ' .
-	            '</script>' . "\n";
-			$out .= '<script type="text/javascript" src="'.plugin_dir_url(__FILE__).'js/pin-it-button-user-selects-image.js"></script>' . "\n";
-		} else if ($really_simple_share_option['pinterest_old_include']) {
-			$out .= '<script type="text/javascript">
-				(function() {
-				    window.PinIt = window.PinIt || { loaded:false };
-				    if (window.PinIt.loaded) return;
-				    window.PinIt.loaded = true;
-				    function async_load(){
-				        var s = document.createElement("script");
-				        s.type = "text/javascript";
-				        s.async = true;
-				        if (window.location.protocol == "https:")
-				            s.src = "https://assets.pinterest.com/js/pinit.js";
-				        else
-				            s.src = "http://assets.pinterest.com/js/pinit.js";
-				        var x = document.getElementsByTagName("script")[0];
-				        x.parentNode.insertBefore(s, x);
-				    }
-				    if (window.attachEvent)
-				        window.attachEvent("onload", async_load);
-				    else
-				        window.addEventListener("load", async_load, false);
-				})();
-			</script>';
-		} else {
-			$out .= '<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>';
-		}
+		$out .= '<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>';
 	}
 	echo $out;
 }
@@ -379,46 +348,54 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$out .= '<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.strip_tags($title).'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$option['locale'].';category:text;tags:'.strip_tags(get_the_tag_list('', ',', '')).';'.$option_layout.';">'.$title.'</a>';
 		}
 		else if ($name == 'pinterest') {
-			$option_layout = ($option['layout']=='button') ? 'horizontal' : 'vertical';
+			$option_layout = ($option['layout']=='button') ? 'beside' : 'above';
 			$option_layout = ($option['pinterest_count']) ? $option_layout : 'none';
+
 			$media = '';
-			// TRY TO USE THE THUMBNAIL, OTHERWHISE TRY TO USE THE FIRST ATTACHMENT
-			$the_post_id = get_the_ID();
-			if ( function_exists('has_post_thumbnail') and has_post_thumbnail($the_post_id) ) {
-				$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
-				$media = wp_get_attachment_url($post_thumbnail_id);
-			}
-			// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
-			if ($media=='') {
-				$args = array(
-					'post_type'   => 'attachment',
-					'numberposts' => 1,
-					'post_status' => null,
-					'post_parent' => $the_post_id
-					);
+			if (!$option['pinterest_multi_image']) {
+				// TRY TO USE THE THUMBNAIL, OTHERWHISE TRY TO USE THE FIRST ATTACHMENT
+				$the_post_id = get_the_ID();
+				if ( function_exists('has_post_thumbnail') and has_post_thumbnail($the_post_id) ) {
+					$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
+					$media = wp_get_attachment_url($post_thumbnail_id);
+				}
+				// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
+				if ($media=='') {
+					$args = array(
+						'post_type'   => 'attachment',
+						'numberposts' => 1,
+						'post_status' => null,
+						'post_parent' => $the_post_id
+						);
 
-				$attachments = get_posts( $args );
+					$attachments = get_posts( $args );
 
-				if ( $attachments ) {
-					$attachment = $attachments[0];
-					$media = wp_get_attachment_url( $attachment->ID);
+					if ( $attachments ) {
+						$attachment = $attachments[0];
+						$media = wp_get_attachment_url( $attachment->ID);
+					}
+				}
+				// IF NO MEDIA IS FOUND, LOOK INSIDE THE CONTENT
+				if ($media=='') {
+					$output = @preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
+					if (isset($matches [1] [0]))  {
+						$media = $matches [1] [0];
+					}
 				}
 			}
-			// IF NO MEDIA IS FOUND, LOOK INSIDE THE CONTENT
-			if ($media=='') {
-				$output = @preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
-				if (isset($matches [1] [0]))  {
-					$media = $matches [1] [0];
-				}
+				
+			if ($media != '') {
+				// ONE IMAGE
+				$appended_url = '?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title);
+				$data_pin_do = 'buttonPin';
+			} else {
+				// ANY IMAGE ON PAGE
+				$appended_url = '';
+				$data_pin_do = 'buttonBookmark';
 			}
-			// IF NO MEDIA IS FOUND, DON'T SHOW THE BUTTON
-			if ($media!='') {
-				if ($really_simple_share_option['pinterest_old_include'] or $really_simple_share_option['pinterest_multi_image']) {
-					$out .= '<a href="https://pinterest.com/pin/create/button/?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title).'" class="pin-it-button" count-layout="'.$option_layout.'">Pin It</a>';
-				} else {
-					$out .= '<a href="https://pinterest.com/pin/create/button/?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.rawurlencode(strip_tags($title)).'" class="pin-it-button" count-layout="'.$option_layout.'"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>';
-				}
-			}
+			
+			// FIXED: ADD THE PROTOCOL OR IT WON'T WORK IN SOME SITES
+			$out .= '<a data-pin-config="'.$option_layout.'" href="https://pinterest.com/pin/create/button/'.$appended_url.'" data-pin-do="'.$data_pin_do.'" ><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
 		}
 		else if ($name == 'tipy') {
 			$option_layout = ($option['layout']=='button') ? 'tipy_button_compact' : 'tipy_button';
@@ -920,14 +897,9 @@ function really_simple_share_options () {
 			)
 		)
 		.really_simple_share_box_content('Pinterest button options', 
-			array('Use multiple image selector'=>'
+			array('Always use multiple image selector'=>'
 					<input type="checkbox" name="really_simple_share_pinterest_multi_image" '.$pinterest_multi_image.' /> 
-					<span class="description">'.__("Warning: uses additional JS code, doesn't work in any environment", 'really-simple-share' ).'</span>
 				',
-				'Use old button code'=>'
-					<input type="checkbox" name="really_simple_share_pinterest_old_include" '.$pinterest_old_include.' /> 
-					<span class="description">'.__("Warning: only works if the \"Use multiple image selector\" option is disabled", 'really-simple-share' ).'</span>
-				'
 			)
 		)
 		.really_simple_share_box_content('Twitter button options', 
@@ -1123,7 +1095,6 @@ function really_simple_share_get_options_default () {
 	$option['linkedin_count'] = true;
 	$option['pinterest_count'] = true;
 	$option['pinterest_multi_image'] = false;
-	$option['pinterest_old_include'] = false;
 	$option['rss_text'] = 'comments feed';
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
