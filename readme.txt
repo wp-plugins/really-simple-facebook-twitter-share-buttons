@@ -116,6 +116,7 @@ We'll see!
 * Added: New `really_simple_share_button` CSS class for button layout
 * Fixed: Pinterest box layout vertical offset
 * Fixed: Pinterest post image search only when in loop
+* Fixed: Email button image theme-aware CSS style
 
 = 2.9 =
 * Changed: Pinterest button complete rewrite
