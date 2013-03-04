@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.9.1
+Version: 2.9.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -630,10 +630,8 @@ function really_simple_share_options () {
 		<h3>'.__("General options").'</h3>
 		<div class="inside">
 			<table>
-			<tr><td style="width:130px;">'.__("Share buttons", 'really-simple-share' ).':<br /><br />
-				<span class="description">'.__("Check to activate, Drag&Drop to sort, Adjust width in pixels", 'really-simple-share' ).'</span>
-			</td>
-			<td>';
+			<tr><td style="width:130px;" colspan="2">'.__("Share buttons", 'really-simple-share' ).':<br />
+				<span class="description">'.__("Check to activate, Drag&Drop to sort, Adjust width in pixels", 'really-simple-share' ).'</span><br /><br />';
 		
 			$out .= '<ul id="sortable">';
 			
@@ -1071,8 +1069,8 @@ function really_simple_share_get_options_default () {
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
 		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150');
-	$option['sort'] = implode(',',array('facebook_like', 'google1', 'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
-		'reddit', 'flattr', 'tipy', 'buffer', 'twitter', 'tumblr', 'facebook_share', 'pinzout', 'rss'));
+	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
+		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
