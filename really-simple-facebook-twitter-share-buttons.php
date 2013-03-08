@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.9.2
+Version: 2.9.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -851,71 +851,71 @@ function really_simple_share_options () {
 			</table>
 		</div>
 		</div>'
-		.really_simple_share_box_content('Advanced options', 
+		.really_simple_share_box_content(__('Advanced options', 'really-simple-share'), 
 			array(
-				'Load scripts at the bottom of the body'=>'
+				__('Load scripts at the bottom of the body', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_scripts_at_bottom" '.$scripts_at_bottom.' />
 					<span class="description">'.__("Checking it should increase the page loading speed. Warning: this requires the theme to have the wp_footer() hook in the appropriate place; if unsure, leave it unchecked", 'really-simple-share' ).'</span>
 				',
-				'Disable default styles'=>'
+				__('Disable default styles', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_disable_default_styles" '.$disable_default_styles.' />
 				',
-				'Disable buttons on excerpts'=>'
+				__('Disable buttons on excerpts', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_disable_excerpts" '.$disable_excerpts.' />
 					<span class="description">'.__("Try changing this if the buttons show bad in some pages or areas", 'really-simple-share' ).'</span>
 				',
-				'Use Wordpress shortlink instead of permalink'=>'
+				__('Use Wordpress shortlink instead of permalink', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_use_shortlink" '.$use_shortlink.' />
 					<span class="description">'.__("Warning: changing the link format may reset the button counters; if unsure, leave it unchecked", 'really-simple-share' ).'</span>
 				'
 			)
 		)
-		.really_simple_share_box_content('Facebook Like button options', 
+		.really_simple_share_box_content(__('Facebook Like button options', 'really-simple-share'), 
 			array(
-				'Button text'=>'
+				__('Button text', 'really-simple-share')=>'
 					<select name="really_simple_share_facebook_like_text">
 						<option value="like" '.$sel_like.' > '.__('like', 'really-simple-share' ).'</option>
 						<option value="recommend" '.$sel_recommend.' > '.__('recommend', 'really-simple-share' ).'</option>
 					</select>
 				',
-				'Show Send button'=>'
+				__('Show Send button', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
 				',
-				'Use Html5 code instead of iFrame'=>'
+				__('Use Html5 code instead of iFrame', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_facebook_like_html5" '.$facebook_like_html5.' />
 					<span class="description">'.__("Warning: this requires the theme to have the wp_footer() hook in the appropriate place; if unsure, leave it unchecked", 'really-simple-share' ).'</span>
 				'
 			)
 		)
-		.really_simple_share_box_content('Email button options', 
-			array('Email label'=>'
+		.really_simple_share_box_content(__('Email button options', 'really-simple-share'), 
+			array(__('Email label', 'really-simple-share')=>'
 					<input type="text" name="really_simple_share_email_label" value="'.stripslashes($option['email_label']).'" size="25" /><br />
 					<span class="description">'.__("This optional text is added next to the email button, e.g. 'forward to a friend'", 'really-simple-share' ).'</span>
 				'
 			)
 		)
-		.really_simple_share_box_content('Pinterest button options', 
-			array('Always use multiple image selector'=>'
+		.really_simple_share_box_content(__('Pinterest button options', 'really-simple-share'), 
+			array(__('Always use multiple image selector', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_pinterest_multi_image" '.$pinterest_multi_image.' /> 
 				',
 			)
 		)
-		.really_simple_share_box_content('Twitter button options', 
+		.really_simple_share_box_content(__('Twitter button options', 'really-simple-share'), 
 			array(
-				'Additional text'=>'
+				__('Additional text', 'really-simple-share')=>'
 					<input type="text" name="really_simple_share_twitter_text" value="'.stripslashes($option['twitter_text']).'" size="25" /><br />
 					<span class="description">'.__("Optional text added at the end of every tweet, e.g. ' (via @authorofblogentry)'.
 					If you use it, insert an initial space or puntuation mark", 'really-simple-share' ).'</span>
 				',
-				'Add author to follow list'=>'
+				__('Add author to follow list', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_twitter_author" '.$twitter_author.' />
 					<span class="description">'.__("If checked, the (wordpress) nickname of the author of the post is always added to the follow list.", 'really-simple-share' ).'</span>
 				',
-				'Add user to follow list'=>'
+				__('Add user to follow list', 'really-simple-share')=>'
 					<input type="text" name="really_simple_share_twitter_follow" value="'.stripslashes($option['twitter_follow']).'" size="25" /><br />
 					<span class="description">'.__("Optional related Twitter usernames (comma separated) added to the follow list", 'really-simple-share' ).'</span>
 				',
-				'Via this user'=>'
+				__('Via this user', 'really-simple-share')=>'
 					<input type="text" name="really_simple_share_twitter_via" value="'.stripslashes($option['twitter_via']).'" size="25" /><br />
 					<span class="description">'.__("Optional Twitter username attributed as the tweet author", 'really-simple-share' ).'</span>
 				',
@@ -935,13 +935,13 @@ function really_simple_share_options () {
 				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
 			</a>
 		')
-		.really_simple_share_box_content('Additional info', '
+		.really_simple_share_box_content(__('Additional info', 'really-simple-share'), '
 			<b>Selective use</b><br />
 			If you want to place the active buttons only in selected posts, put the [really_simple_share] shortcode inside the post text.<br /><br />
 			<b>Selective hide</b><br />
 			If you want to hide the share buttons inside selected posts, set the "really_simple_share_disable" custom field with value "yes".
 		')
-		.really_simple_share_box_content('Really simple, isn\'t it?', '
+		.really_simple_share_box_content(__('Really simple, isn\'t it?', 'really-simple-share'), '
 			Most of the actual plugin features were requested by users and developed for the sake of doing it.<br /><br />
 			If you want to be sure this passion lasts centuries, please consider donating some cents!<br /><br />
 			<div style="text-align: center;">
