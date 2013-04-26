@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.9.4
+Version: 2.9.5
 Author URI: http://www.whiletrue.it
 */
 
@@ -953,6 +953,7 @@ function really_simple_share_options () {
 			</form>
 			</div>
 		')
+		.really_simple_share_box_content('News by WhileTrue', really_simple_share_feed())
 	.'</div>
 
 	</div>
@@ -980,6 +981,33 @@ function really_simple_share_publish ($link='', $title='') {
 
 
 // PRIVATE FUNCTIONS
+
+function really_simple_share_feed () {
+	$feedurl = 'http://www.whiletrue.it/feed/';
+	$select = 8;
+
+	$rss = fetch_feed($feedurl);
+	if (!is_wp_error($rss)) { // Checks that the object is created correctly
+		$maxitems = $rss->get_item_quantity($select);
+		$rss_items = $rss->get_items(0, $maxitems);
+	}
+	if (!empty($maxitems)) {
+		$out .= '
+			<div class="rss-widget">
+				<ul>';
+    foreach ($rss_items as $item) {
+			$out .= '
+						<li><a class="rsswidget" href="'.$item->get_permalink().'">'.$item->get_title().'</a> 
+							<span class="rss-date">'.date_i18n(get_option('date_format') ,strtotime($item->get_date('j F Y'))).'</span></li>';
+		}
+		$out .= '
+				</ul>
+			</div>';
+	}
+	$x = is_rtl() ? 'left' : 'right'; // This makes sure that the positioning is also correct for right-to-left languages
+	$out .= '<style type="text/css">#plagiarism_id {float:'.$x.';}</style>';
+	return $out;
+}
 
 function really_simple_share_box_content ($title, $content) {
 	if (is_array($content)) {
