@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.9.5
+Version: 2.9.6
 Author URI: http://www.whiletrue.it
 */
 
@@ -72,7 +72,17 @@ function really_simple_share_scripts () {
 	}
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
-		$out .= '<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>';
+		$hover = ($really_simple_share_option['pinterest_hover']!='') ? ' p.setAttribute(\'data-pin-hover\', true); ' : '';
+		$out .= '<script type="text/javascript">
+			(function(d){
+			  var f = d.getElementsByTagName(\'SCRIPT\')[0], p = d.createElement(\'SCRIPT\');
+			  p.type = \'text/javascript\';
+			  '.$hover.'
+			  p.async = true;
+			  p.src = \'//assets.pinterest.com/js/pinit.js\';
+			  f.parentNode.insertBefore(p, f);
+			}(document));
+			</script>';
 	}
 	echo $out;
 }
@@ -347,7 +357,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_layout = ($option['layout']=='button') ? 'button:compact' : '';
 			$out .= '<a class="FlattrButton" style="display:none;" href="'.$link.'" title="'.strip_tags($title).'" rev="flattr;uid:'.$option['flattr_uid'].';language:'.$option['locale'].';category:text;tags:'.strip_tags(get_the_tag_list('', ',', '')).';'.$option_layout.';">'.$title.'</a>';
 		}
-		else if ($name == 'pinterest') {
+		else if ($name == 'pinterest' and $option['pinterest_hover']!='hide') {
 			$option_layout = ($option['layout']=='button') ? 'beside' : 'above';
 			$option_layout = ($option['pinterest_count']) ? $option_layout : 'none';
 
@@ -548,7 +558,7 @@ function really_simple_share_options () {
 		$option['facebook_share_text'] = esc_html($_POST['really_simple_share_facebook_share_text']);
 		$option['rss_text'] = esc_html($_POST['really_simple_share_rss_text']);
 		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
-		$option['pinterest_old_include'] = (isset($_POST['really_simple_share_pinterest_old_include']) and $_POST['really_simple_share_pinterest_old_include']=='on') ? true : false;
+		$option['pinterest_hover'] = esc_html($_POST['really_simple_share_pinterest_hover']);
 		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
 		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
@@ -579,6 +589,10 @@ function really_simple_share_options () {
 
 	$sel_like      = ($option['facebook_like_text']=='like'     ) ? 'selected="selected"' : '';
 	$sel_recommend = ($option['facebook_like_text']=='recommend') ? 'selected="selected"' : '';
+
+	$sel_pinterest_hover_no    = ($option['pinterest_hover']=='')      ? 'selected="selected"' : '';
+	$sel_pinterest_hover_hover = ($option['pinterest_hover']=='hover') ? 'selected="selected"' : '';
+	$sel_pinterest_hover_hide  = ($option['pinterest_hover']=='hide' ) ? 'selected="selected"' : '';
 	
 	$disable_default_styles = ($option['disable_default_styles']) ? 'checked="checked"' : '';
 	$disable_excerpts = ($option['disable_excerpts']) ? 'checked="checked"' : '';
@@ -587,7 +601,6 @@ function really_simple_share_options () {
 	$facebook_like_html5 = ($option['facebook_like_html5']) ? 'checked="checked"' : '';
 	$facebook_like_show_send_button = ($option['facebook_like_send']) ? 'checked="checked"' : '';
 	$pinterest_multi_image = ($option['pinterest_multi_image']) ? 'checked="checked"' : '';
-	$pinterest_old_include = ($option['pinterest_old_include']) ? 'checked="checked"' : '';
 	$google1_count = ($option['google1_count']) ? 'checked="checked"' : '';
 	$linkedin_count = ($option['linkedin_count']) ? 'checked="checked"' : '';
 	$pinterest_count = ($option['pinterest_count']) ? 'checked="checked"' : '';
@@ -898,6 +911,13 @@ function really_simple_share_options () {
 			array(__('Always use multiple image selector', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_pinterest_multi_image" '.$pinterest_multi_image.' /> 
 				',
+				__('Use the PinIt image hover button', 'really-simple-share')=>'
+				<select name="really_simple_share_pinterest_hover">
+				<option value=""      '.$sel_pinterest_hover_no.'    > '.__('no',  'really-simple-share' ).'</option>
+				<option value="hover" '.$sel_pinterest_hover_hover.' > '.__('yes', 'really-simple-share' ).'</option>
+				<option value="hide"  '.$sel_pinterest_hover_hide.'  > '.__('yes, and hide PinIt on the button bar', 'really-simple-share' ).'</option>
+				</select>
+				'
 			)
 		)
 		.really_simple_share_box_content(__('Twitter button options', 'really-simple-share'), 
@@ -1121,6 +1141,7 @@ function really_simple_share_get_options_default () {
 	$option['linkedin_count'] = true;
 	$option['pinterest_count'] = true;
 	$option['pinterest_multi_image'] = false;
+	$option['pinterest_hover'] = '';
 	$option['rss_text'] = 'comments feed';
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
