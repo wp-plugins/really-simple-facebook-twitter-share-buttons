@@ -112,7 +112,7 @@ We'll see!
 == Changelog ==
 
 = 2.10.1 =
-* Fixed: Pinterest multiple calls (from different plugins) could stop counters
+* Fixed: Pinterest multiple calls (from different plugins) could stop counters (thanks Darwood)
 
 = 2.10 =
 * Added: Different calls to action, above and below the post
