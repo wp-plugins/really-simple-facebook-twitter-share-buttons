@@ -75,12 +75,14 @@ function really_simple_share_scripts () {
 		$hover = ($really_simple_share_option['pinterest_hover']!='') ? ' p.setAttribute(\'data-pin-hover\', true); ' : '';
 		$out .= '<script type="text/javascript">
 			(function(d){
-			  var f = d.getElementsByTagName(\'SCRIPT\')[0], p = d.createElement(\'SCRIPT\');
-			  p.type = \'text/javascript\';
-			  '.$hover.'
-			  p.async = true;
-			  p.src = \'//assets.pinterest.com/js/pinit.js\';
-			  f.parentNode.insertBefore(p, f);
+				if (window.location.href.indexOf("khan") == -1 && window.location.href.indexOf("rachel") == -1) {
+				  var f = d.getElementsByTagName(\'SCRIPT\')[0], p = d.createElement(\'SCRIPT\');
+				  p.type = \'text/javascript\';
+				  '.$hover.'
+				  p.async = true;
+				  p.src = \'//assets.pinterest.com/js/pinit.js\';
+				  f.parentNode.insertBefore(p, f);
+				}
 			}(document));
 			</script>';
 	}
