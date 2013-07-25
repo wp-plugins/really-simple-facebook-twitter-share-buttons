@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode
 Requires at least: 2.9+
 Tested up to: 3.5.2
-Stable tag: 2.10.2
+Stable tag: 2.10.3
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -110,6 +110,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.10.3 =
+* Fixed: Pinterest multiple calls (from different plugins) could stop counters, now working
 
 = 2.10.2 =
 * Fixed: Facebook iframe style cleaning
@@ -431,6 +434,9 @@ Initial release
 
 
 == Upgrade Notice ==
+
+= 2.10.3 =
+Users having versions from 2.10.1 and 2.10.2 should upgrade due to a bugfix on the Pinterest button
 
 = 2.4.4 =
 Users having versions from 2.4 to 2.4.3 should upgrade due to a bugfix on the Google+ and Pinterest buttons 
