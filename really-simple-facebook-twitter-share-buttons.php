@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.11.1
+Version: 2.11.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -104,14 +104,14 @@ function really_simple_share_facebook_like_html5_bottom_scripts () {
 
 	global $really_simple_share_option;
 
-	$app_id = ($really_simple_share_option['facebook_like_appid']!='') ? '&amp;appId='.$really_simple_share_option['facebook_like_appid'] : '';
+	$app_id = ($really_simple_share_option['facebook_like_appid']!='') ? '&appId='.$really_simple_share_option['facebook_like_appid'] : '';
 	$out = '
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1&amp;status=0'.$app_id.'";
+		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1&status=0'.$app_id.'";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, "script", "facebook-jssdk"));</script>';
 	echo $out;
@@ -277,7 +277,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_layout = ($option['layout']=='button') ? 'button_count' : 'box_count';
 			$option_height = ($option['layout']=='button') ? 27 : 62;
 
-			$appid = ($option['facebook_like_appid']!='') ? '&amp;appId='.$option['facebook_like_appid'] : '';
+			$appid = ($option['facebook_like_appid']!='') ? '&appId='.$option['facebook_like_appid'] : '';
 
 			if ($option['facebook_like_html5']) {
 				// HTML5 VERSION
@@ -302,7 +302,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 							  var js, fjs = d.getElementsByTagName(s)[0];
 							  if (d.getElementById(id)) return;
 							  js = d.createElement(s); js.id = id;
-							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1&amp;status=0'.$app_id.'";
+							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1&status=0'.$app_id.'";
 							  fjs.parentNode.insertBefore(js, fjs);
 							}(document, "script", "facebook-jssdk"));</script>';
 						$facebook_like_send_script_inserted = true;
@@ -404,7 +404,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 				
 			if ($media != '') {
 				// ONE IMAGE
-				$appended_url = '?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.strip_tags($title);
+				$appended_url = '?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.rawurlencode(strip_tags($title));
 				$data_pin_do = 'buttonPin';
 			} else {
 				// ANY IMAGE ON PAGE
@@ -1135,36 +1135,45 @@ function really_simple_share_get_options_stored () {
 		// Versions below 2.3 compatibility
 		$option['width_buttons']['pinterest'] = '100'; 
 		$option['sort'] .= ',pinterest';
-	} else if (strpos($option['sort'], 'buffer')===false) {
+	} 
+	if (strpos($option['sort'], 'buffer')===false) {
 		// Versions below 2.5 compatibility
 		$option['width_buttons']['buffer'] = '100'; 
 		$option['sort'] .= ',buffer';
-	} else if (isset($option['active_buttons']['facebook']) and $option['active_buttons']['facebook']==true) {
+	} 
+	if (isset($option['active_buttons']['facebook']) and $option['active_buttons']['facebook']==true) {
 		// Versions below 2.5.3 compatibility - Remove Facebook Share button
 		$option['active_buttons']['facebook'] = false;
-	} else if (in_array('facebook',explode(',',$option['sort']))) {
+	} 
+	if (in_array('facebook',explode(',',$option['sort']))) {
 		// Versions below 2.5.3 compatibility - Remove Facebook Share button
 		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('facebook')));
-	} else if (strpos($option['sort'], 'facebook_share')===false) {
+	} 
+	if (strpos($option['sort'], 'facebook_share')===false) {
 		$option['sort'] .= ',tumblr,facebook_share';
 		$option['width_buttons']['tumblr'] = '100'; 
 		$option['width_buttons']['facebook_share'] = '100'; 
-	} else if (isset($option['active_buttons']['buzz']) and $option['active_buttons']['buzz']==true) {
+	} 
+	if (isset($option['active_buttons']['buzz']) and $option['active_buttons']['buzz']==true) {
 		// Versions below 2.5.6 compatibility - Remove Google Buzz button
 		$option['active_buttons']['buzz'] = false;
-	} else if (in_array('buzz',explode(',',$option['sort']))) {
+	} 
+	if (in_array('buzz',explode(',',$option['sort']))) {
 		// Versions below 2.5.6 compatibility - Remove Google Buzz button
 		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('buzz')));
-	} else if (strpos($option['sort'], 'pinzout')===false) {
+	} 
+	if (strpos($option['sort'], 'pinzout')===false) {
 		// Versions below 2.6 compatibility
 		$option['width_buttons']['pinzout'] = '75'; 
 		$option['width_buttons']['rss']     = '150'; 
 		$option['sort'] .= ',pinzout,rss';
-	} else if (strpos($option['sort'], 'print')===false) {
+	} 
+	if (strpos($option['sort'], 'print')===false) {
 		// Versions below 2.10 compatibility
 		$option['width_buttons']['print'] = '40'; 
 		$option['sort'] .= ',print';
-	} else if ($option['prepend_above']!='' or $option['prepend_inline']!='') {
+	} 
+	if ($option['prepend_above']!='' or $option['prepend_inline']!='') {
 		// Versions below 2.10 compatibility
 		if ($option['prepend_above']!='') {
 			$option['above_prepend_above'] = $option['prepend_above'];
@@ -1176,12 +1185,13 @@ function really_simple_share_get_options_stored () {
 			$option['below_prepend_inline'] = $option['prepend_inline']; 
 			$option['prepend_inline'] = '';
 		}
-	} else if (strpos($option['sort'], 'youtube')===false) {
+	}
+	if (strpos($option['sort'], 'youtube')===false) {
 		// Versions below 2.11 compatibility
 		$option['width_buttons']['youtube'] = '140'; 
 		$option['sort'] .= ',youtube';
 	}	
-	
+
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
 	$option = array_merge($option_default, $option);
