@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.11
+Version: 2.11.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -111,7 +111,7 @@ function really_simple_share_facebook_like_html5_bottom_scripts () {
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1'.$app_id.'";
+		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1&amp;status=0'.$app_id.'";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, "script", "facebook-jssdk"));</script>';
 	echo $out;
@@ -302,7 +302,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 							  var js, fjs = d.getElementsByTagName(s)[0];
 							  if (d.getElementById(id)) return;
 							  js = d.createElement(s); js.id = id;
-							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1'.$app_id.'";
+							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1&amp;status=0'.$app_id.'";
 							  fjs.parentNode.insertBefore(js, fjs);
 							}(document, "script", "facebook-jssdk"));</script>';
 						$facebook_like_send_script_inserted = true;
@@ -346,7 +346,8 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$out .= '<script type="text/javascript" src="http://www.reddit.com/static/button/button'.$option_layout.'.js?newwindow=1&amp;url='.$link.'"></script>';
 		}	
 		else if ($name == 'email') {
-			$out .= '<a href="mailto:?subject='.rawurlencode($title).'&amp;body='.rawurlencode($title.' - '.$link).'"><img src="'.plugins_url('images/email.png',__FILE__).'" alt="'.__('Email', 'really-simple-share').'" title="'.__('Email', 'really-simple-share').'" /> '.stripslashes($option['email_label']).'</a>';
+			$subject = ($option['email_subject']!='') ? $option['email_subject'] : $title;
+			$out .= '<a href="mailto:?subject='.rawurlencode($subject).'&amp;body='.rawurlencode($subject.' - '.$link).'"><img src="'.plugins_url('images/email.png',__FILE__).'" alt="'.__('Email', 'really-simple-share').'" title="'.__('Email', 'really-simple-share').'" /> '.stripslashes($option['email_label']).'</a>';
 		}
 		else if ($name == 'print') {
 			$out .= '<a href="javascript:window.print();void(0);"><img src="'.plugins_url('images/print.png',__FILE__).'" alt="'.__('Print', 'really-simple-share').'" title="'.__('Print', 'really-simple-share').'" /> '.stripslashes($option['print_label']).'</a>';
@@ -591,7 +592,8 @@ function really_simple_share_options () {
 		$option['rss_text'] = esc_html($_POST['really_simple_share_rss_text']);
 		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
 		$option['pinterest_hover'] = esc_html($_POST['really_simple_share_pinterest_hover']);
-		$option['email_label'] = esc_html($_POST['really_simple_share_email_label']);
+		$option['email_label']   = esc_html($_POST['really_simple_share_email_label']);
+		$option['email_subject'] = esc_html($_POST['really_simple_share_email_subject']);
 		$option['print_label'] = esc_html($_POST['really_simple_share_print_label']);
 		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
 		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
@@ -999,6 +1001,14 @@ function really_simple_share_options () {
 				',
 			)
 		)
+		.really_simple_share_box_content(__('Email button options', 'really-simple-share'), 
+			array(
+				__('Custom text for email subject and text', 'really-simple-share')=>'
+					<input type="text" name="really_simple_share_email_subject" value="'.stripslashes($option['email_subject']).'" size="50" /><br />
+				<span class="description">'.__("Optional text used instead of the article title", 'really-simple-share' ).'</span>
+				',
+			)
+		)
 		.wp_nonce_field('really_simple_share_settings','really_simple_share_settings_nonce')
 		.'<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
@@ -1218,6 +1228,7 @@ function really_simple_share_get_options_default () {
 	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
 	$option['email_label'] = '';
+	$option['email_subject'] = '';
 	$option['print_label'] = '';
 	$option['linkedin_count'] = true;
 	$option['pinterest_count'] = true;
