@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
 Requires at least: 2.9+
-Tested up to: 3.6
-Stable tag: 2.11.2
+Tested up to: 3.6.1
+Stable tag: 2.12
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -111,6 +111,10 @@ We'll see!
 
 == Changelog ==
 
+= 2.12 =
+* Added: Google share button
+* Fixed: Pinterest image default alt text (thanks Laserjob)
+
 = 2.11.2 =
 * Fixed: Plugin updates bug
 * Fixed: Facebook like status bug (thanks laserjobs)
@@ -121,7 +125,7 @@ We'll see!
 * Fixed: Facebook like status bug
 
 = 2.11 =
-* Added: Youtube channel button (experimental)
+* Added: Youtube channel button
 
 = 2.10.5 =
 * Fixed: CSRF vulnerability on settings page
