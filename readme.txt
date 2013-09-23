@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
 Requires at least: 2.9+
 Tested up to: 3.6.1
-Stable tag: 2.12
+Stable tag: 2.13
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -29,7 +29,7 @@ If you want to place only one share button, add the *button* attribute to the sh
 * [really_simple_share button="facebook_like"]
 * [really_simple_share button="twitter"]
 * [really_simple_share button="linkedin"]
-* [really_simple_share button="pinterest"] (only displays if there is at least one picture in the post or page)
+* [really_simple_share button="pinterest"]
 * [really_simple_share button="google1"]
 * [really_simple_share button="digg"]
 * [really_simple_share button="stumbleupon"]
@@ -47,10 +47,9 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.10:
+*New* in version 2.13:
 
-* Different calls to action, above and below the post
-* Print button, with optional label
+* Reset to Default values button
 * Code cleaning
 
 = Reference =
@@ -110,6 +109,10 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.13 =
+* Added: Reset to Default values button
+* Changed: Code cleaning
 
 = 2.12 =
 * Added: Google share button
@@ -481,11 +484,3 @@ Facebook Share button is deprecated in favor of Facebook Like button
 = 1.0.0 =
 Initial release
 
-
-== Upcoming features ==
-
-* Reset default options
-* Share buttons widget
-* Multilanguage support
-* New "report" button
-* Counter for the "mail" button

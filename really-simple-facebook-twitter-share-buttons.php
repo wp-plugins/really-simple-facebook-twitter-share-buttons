@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.12
+Version: 2.13
 Author URI: http://www.whiletrue.it
 */
 
@@ -571,50 +571,54 @@ function really_simple_share_options () {
 	if( isset($_POST['really_simple_share_position']) && check_admin_referer('really_simple_share_settings','really_simple_share_settings_nonce')) {
 		$option = array();
 
-		foreach (array_keys($active_buttons) as $item) {
-			$option['active_buttons'][$item] = (isset($_POST['really_simple_share_active_'.$item]) and $_POST['really_simple_share_active_'.$item]=='on') ? true : false;
-			$option['width_buttons'][$item]  = esc_html($_POST['really_simple_share_width_'.$item]);
-		}
-		foreach (array_keys($show_in) as $item) {
-			$option['show_in'][$item] = (isset($_POST['really_simple_share_show_'.$item]) and $_POST['really_simple_share_show_'.$item]=='on') ? true : false;
-		}
-		$option['sort'] = esc_html($_POST['really_simple_share_sort']);
-		$option['position'] = esc_html($_POST['really_simple_share_position']);
-		$option['layout'] = esc_html($_POST['really_simple_share_layout']);
-		$option['locale'] = esc_html($_POST['really_simple_share_locale']);
-		$option['above_prepend_above']  = esc_html($_POST['really_simple_share_above_prepend_above']);
-		$option['above_prepend_inline'] = esc_html($_POST['really_simple_share_above_prepend_inline']);
-		$option['below_prepend_above']  = esc_html($_POST['really_simple_share_below_prepend_above']);
-		$option['below_prepend_inline'] = esc_html($_POST['really_simple_share_below_prepend_inline']);
-		$option['disable_default_styles'] = (isset($_POST['really_simple_share_disable_default_styles']) and $_POST['really_simple_share_disable_default_styles']=='on') ? true : false;
-		$option['disable_excerpts'] = (isset($_POST['really_simple_share_disable_excerpts']) and $_POST['really_simple_share_disable_excerpts']=='on') ? true : false;
-		$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
-		$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
+		if ($_POST['reset']=='reset') {
+			$option = really_simple_share_get_options_default();
+		} else {
+			foreach (array_keys($active_buttons) as $item) {
+				$option['active_buttons'][$item] = (isset($_POST['really_simple_share_active_'.$item]) and $_POST['really_simple_share_active_'.$item]=='on') ? true : false;
+				$option['width_buttons'][$item]  = esc_html($_POST['really_simple_share_width_'.$item]);
+			}
+			foreach (array_keys($show_in) as $item) {
+				$option['show_in'][$item] = (isset($_POST['really_simple_share_show_'.$item]) and $_POST['really_simple_share_show_'.$item]=='on') ? true : false;
+			}
+			$option['sort'] = esc_html($_POST['really_simple_share_sort']);
+			$option['position'] = esc_html($_POST['really_simple_share_position']);
+			$option['layout'] = esc_html($_POST['really_simple_share_layout']);
+			$option['locale'] = esc_html($_POST['really_simple_share_locale']);
+			$option['above_prepend_above']  = esc_html($_POST['really_simple_share_above_prepend_above']);
+			$option['above_prepend_inline'] = esc_html($_POST['really_simple_share_above_prepend_inline']);
+			$option['below_prepend_above']  = esc_html($_POST['really_simple_share_below_prepend_above']);
+			$option['below_prepend_inline'] = esc_html($_POST['really_simple_share_below_prepend_inline']);
+			$option['disable_default_styles'] = (isset($_POST['really_simple_share_disable_default_styles']) and $_POST['really_simple_share_disable_default_styles']=='on') ? true : false;
+			$option['disable_excerpts'] = (isset($_POST['really_simple_share_disable_excerpts']) and $_POST['really_simple_share_disable_excerpts']=='on') ? true : false;
+			$option['use_shortlink'] = (isset($_POST['really_simple_share_use_shortlink']) and $_POST['really_simple_share_use_shortlink']=='on') ? true : false;
+			$option['scripts_at_bottom'] = (isset($_POST['really_simple_share_scripts_at_bottom']) and $_POST['really_simple_share_scripts_at_bottom']=='on') ? true : false;
 
-		$option['facebook_like_appid']  = esc_html($_POST['really_simple_share_facebook_like_appid']);
-		$option['facebook_like_text']  = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
-		$option['facebook_like_html5']  = (isset($_POST['really_simple_share_facebook_like_html5']) and $_POST['really_simple_share_facebook_like_html5']=='on') ? true : false;
-		$option['facebook_like_send']  = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
-		$option['facebook_share_text'] = esc_html($_POST['really_simple_share_facebook_share_text']);
-		$option['rss_text'] = esc_html($_POST['really_simple_share_rss_text']);
-		$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
-		$option['pinterest_hover'] = esc_html($_POST['really_simple_share_pinterest_hover']);
-		$option['email_label']   = esc_html($_POST['really_simple_share_email_label']);
-		$option['email_subject'] = esc_html($_POST['really_simple_share_email_subject']);
-		$option['print_label'] = esc_html($_POST['really_simple_share_print_label']);
-		$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
-		$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
-		$option['linkedin_count']  = (isset($_POST['really_simple_share_linkedin_count'])  and $_POST['really_simple_share_linkedin_count'] =='on') ? true : false;
-		$option['pinterest_count'] = (isset($_POST['really_simple_share_pinterest_count']) and $_POST['really_simple_share_pinterest_count']=='on') ? true : false;
-		$option['buffer_count']    = (isset($_POST['really_simple_share_buffer_count'])    and $_POST['really_simple_share_buffer_count']   =='on') ? true : false;
-		$option['tipy_uid']        = esc_html($_POST['really_simple_share_tipy_uid']);
-		$option['twitter_count']   = (isset($_POST['really_simple_share_twitter_count'])  and $_POST['really_simple_share_twitter_count']=='on')  ? true : false;
-		$option['twitter_author']  = (isset($_POST['really_simple_share_twitter_author']) and $_POST['really_simple_share_twitter_author']=='on') ? true : false;
-		$option['twitter_text']    = esc_html($_POST['really_simple_share_twitter_text']);
-		$option['twitter_follow']  = esc_html($_POST['really_simple_share_twitter_follow']);
-		$option['twitter_via']     = esc_html($_POST['really_simple_share_twitter_via']);
-		$option['youtube_channel'] = esc_html($_POST['really_simple_share_youtube_channel']);
-		
+			$option['facebook_like_appid']  = esc_html($_POST['really_simple_share_facebook_like_appid']);
+			$option['facebook_like_text']  = ($_POST['really_simple_share_facebook_like_text']=='recommend') ? 'recommend' : 'like';
+			$option['facebook_like_html5']  = (isset($_POST['really_simple_share_facebook_like_html5']) and $_POST['really_simple_share_facebook_like_html5']=='on') ? true : false;
+			$option['facebook_like_send']  = (isset($_POST['really_simple_share_facebook_like_send']) and $_POST['really_simple_share_facebook_like_send']=='on') ? true : false;
+			$option['facebook_share_text'] = esc_html($_POST['really_simple_share_facebook_share_text']);
+			$option['rss_text'] = esc_html($_POST['really_simple_share_rss_text']);
+			$option['pinterest_multi_image'] = (isset($_POST['really_simple_share_pinterest_multi_image']) and $_POST['really_simple_share_pinterest_multi_image']=='on') ? true : false;
+			$option['pinterest_hover'] = esc_html($_POST['really_simple_share_pinterest_hover']);
+			$option['email_label']   = esc_html($_POST['really_simple_share_email_label']);
+			$option['email_subject'] = esc_html($_POST['really_simple_share_email_subject']);
+			$option['print_label'] = esc_html($_POST['really_simple_share_print_label']);
+			$option['flattr_uid']  = esc_html($_POST['really_simple_share_flattr_uid']);
+			$option['google1_count']   = (isset($_POST['really_simple_share_google1_count'])   and $_POST['really_simple_share_google1_count']  =='on') ? true : false;
+			$option['linkedin_count']  = (isset($_POST['really_simple_share_linkedin_count'])  and $_POST['really_simple_share_linkedin_count'] =='on') ? true : false;
+			$option['pinterest_count'] = (isset($_POST['really_simple_share_pinterest_count']) and $_POST['really_simple_share_pinterest_count']=='on') ? true : false;
+			$option['buffer_count']    = (isset($_POST['really_simple_share_buffer_count'])    and $_POST['really_simple_share_buffer_count']   =='on') ? true : false;
+			$option['tipy_uid']        = esc_html($_POST['really_simple_share_tipy_uid']);
+			$option['twitter_count']   = (isset($_POST['really_simple_share_twitter_count'])  and $_POST['really_simple_share_twitter_count']=='on')  ? true : false;
+			$option['twitter_author']  = (isset($_POST['really_simple_share_twitter_author']) and $_POST['really_simple_share_twitter_author']=='on') ? true : false;
+			$option['twitter_text']    = esc_html($_POST['really_simple_share_twitter_text']);
+			$option['twitter_follow']  = esc_html($_POST['really_simple_share_twitter_follow']);
+			$option['twitter_via']     = esc_html($_POST['really_simple_share_twitter_via']);
+			$option['youtube_channel'] = esc_html($_POST['really_simple_share_youtube_channel']);
+		}
+
 		update_option($option_name, $option);
 		// Put a settings updated message on the screen
 		$out .= '<div class="updated"><p><strong>'.__('Settings updated', 'really-simple-share').'.</strong></p></div>';
@@ -671,6 +675,13 @@ function really_simple_share_options () {
 			}
 		});
 	});
+	
+	function really_simple_share_reset_default () {
+		if (confirm("'.__('Are you sure?', 'really-simple-share').'")) { 
+			document.getElementById("really_simple_share_reset").value = "reset";
+			document.form1.submit();
+		}
+	}
 	</script>
 
 	
@@ -1018,7 +1029,11 @@ function really_simple_share_options () {
 		)
 		.wp_nonce_field('really_simple_share_settings','really_simple_share_settings_nonce')
 		.'<p class="submit">
+			<input type="hidden" name="reset" id="really_simple_share_reset" value="" />
 			<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
+		</p>
+		<p style="text-align:right;">
+			<input type="button" name="reset" class="button-default" onclick="javascript:really_simple_share_reset_default(); return false;" value="'.esc_attr('Reset to Default values').'" />
 		</p>
 		</form>
 
@@ -1131,68 +1146,6 @@ function really_simple_share_get_options_stored () {
 	//GET ARRAY OF STORED VALUES
 	$option = get_option('really_simple_share');
 	 
-	if(!is_array($option)) {
-		$option = array();
-	} else if (!isset($option['sort'])) {
-		// Versions below 2.0 compatibility
-		$option['width_buttons']['facebook_like'] = $option['facebook_like_width'];
-		$option['width_buttons']['google1'] = $option['google1_width'];
-		$option['width_buttons']['twitter'] = $option['twitter_width'];
-	} else if (strpos($option['sort'], 'pinterest')===false) {
-		// Versions below 2.3 compatibility
-		$option['width_buttons']['pinterest'] = '100'; 
-		$option['sort'] .= ',pinterest';
-	} 
-	if (strpos($option['sort'], 'buffer')===false) {
-		// Versions below 2.5 compatibility
-		$option['width_buttons']['buffer'] = '100'; 
-		$option['sort'] .= ',buffer';
-	} 
-	if (isset($option['active_buttons']['facebook']) and $option['active_buttons']['facebook']==true) {
-		// Versions below 2.5.3 compatibility - Remove Facebook Share button
-		$option['active_buttons']['facebook'] = false;
-	} 
-	if (in_array('facebook',explode(',',$option['sort']))) {
-		// Versions below 2.5.3 compatibility - Remove Facebook Share button
-		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('facebook')));
-	} 
-	if (strpos($option['sort'], 'facebook_share')===false) {
-		$option['sort'] .= ',tumblr,facebook_share';
-		$option['width_buttons']['tumblr'] = '100'; 
-		$option['width_buttons']['facebook_share'] = '100'; 
-	} 
-	if (isset($option['active_buttons']['buzz']) and $option['active_buttons']['buzz']==true) {
-		// Versions below 2.5.6 compatibility - Remove Google Buzz button
-		$option['active_buttons']['buzz'] = false;
-	} 
-	if (in_array('buzz',explode(',',$option['sort']))) {
-		// Versions below 2.5.6 compatibility - Remove Google Buzz button
-		$option['sort'] = implode(',',array_diff(explode(',',$option['sort']),array('buzz')));
-	} 
-	if (strpos($option['sort'], 'pinzout')===false) {
-		// Versions below 2.6 compatibility
-		$option['width_buttons']['pinzout'] = '75'; 
-		$option['width_buttons']['rss']     = '150'; 
-		$option['sort'] .= ',pinzout,rss';
-	} 
-	if (strpos($option['sort'], 'print')===false) {
-		// Versions below 2.10 compatibility
-		$option['width_buttons']['print'] = '40'; 
-		$option['sort'] .= ',print';
-	} 
-	if ($option['prepend_above']!='' or $option['prepend_inline']!='') {
-		// Versions below 2.10 compatibility
-		if ($option['prepend_above']!='') {
-			$option['above_prepend_above'] = $option['prepend_above'];
-			$option['below_prepend_above'] = $option['prepend_above']; 
-			$option['prepend_above'] = '';
-		}
-		if ($option['prepend_inline']!='') {
-			$option['above_prepend_inline'] = $option['prepend_inline'];
-			$option['below_prepend_inline'] = $option['prepend_inline']; 
-			$option['prepend_inline'] = '';
-		}
-	}
 	if (strpos($option['sort'], 'youtube')===false) {
 		// Versions below 2.11 compatibility
 		$option['width_buttons']['youtube'] = '140'; 
