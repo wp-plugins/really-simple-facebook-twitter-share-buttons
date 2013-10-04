@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.13
+Version: 2.13.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -258,12 +258,12 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 	$out = '';
 
 	foreach (explode(',',$option['sort']) as $name) {
-		if (!$option['active_buttons'][$name]) {
+		if (!isset($option['active_buttons'][$name]) || !$option['active_buttons'][$name]) {
 			continue;
 		}
 		
 		// IF A SINGLE BUTTON IS FORCED (E.G. BY SHORTCODE, SKIP ALL OTHERS)
-		if ($force_button!='' and $force_button!=$name) {
+		if ($force_button!='' && $force_button!=$name) {
 			continue;
 		}
 		
@@ -1101,6 +1101,7 @@ function really_simple_share_feed () {
 		$maxitems = $rss->get_item_quantity($select);
 		$rss_items = $rss->get_items(0, $maxitems);
 	}
+  $out = '';
 	if (!empty($maxitems)) {
 		$out .= '
 			<div class="rss-widget">
@@ -1179,7 +1180,7 @@ function really_simple_share_get_options_default () {
 	$option['width_buttons'] = array('facebook_like'=>'100', 'twitter'=>'100', 'linkedin'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'google_share'=>'110', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
-		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'print'=>'140');
+		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140');
 	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'google_share', 'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube'));
 	$option['position'] = 'below';
