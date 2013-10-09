@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.13.1
+Version: 2.13.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -664,7 +664,9 @@ function really_simple_share_options () {
 		#sortable { list-style-type: none; margin: 0; padding: 0; width:600px; }
 		#sortable li { margin: 3px; padding: 0.5em 0.8em 0.5em 1.5em; height: 22px; cursor:pointer; border:1px solid gray;}
 		#sortable li.button_active   { background-color: white; }
+		#sortable li.button_active .button_title { font-weight: bold; }
 		#sortable li.button_inactive { background-color: gray; }
+		#sortable li.button_inactive .button_title { color: white; }
 	</style>
 	<script>
 	jQuery(function() {
@@ -764,13 +766,13 @@ function really_simple_share_options () {
 						';
 						break;
 				}
-				$li_class = ($checked) ? 'button_active' : 'button_inactive';
-				$out .= '<li class="ui-state-default '.$li_class.'" id="'.$name.'">
-						<div style="float:left; width:180px;">
+				$button_status = ($checked) ? 'active' : 'inactive';
+				$out .= '<li class="ui-state-default button_'.$button_status.'" id="'.$name.'">
+						<div style="float:left; width:180px;" title="'.esc_html($active_buttons[$name]).' - '.$button_status.'">
 							<input type="checkbox" class="button_activate" name="really_simple_share_active_'.$name.'" title="'.__('Activate button', 'really-simple-share').' '.$active_buttons[$name].'" '.$checked.' /> 
-							<b>'.$active_buttons[$name].'</b>
+							<span class="button_title">'.esc_html($active_buttons[$name]).'</span>
 						</div>
-						<div style="float:left; width:120px;">
+						<div style="float:left; width:120px;" title="'.__('Width of the transparent box surrounding the button (use it for spacing)', 'really-simple-share' ).'">
 							'.__('Width', 'really-simple-share').': <input type="text" name="really_simple_share_width_'.$name.'" value="'.stripslashes($option['width_buttons'][$name]).'" style="width:35px; margin:0; padding:0; text-align:right;" />px	
 						</div>
 						<div style="float:left; width:260px;">
@@ -785,7 +787,7 @@ function really_simple_share_options () {
 
 
 			$out .= '</td></tr>
-			<tr><td>'.__("Show buttons in these pages", 'really-simple-share' ).':</td>
+			<tr><td>'.__('Show buttons in these pages', 'really-simple-share' ).':</td>
 			<td>';
 
 			foreach ($show_in as $name => $text) {
