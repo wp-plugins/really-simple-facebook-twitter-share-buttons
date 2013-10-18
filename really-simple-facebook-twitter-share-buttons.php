@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.14
+Version: 2.14.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -64,18 +64,21 @@ function really_simple_share_scripts () {
 	|| $really_simple_share_option['active_buttons']['google_share']
 	|| $really_simple_share_option['active_buttons']['youtube']) {
 		$out .= '<script type="text/javascript">
-		  window.___gcfg = {lang: "'.substr($really_simple_share_option['locale'],0,2).'"};
+		  //<![CDATA[
+      window.___gcfg = {lang: "'.substr($really_simple_share_option['locale'],0,2).'"};
 		  (function() {
 		    var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;
 		    po.src = "https://apis.google.com/js/plusone.js";
 		    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);
 		  })();
+    //]]>
 		</script>';
 	}
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
 		$hover = ($really_simple_share_option['pinterest_hover']!='') ? ' p.setAttribute(\'data-pin-hover\', true); ' : '';
 		$out .= '<script type="text/javascript">
+      //<![CDATA[
 			(function(d){
 				var pinit_already_loaded = false;
 				if(document.getElementsByClassName && document.getElementsByTagName) {
@@ -95,6 +98,7 @@ function really_simple_share_scripts () {
 				  f.parentNode.insertBefore(p, f);
 				}
 			}(document));
+      //]]>
 			</script>';
 	}
 	echo $out;
