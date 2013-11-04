@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
 Requires at least: 2.9+
-Tested up to: 3.7
-Stable tag: 2.14.2
+Tested up to: 3.7.1
+Stable tag: 2.14.3
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -109,6 +109,9 @@ We'll see!
 
 
 == Changelog ==
+
+= 2.14.3 =
+* Fixed: Smartphone usability improvements on settings screen
 
 = 2.14.2 =
 * Changed: Plugin tested up WordPress 3.6

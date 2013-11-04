@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.14.2
+Version: 2.14.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -669,10 +669,19 @@ function really_simple_share_options () {
 
 	$out .= '
 	<style>
+    #poststuff          { padding-top:10px; position:relative; }
+    #poststuff .postbox { min-width: 200px; }
+    #poststuff_left, #poststuff_right { float:none; width: 100%; min-width:550px; }
+    
+    @media all and (min-width: 970px) {
+      #poststuff_left  { float:left;  width:74%; }
+      #poststuff_right { float:right; width:25%; min-width:200px; }
+    }
+  
 		#really_simple_share_form h3 { cursor: default; }
 		#really_simple_share_form td { vertical-align:top; padding-bottom:15px; }
-		#sortable { list-style-type: none; margin: 0; padding: 0; width:600px; }
-		#sortable li { margin: 3px; padding: 0.5em 0.8em 0.5em 1.5em; height: 22px; cursor:pointer; border:1px solid gray;}
+		#sortable { list-style-type: none; margin: 0; padding: 0; width:520px; }
+		#sortable li { margin: 3px 0; padding: 4px 0 0 4px; height: 22px; cursor:pointer; border:1px solid gray;}
 		#sortable li.button_active   { background-color: white; }
 		#sortable li.button_active .button_title { font-weight: bold; }
 		#sortable li.button_inactive { background-color: gray; }
@@ -699,9 +708,9 @@ function really_simple_share_options () {
 	
 	<div class="wrap">
 	<h2>'.__( 'Really simple Facebook and Twitter share buttons', 'really-simple-share').'</h2>
-	<div id="poststuff" style="padding-top:10px; position:relative;">
+	<div id="poststuff">
 
-	<div style="float:left; width:74%; padding-right:1%;">
+	<div id="poststuff_left">
 
 		<form id="really_simple_share_form" name="form1" method="post" action="">
 
@@ -785,8 +794,8 @@ function really_simple_share_options () {
 							<input type="checkbox" class="button_activate" name="really_simple_share_active_'.$name.'" title="'.__('Activate button', 'really-simple-share').' '.$active_buttons[$name].'" '.$checked.' /> 
 							<span class="button_title">'.esc_html($active_buttons[$name]).'</span>
 						</div>
-						<div style="float:left; width:120px;" title="'.__('Width of the transparent box surrounding the button (use it for spacing)', 'really-simple-share' ).'">
-							'.__('Width', 'really-simple-share').': <input type="text" name="really_simple_share_width_'.$name.'" value="'.stripslashes($option['width_buttons'][$name]).'" style="width:35px; margin:0; padding:0; text-align:right;" />px	
+						<div style="float:left; width:70px;" title="'.__('Width of the transparent box surrounding the button (use it for spacing)', 'really-simple-share' ).'">
+							<input type="text" name="really_simple_share_width_'.$name.'" value="'.stripslashes($option['width_buttons'][$name]).'" style="width:35px; margin:0; padding:0; text-align:right;" />px	
 						</div>
 						<div style="float:left; width:260px;">
 							'.$options.'
@@ -1056,7 +1065,7 @@ function really_simple_share_options () {
 
 	</div>
 	
-	<div style="float:right; width:25%;">'
+	<div id="poststuff_right">'
 		.really_simple_share_box_content('PremiumPress Shopping Cart', '
 			<a target="_blank" href="https://secure.avangate.com/order/product.php?PRODS=2929632&amp;QTY=1&amp;AFFILIATE=26764&amp;AFFSRC=really_simple_share_plugin">
 				<img border="0" src="http://shopperpress.com/inc/images/banners/180x150.png" style="display: block; margin-left: auto; margin-right: auto;">
