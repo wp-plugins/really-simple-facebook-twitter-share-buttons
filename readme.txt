@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
 Requires at least: 2.9+
 Tested up to: 3.7.1
-Stable tag: 2.14.3
+Stable tag: 2.14.4
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -67,6 +67,12 @@ Best is to install directly from WordPress. If manual installation is required, 
 
 == Frequently Asked Questions ==
 
+= The settings page seems corrupted, some buttons labels are missing. How to solve it? =
+
+Sometimes the options get corrupted after several plugin updates. 
+Click the Reset button (on the lowest right of the plugin settings page) to give the plugin a fresh start. 
+Please take a note of your plugin configuration before resetting the options, or remember the data you want to put back in.
+
 = What's the difference between Facebook Like and Share buttons? =
 Facebook Like is the official Button actively supported by Facebook.
 On 18th July 2012 Facebook dropped support for the (old and long time deprecated) Share button, so this button has been removed from the plugin and replaced with an externali link with no counter.
@@ -99,16 +105,15 @@ The PinIt button requires some media to share, so it only shows up when the post
 = I've cheched the "show counter" option in the Settings page, but sometimes the Pinterest PinIt button's counter doesn't appear. =
 The PinIt counter only appear if the post has been shared at least once. Also, the refresh time for the PinIt counter could be long. 
 
-= How about other social networks? =
-We'll see!
- 
-
 == Screenshots ==
 1. Sample content, activating the Facebook Share and Twitter buttons  
 2. Options available in the Settings menu 
 
 
 == Changelog ==
+
+= 2.14.4 =
+* Changed: Updated FAQ
 
 = 2.14.3 =
 * Fixed: Smartphone usability improvements on settings screen
