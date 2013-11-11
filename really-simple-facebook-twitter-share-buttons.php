@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.14.4
+Version: 2.15
 Author URI: http://www.whiletrue.it
 */
 
@@ -284,18 +284,19 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_height = ($option['layout']=='box') ? 62 : 27;
 
 			$appid = ($option['facebook_like_appid']!='') ? '&appId='.$option['facebook_like_appid'] : '';
+      $facebook_link = ($option['facebook_like_fixed_url']!='') ? $option['facebook_like_fixed_url'] : $link;
 
 			if ($option['facebook_like_html5']) {
 				// HTML5 VERSION
 				$option_data_send = ($option['facebook_like_send']) ? 'true"' : 'false';
 				$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'data-action="recommend"' : '';
 
-				$out .= '<div class="fb-like" data-href="'.$link.'" data-send="'.$option_data_send.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" '.$option_facebook_like_text.'></div>';
+				$out .= '<div class="fb-like" data-href="'.$facebook_link.'" data-send="'.$option_data_send.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" '.$option_facebook_like_text.'></div>';
 			} else {
 				$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? 'recommend' : 'like';
 			
 				// IFRAME VERSION
-				$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].$appid.'" 
+				$out .= '<iframe src="//www.facebook.com/plugins/like.php?href='.rawurlencode($facebook_link).'&amp;send=false&amp;layout='.$option_layout.'&amp;width='.$option['width_buttons'][$name].'&amp;show_faces=false&amp;action='.$option_facebook_like_text.'&amp;colorscheme=light&amp;height='.$option_height.'&amp;locale='.$option['locale'].$appid.'" 
 							scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:'.$option['width_buttons'][$name].'px; height:'.$option_height.'px;" allowTransparency="true"></iframe>';
 				// FACEBOOK LIKE SEND BUTTON ONLY AVAILABLE IN FBML MODE	
 				if ($option['facebook_like_send']) {
@@ -315,7 +316,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					}
 					$out .= '
 						<div class="really_simple_share_facebook_like_send">
-						<div class="fb-send" data-href="'.$link.'"></div>';
+						<div class="fb-send" data-href="'.$facebook_link.'"></div>';
 				}
 			}
 		}
@@ -619,6 +620,7 @@ function really_simple_share_options () {
 
 			$option['facebook_like_appid'] = esc_html($_POST['really_simple_share_'.'facebook_like_appid']);
 			$option['facebook_like_text']  = ($_POST['really_simple_share_'.'facebook_like_text']=='recommend') ? 'recommend' : 'like';
+			$option['facebook_like_fixed_url'] = esc_html($_POST['really_simple_share_'.'facebook_like_fixed_url']);
 			$option['facebook_share_text'] = esc_html($_POST['really_simple_share_'.'facebook_share_text']);
 			$option['rss_text']            = esc_html($_POST['really_simple_share_'.'rss_text']);
 			$option['pinterest_hover']     = esc_html($_POST['really_simple_share_'.'pinterest_hover']);
@@ -682,9 +684,9 @@ function really_simple_share_options () {
 		#really_simple_share_form td { vertical-align:top; padding-bottom:15px; }
 		#sortable { list-style-type: none; margin: 0; padding: 0; width:520px; }
 		#sortable li { margin: 3px 0; padding: 4px 0 0 4px; height: 22px; cursor:pointer; border:1px solid gray;}
-		#sortable li.button_active   { background-color: white; }
+		#sortable li.button_active   { background: white; }
 		#sortable li.button_active .button_title { font-weight: bold; }
-		#sortable li.button_inactive { background-color: gray; }
+		#sortable li.button_inactive { background: gray; }
 		#sortable li.button_inactive .button_title { color: white; }
 	</style>
 	<script>
@@ -1007,7 +1009,11 @@ function really_simple_share_options () {
 				',
 				__('Use Html5 code instead of iFrame', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_facebook_like_html5" '.$facebook_like_html5.' />
-					<span class="description">'.__("Warning: this requires the theme to have the wp_footer() hook in the appropriate place; if unsure, leave it unchecked", 'really-simple-share' ).'</span>
+					<span class="description">'.__("Warning: this requires the theme to have the wp_footer() hook in the appropriate place. If unsure, leave it unchecked", 'really-simple-share' ).'</span>
+				',
+				__('Fixed sharing url', 'really-simple-share')=>'
+					<input type="text" name="really_simple_share_facebook_like_fixed_url" value="'.stripslashes($option['facebook_like_fixed_url']).'" size="50" /><br />
+			  	<span class="description">'.__("The optional url provided (e.g. http://www.yoursite.com/) will be linked to every FB Like button on the site, and used as a reference for share counts and clicks, instead of the single posts and pages. If unsure, leave it blank", 'really-simple-share' ).'</span>
 				'
 			)
 		)
@@ -1173,16 +1179,18 @@ function really_simple_share_get_options_stored () {
 	//GET ARRAY OF STORED VALUES
 	$option = get_option('really_simple_share');
 	 
-	if (strpos($option['sort'], 'youtube')===false) {
+  /*
+  if ($option['sort'] != '' && strpos($option['sort'], 'youtube')===false) {
 		// Versions below 2.11 compatibility
 		$option['width_buttons']['youtube'] = '140'; 
 		$option['sort'] .= ',youtube';
 	}	
-	if (strpos($option['sort'], 'google_share')===false) {
+	if ($option['sort'] != '' && strpos($option['sort'], 'google_share')===false) {
 		// Versions below 2.12 compatibility
 		$option['width_buttons']['google_share'] = '110'; 
 		$option['sort'] .= ',google_share';
 	}	
+  */
 
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
@@ -1226,6 +1234,7 @@ function really_simple_share_get_options_default () {
 	$option['facebook_like_html5'] = false;
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
+	$option['facebook_like_fixed_url'] = '';
 	$option['facebook_share_text'] = 'Share';
 	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
