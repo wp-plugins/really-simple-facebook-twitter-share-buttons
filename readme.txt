@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
 Requires at least: 2.9+
 Tested up to: 3.7.1
-Stable tag: 2.15
+Stable tag: 2.16
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -47,9 +47,9 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.14:
+*New* in version 2.16:
 
-* Large button option, available for some social networks (e.g. google+ and twitter)
+* New admin page showing share button counts for recent posts and pages
 * Code cleaning
 
 = Reference =
@@ -112,7 +112,11 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 == Changelog ==
 
-=2.15=
+= 2.16 =
+* Added: New admin page showing share button counts for recent posts and pages
+* Fixed: Minimum box height for large buttons
+
+= 2.15 =
 * Added: Fixed share url option for the Facebook Like button
 * Fixed: Disabled buttons messed up on older (<3.0) WordPress releases
 * Fixed: Options messed up on install
