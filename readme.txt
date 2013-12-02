@@ -114,6 +114,7 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 = 2.16.2 =
 * Changed: New button to show/hide advanced options
+* Fixed: Facebook Like Send button enable bug
 
 = 2.16.1 =
 * Changed: Old tags cleaning

@@ -478,7 +478,7 @@ function really_simple_share_options () {
 					</select>
 				',
 				__('Show Send button', 'really-simple-share')=>'
-					<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_show_send_button.' />
+					<input type="checkbox" name="really_simple_share_facebook_like_send" '.$facebook_like_send.' />
 				',
 				__('Use Html5 code instead of iFrame', 'really-simple-share')=>'
 					<input type="checkbox" name="really_simple_share_facebook_like_html5" '.$facebook_like_html5.' />
