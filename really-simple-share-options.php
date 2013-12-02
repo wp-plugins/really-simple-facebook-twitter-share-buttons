@@ -419,7 +419,13 @@ function really_simple_share_options () {
 			</td></tr>
 			</table>
 		</div>
-		</div>'
+		</div>
+
+    <h2>
+      Advanced Options
+      <button class="button" style="margin-left:20px;" onclick="javascript:jQuery(\'#really_simple_share_advanced\').toggle(); return false;">Click to show / hide</button>
+    </h2>
+    <div id="really_simple_share_advanced" style="display:none;">'
 		.really_simple_share_box_content(__('Call to action, above the post', 'really-simple-share'), 
 			array(
 				__('On the above line', 'really-simple-share')=>'
@@ -526,13 +532,14 @@ function really_simple_share_options () {
 				',
 			)
 		)
+    .'</div>'
 		.wp_nonce_field('really_simple_share_settings','really_simple_share_settings_nonce')
 		.'<p class="submit">
 			<input type="hidden" name="reset" id="really_simple_share_reset" value="" />
 			<input type="submit" name="Submit" class="button-primary" value="'.esc_attr('Save Changes').'" />
 		</p>
 		<p style="text-align:right;">
-			<input type="button" name="reset" class="button-default" onclick="javascript:really_simple_share_reset_default(); return false;" value="'.esc_attr('Reset to Default values').'" />
+			<input type="button" name="reset" class="button" onclick="javascript:really_simple_share_reset_default(); return false;" value="'.esc_attr('Reset to Default values').'" />
 		</p>
 		</form>
 
