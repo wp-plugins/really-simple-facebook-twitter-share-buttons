@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.16.2
+Version: 2.16.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -65,25 +65,29 @@ function really_simple_share_scripts () {
 	global $really_simple_share_option;
 
 	$out = '';
+
+	if ($really_simple_share_option['active_buttons']['twitter']) {
+		$out .= '
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+      ';
+  }
+
 	if ($really_simple_share_option['active_buttons']['google1'] 
-	|| $really_simple_share_option['active_buttons']['google_share']
-	|| $really_simple_share_option['active_buttons']['youtube']) {
-		$out .= '<script type="text/javascript">
-		  //<![CDATA[
+	||  $really_simple_share_option['active_buttons']['google_share']
+	||  $really_simple_share_option['active_buttons']['youtube']) {
+		$out .= '
       window.___gcfg = {lang: "'.substr($really_simple_share_option['locale'],0,2).'"};
 		  (function() {
 		    var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;
 		    po.src = "https://apis.google.com/js/plusone.js";
 		    var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);
 		  })();
-    //]]>
-		</script>';
+      ';
 	}
 
 	if ($really_simple_share_option['active_buttons']['pinterest']) {
 		$hover = ($really_simple_share_option['pinterest_hover']!='') ? ' p.setAttribute(\'data-pin-hover\', true); ' : '';
-		$out .= '<script type="text/javascript">
-      //<![CDATA[
+		$out .= '
 			(function(d){
 				var pinit_already_loaded = false;
 				if(document.getElementsByClassName && document.getElementsByTagName) {
@@ -103,10 +107,16 @@ function really_simple_share_scripts () {
 				  f.parentNode.insertBefore(p, f);
 				}
 			}(document));
-      //]]>
-			</script>';
+      ';
 	}
-	echo $out;
+  
+  if ($out != '') {
+  	echo '<script type="text/javascript">
+        //<![CDATA[
+        '.$out.'
+        //]]>
+  		</script>';
+  }
 }
 
 
@@ -154,9 +164,6 @@ function really_simple_share_init ($force=false) {
 	}
 	if ($really_simple_share_option['active_buttons']['tumblr']) {
 		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
-	}
-	if ($really_simple_share_option['active_buttons']['twitter']) {
-		wp_enqueue_script('really_simple_share_twitter', 'https://platform.twitter.com/widgets.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
 	}
 }    
 
