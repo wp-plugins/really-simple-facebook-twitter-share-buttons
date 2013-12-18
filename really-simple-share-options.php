@@ -14,6 +14,7 @@ function really_simple_share_options () {
 		'twitter'=>'Twitter',
 		'linkedin'=>'Linkedin',
 		'google1'=>'Google "+1"',
+		'facebook_share_new'=>'Facebook share (new)',
 		'google_share'=>'Google share',
 		'digg'=>'Digg',
 		'stumbleupon'=>'Stumbleupon',
@@ -25,7 +26,7 @@ function really_simple_share_options () {
 		'tipy'=>'Tipy',
 		'buffer'=>'Buffer',
 		'tumblr'=>'Tumblr',
-		'facebook_share'=>'(old) Facebook Share',
+		'facebook_share'=>'Facebook share (old)',
 		'pinzout' => 'Pinzout',
 		'rss' => 'Comments RSS Feed',
 		'print' => 'Print',
@@ -53,6 +54,7 @@ function really_simple_share_options () {
     'pinterest_multi_image',
     'google1_count',
     'google_share_count',
+    'facebook_share_new_count',
     'linkedin_count',
     'pinterest_count',
     'buffer_count',
@@ -210,6 +212,9 @@ function really_simple_share_options () {
 						$options = __('Button text').':
 							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />
 						';
+						break;
+					case 'facebook_share_new': 
+						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_facebook_share_new_count" '.$facebook_share_new_count.' />';
 						break;
 					case 'print': 
 						$options = __('Button text').':
