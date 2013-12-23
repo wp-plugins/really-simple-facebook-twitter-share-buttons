@@ -12,7 +12,8 @@ function really_simple_share_counts () {
 	global $really_simple_share_option;
   really_simple_share_init(true);
   really_simple_share_scripts();
-  if ($really_simple_share_option['active_buttons']['facebook_like'] and $really_simple_share_option['facebook_like_html5']) {
+  if (($really_simple_share_option['active_buttons']['facebook_like'] and $really_simple_share_option['facebook_like_html5'])
+  || $really_simple_share_option['active_buttons']['facebook_share_new']) {
   	really_simple_share_facebook_like_html5_bottom_scripts();
   }
   really_simple_share_style();
