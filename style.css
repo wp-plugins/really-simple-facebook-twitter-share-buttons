@@ -35,7 +35,7 @@
 	padding-left: 20px;
 }
 .really_simple_share_facebook_share_new {
-	margin-top: -4px !important;
+	line-height: normal;
 }
 .really_simple_share_facebook_like iframe {
 	max-width:450px;
