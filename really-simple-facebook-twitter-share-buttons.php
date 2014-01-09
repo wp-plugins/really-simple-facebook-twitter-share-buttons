@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.17.2
+Version: 2.17.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -413,6 +413,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 				if ( function_exists('has_post_thumbnail') and has_post_thumbnail($the_post_id) ) {
 					$post_thumbnail_id = get_post_thumbnail_id($the_post_id);
 					$media = wp_get_attachment_url($post_thumbnail_id);
+            // TRY TO GET ALT ATTRIBUTE
+            $alt = get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true);
+            if(count($alt) && $alt != '') {
+              $title = $alt;
+            }
 				}
 				// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
 				if ($media=='') {
@@ -428,6 +433,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					if ( $attachments ) {
 						$attachment = $attachments[0];
 						$media = wp_get_attachment_url( $attachment->ID);
+            // TRY TO GET ALT ATTRIBUTE
+            $alt = get_post_meta($attachment->ID, '_wp_attachment_image_alt', true);
+            if(count($alt) && $alt != '') {
+              $title = $alt;
+            }
 					}
 				}
 				// IF NO MEDIA IS FOUND, LOOK INSIDE THE CONTENT
@@ -435,6 +445,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					$output = @preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
 					if (isset($matches [1] [0]))  {
 						$media = $matches [1] [0];
+					}
+  				// TRY TO GET ALT ATTRIBUTE
+					$output = @preg_match_all('/<img.+alt=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
+					if (isset($matches [1] [0]) && $matches[1][0] != '')  {
+						$title = $matches [1] [0];
 					}
 				}
 			}
