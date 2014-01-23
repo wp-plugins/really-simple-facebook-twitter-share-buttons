@@ -31,6 +31,8 @@ function really_simple_share_options () {
 		'rss' => 'Comments RSS Feed',
 		'print' => 'Print',
 		'youtube'=>'Youtube',
+		'bitcoin'=>'BitCoin',
+		'litecoin'=>'Litecoin',
 	);	
 
 	$show_in = array(
@@ -96,6 +98,8 @@ function really_simple_share_options () {
 			$option['email_label']         = esc_html($_POST['really_simple_share_'.'email_label']);
 			$option['email_subject']       = esc_html($_POST['really_simple_share_'.'email_subject']);
 			$option['print_label']         = esc_html($_POST['really_simple_share_'.'print_label']);
+			$option['bitcoin_wallet']      = esc_html($_POST['really_simple_share_'.'bitcoin_wallet']);
+			$option['litecoin_wallet']     = esc_html($_POST['really_simple_share_'.'litecoin_wallet']);
 			$option['flattr_uid']          = esc_html($_POST['really_simple_share_'.'flattr_uid']);
 			$option['tipy_uid']            = esc_html($_POST['really_simple_share_'.'tipy_uid']);
 			$option['twitter_text']        = esc_html($_POST['really_simple_share_'.'twitter_text']);
@@ -200,37 +204,39 @@ function really_simple_share_options () {
 				switch ($name) {
 					case 'facebook_like': 
 						$options = 'Facebook app ID:
-							<input type="text" name="really_simple_share_facebook_like_appid" value="'.stripslashes($option['facebook_like_appid']).'" style="width:120px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_facebook_like_appid" value="'.stripslashes($option['facebook_like_appid']).'" style="width:120px; margin:0; padding:0;" />';
 						break;
 					case 'email': 
 						$options = __('Button text').':
-							<input type="text" name="really_simple_share_email_label" value="'.stripslashes($option['email_label']).'" size="25" style="width:160px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_email_label" value="'.stripslashes($option['email_label']).'" size="25" style="width:160px; margin:0; padding:0;" />';
 						break;
 					case 'facebook_share': 
 						$options = __('Button text').':
-							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />';
 						break;
 					case 'facebook_share_new': 
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_facebook_share_new_count" '.$facebook_share_new_count.' />';
 						break;
 					case 'print': 
 						$options = __('Button text').':
-							<input type="text" name="really_simple_share_print_label" value="'.stripslashes($option['print_label']).'" size="25" style="width:160px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_print_label" value="'.stripslashes($option['print_label']).'" size="25" style="width:160px; margin:0; padding:0;" />';
 						break;
 					case 'rss': 
 						$options = __('Button text').':
-							<input type="text" name="really_simple_share_rss_text" value="'.stripslashes($option['rss_text']).'" style="width:160px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_rss_text" value="'.stripslashes($option['rss_text']).'" style="width:160px; margin:0; padding:0;" />';
+						break;
+					case 'bitcoin': 
+						$options = __('Wallet').':
+							<input type="text" name="really_simple_share_bitcoin_wallet" value="'.stripslashes($option['bitcoin_wallet']).'" style="width:160px; margin:0; padding:0;" />';
+						break;
+					case 'litecoin': 
+						$options = __('Wallet').':
+							<input type="text" name="really_simple_share_litecoin_wallet" value="'.stripslashes($option['litecoin_wallet']).'" style="width:160px; margin:0; padding:0;" />';
 						break;
 					case 'flattr': 
 						$options = 'Flattr UID:
 							<input type="text" name="really_simple_share_flattr_uid" value="'.stripslashes($option['flattr_uid']).'" style="width:80px; margin:0; padding:0;" />
-							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>
-						';
+							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>';
 						break;
 					case 'google1': 
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />';
@@ -250,16 +256,14 @@ function really_simple_share_options () {
 					case 'tipy': 
 						$options = __('Tipy site id', 'really-simple-share').': 
 							<input type="text" name="really_simple_share_tipy_uid" value="'.stripslashes($option['tipy_uid']).'" style="width:80px; margin:0; padding:0;" />
-							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>
-						';
+							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>';
 						break;
 					case 'twitter': 
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
 						break;
 					case 'youtube': 
 						$options = __('Channel name').':
-							<input type="text" name="really_simple_share_youtube_channel" value="'.stripslashes($option['youtube_channel']).'" style="width:120px; margin:0; padding:0;" />
-						';
+							<input type="text" name="really_simple_share_youtube_channel" value="'.stripslashes($option['youtube_channel']).'" style="width:120px; margin:0; padding:0;" />';
 						break;
 				}
 				$button_status = ($checked) ? 'active' : 'inactive';

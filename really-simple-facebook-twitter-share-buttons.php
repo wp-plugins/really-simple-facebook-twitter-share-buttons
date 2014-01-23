@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 2.17.3
+Version: 3.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -165,6 +165,10 @@ function really_simple_share_init ($force=false) {
 	}
 	if ($really_simple_share_option['active_buttons']['tumblr']) {
 		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
+	}
+	if ($really_simple_share_option['active_buttons']['bitcoin'] || $really_simple_share_option['active_buttons']['litecoin']) {
+    // ALWAYS IN THE HEADER, OTHERWHISE THE WIDGET IS UNABLE TO LOAD
+		wp_enqueue_script('really_simple_share_bitcoin', 'http://coinwidget.com/widget/coin.js');
 	}
 }    
 
@@ -514,6 +518,32 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 						.' data-text="'.strip_tags($title).stripslashes($option['twitter_text']).'" data-url="'.$link.'" '
 						.' data-via="'.stripslashes($option['twitter_via']).'" '.$locale.' '.$option_size.' '.$data_related.'></a>';
 		}
+    else if ($name == 'bitcoin') {
+      $out .= '<script type="text/javascript">
+        CoinWidgetCom.go({
+        	wallet_address: "'.$option['bitcoin_wallet'].'"
+        	, counter: "count"
+        	, lbl_button: "Donate"
+        	, lbl_address: "My BitCoin Address:"
+        	, lbl_count: "donations"
+        	, lbl_amount: "BTC"
+        	, currency: "bitcoin", alignment: "bl", qrcode: true, auto_show: false
+        });
+        </script>';
+		}
+    else if ($name == 'litecoin') {
+      $out .= '<script type="text/javascript">
+        CoinWidgetCom.go({
+        	wallet_address: "'.$option['litecoin_wallet'].'"
+        	, counter: "count"
+        	, lbl_button: "Donate"
+        	, lbl_address: "My LiteCoin Address:"
+        	, lbl_count: "donations"
+        	, lbl_amount: "LTC"
+        	, currency: "litecoin", alignment: "bl", qrcode: true, auto_show: false
+        });
+        </script>';
+		}
 		
 		// CLOSE THE BUTTON DIV
 		$out .= '</div>';
@@ -650,6 +680,12 @@ function really_simple_share_get_options_stored () {
 		$option['width_buttons']['facebook_share_new'] = '110'; 
 		$option['sort'] .= ',facebook_share_new';
 	}	
+	if ($option['sort'] != '' && strpos($option['sort'], 'bitcoin')===false) {
+		// Versions below 3.0 compatibility
+		$option['width_buttons']['bitcoin'] = '100'; 
+		$option['width_buttons']['litecoin'] = '100'; 
+		$option['sort'] .= ',bitcoin,litecoin';
+	}	
 
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
@@ -670,14 +706,17 @@ function really_simple_share_get_options_default () {
     'twitter'=>true, 'google1'=>true, 'google_share'=>false,   
 		'linkedin'=>false, 'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 
-		'tumblr'=>false, 'facebook_share'=>false,  'pinzout'=>false, 'rss'=>false, 'print'=>false, 'youtube'=>false);
+		'tumblr'=>false, 'facebook_share'=>false, 'pinzout'=>false, 'rss'=>false, 'print'=>false, 'youtube'=>false,
+    'bitcoin'=>false, 'litecoin'=>false, );
 	$option['width_buttons'] = array('facebook_like'=>'100', 'facebook_share_new'=>'110', 'twitter'=>'100', 'linkedin'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'google_share'=>'110', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
-		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140');
+		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140',
+    'bitcoin'=>'120', 'litecoin'=>'120', );
 	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'facebook_share_new', 'google_share', 
     'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
-		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube'));
+		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube',
+    'bitcoin', 'litecoin',));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
@@ -698,6 +737,8 @@ function really_simple_share_get_options_default () {
 	$option['facebook_like_fixed_url'] = '';
 	$option['facebook_share_text'] = 'Share';
 	$option['facebook_share_new_count'] = true;
+	$option['bitcoin_wallet']  = '';
+	$option['litecoin_wallet'] = '';
 	$option['flattr_uid'] = '';
 	$option['google1_count'] = true;
 	$option['google_share_count'] = true;

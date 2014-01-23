@@ -1,10 +1,10 @@
 === Really simple Facebook Twitter share buttons ===
 Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
-Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss
+Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin
 Requires at least: 2.9+
 Tested up to: 3.8
-Stable tag: 2.17.3
+Stable tag: 3.0
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -16,7 +16,7 @@ In contrast to several other sharing plugin, this one aims to use only original 
 There is no other service in the middle, you are not required to register or get a key to use it. Enjoy!
 
 Facebook Like, Twitter and Google +1 share buttons are loaded by default. 
-Other buttons, including Digg, Facebook Send, Flattr, LinkedIn, Pinterest, Google Buzz, Stumbleupon, Youtube, Hyves, Print, Email, RSS, Reddit, Tipy, Tumblr, Buffer, Pinzout (and the deprecated Facebook Share button) can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, Facebook Share, Flattr, LinkedIn, Pinterest, BitCoin, LiteCoin, Stumbleupon, Youtube, Hyves, Print, Email, RSS, Reddit, Tipy, Tumblr, Buffer, Pinzout can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -47,12 +47,9 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 = News =
 
-*New* in version 2.17:
+*New* in version 3.0:
 
-* New Facebook Share (new) button
-* Performance improvements
-* Hardcoded CSS cleaning
-* Facebook Like code cleaning
+* New BitCoin and LiteCoin buttons
 
 = Reference =
 
@@ -113,6 +110,9 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 
 == Changelog ==
+
+= 3.0 =
+* Added: BitCoin and LiteCoin buttons
 
 = 2.17.3 =
 * Added: Use image alt text, if present, as Pinterest description 
