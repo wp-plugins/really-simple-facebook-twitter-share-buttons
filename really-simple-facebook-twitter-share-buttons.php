@@ -524,7 +524,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
         	wallet_address: "'.$option['bitcoin_wallet'].'"
         	, counter: "count"
         	, lbl_button: "Donate"
-        	, lbl_address: "My BitCoin Address:"
+        	, lbl_address: "My Bitcoin Address:"
         	, lbl_count: "donations"
         	, lbl_amount: "BTC"
         	, currency: "bitcoin", alignment: "bl", qrcode: true, auto_show: false
@@ -537,7 +537,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
         	wallet_address: "'.$option['litecoin_wallet'].'"
         	, counter: "count"
         	, lbl_button: "Donate"
-        	, lbl_address: "My LiteCoin Address:"
+        	, lbl_address: "My Litecoin Address:"
         	, lbl_count: "donations"
         	, lbl_amount: "LTC"
         	, currency: "litecoin", alignment: "bl", qrcode: true, auto_show: false

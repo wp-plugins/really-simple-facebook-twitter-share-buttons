@@ -31,7 +31,7 @@ function really_simple_share_options () {
 		'rss' => 'Comments RSS Feed',
 		'print' => 'Print',
 		'youtube'=>'Youtube',
-		'bitcoin'=>'BitCoin',
+		'bitcoin'=>'Bitcoin',
 		'litecoin'=>'Litecoin',
 	);	
 

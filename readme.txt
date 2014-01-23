@@ -16,7 +16,7 @@ In contrast to several other sharing plugin, this one aims to use only original 
 There is no other service in the middle, you are not required to register or get a key to use it. Enjoy!
 
 Facebook Like, Twitter and Google +1 share buttons are loaded by default. 
-Other buttons, including Digg, Facebook Share, Flattr, LinkedIn, Pinterest, BitCoin, LiteCoin, Stumbleupon, Youtube, Hyves, Print, Email, RSS, Reddit, Tipy, Tumblr, Buffer, Pinzout can be added through the `Settings->Really simple share` menu.
+Other buttons, including Digg, Facebook Share, Flattr, LinkedIn, Pinterest, Bitcoin, Litecoin, Stumbleupon, Youtube, Hyves, Print, Email, RSS, Reddit, Tipy, Tumblr, Buffer, Pinzout can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
 
@@ -49,7 +49,8 @@ If you want to hide the share buttons inside selected posts, set a "really_simpl
 
 *New* in version 3.0:
 
-* New BitCoin and LiteCoin buttons
+* New Bitcoin and Litecoin buttons
+* Code cleaning
 
 = Reference =
 
@@ -112,7 +113,8 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 == Changelog ==
 
 = 3.0 =
-* Added: BitCoin and LiteCoin buttons
+* Added: Bitcoin and Litecoin buttons
+* Changed: Code cleaning
 
 = 2.17.3 =
 * Added: Use image alt text, if present, as Pinterest description 
