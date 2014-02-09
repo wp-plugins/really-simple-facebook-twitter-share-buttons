@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.0
+Version: 3.0.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -421,6 +421,10 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
             $alt = get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true);
             if(count($alt) && $alt != '') {
               $title = $alt;
+            } else {
+              // ELSE USE TITLE ATTRIBUTE
+              $attachment = get_post( $post_thumbnail_id );
+              $title = $attachment->post_title;
             }
 				}
 				// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
@@ -441,6 +445,9 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
             $alt = get_post_meta($attachment->ID, '_wp_attachment_image_alt', true);
             if(count($alt) && $alt != '') {
               $title = $alt;
+            } else {
+              // ELSE USE TITLE ATTRIBUTE
+              $title = $attachment->post_title;
             }
 					}
 				}
@@ -454,7 +461,13 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 					$output = @preg_match_all('/<img.+alt=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
 					if (isset($matches [1] [0]) && $matches[1][0] != '')  {
 						$title = $matches [1] [0];
-					}
+					} else {
+    				// TRY TO GET TITLE ATTRIBUTE
+  					$output = @preg_match_all('/<img.+title=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
+  					if (isset($matches [1] [0]) && $matches[1][0] != '')  {
+  						$title = $matches [1] [0];
+  					}
+          }
 				}
 			}
 				
