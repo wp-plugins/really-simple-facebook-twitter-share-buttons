@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.0.1
+Version: 3.0.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -311,7 +311,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 				$out .= '<div class="fb-like" data-href="'.$facebook_link.'" data-layout="'.$option_layout.'" data-width="'.$option['width_buttons'][$name].'" '.$option_data_send.$option_facebook_like_text.'></div>';
 			} else {
 				$option_facebook_like_text = ($option['facebook_like_text']=='recommend') ? '&amp;action=recommend' : '';
-  			$appid = (is_numeric($option['facebook_like_appid'])) ? '&appId='.$option['facebook_like_appid'] : '';
+  			$appid = (is_numeric($option['facebook_like_appid'])) ? '&amp;appId='.$option['facebook_like_appid'] : '';
   			$option_height = ($option['layout']=='box') ? 62 : 27;
 			
 				// IFRAME VERSION
@@ -354,7 +354,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 		else if ($name == 'buffer') {
 			$option_layout = ($option['layout']=='box') ? 'data-count="vertical"' : 'data-count="horizontal"';
 			$option_layout = ($option['buffer_count']) ? $option_layout : 'data-count="none"';
-			$out .= '<a href="https://bufferapp.com/add" class="buffer-add-button" data-text="'.$title.'" data-url="'.$link.'" '.$option_layout.'>Buffer</a>';
+			$out .= '<a href="https://bufferapp.com/add" class="buffer-add-button" data-text="'.$title.'" data-url="'.$link.'" '.$option_layout.'></a>';
 			// BUFFER JS ONLY WORKS ON BOTTOM
 			if (!$really_simple_share_option['scripts_at_bottom']) {
 				$out .= '<script type="text/javascript" src="http://static.bufferapp.com/js/button.js"></script>';
