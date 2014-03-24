@@ -33,6 +33,7 @@ function really_simple_share_options () {
 		'youtube'=>'Youtube',
 		'bitcoin'=>'Bitcoin',
 		'litecoin'=>'Litecoin',
+		'specificfeeds'=>'SpecificFeeds',
 	);	
 
 	$show_in = array(
@@ -101,6 +102,7 @@ function really_simple_share_options () {
 			$option['bitcoin_wallet']      = esc_html($_POST['really_simple_share_'.'bitcoin_wallet']);
 			$option['litecoin_wallet']     = esc_html($_POST['really_simple_share_'.'litecoin_wallet']);
 			$option['flattr_uid']          = esc_html($_POST['really_simple_share_'.'flattr_uid']);
+			$option['specificfeeds_link']  = esc_html($_POST['really_simple_share_'.'specificfeeds_link']);
 			$option['tipy_uid']            = esc_html($_POST['really_simple_share_'.'tipy_uid']);
 			$option['twitter_text']        = esc_html($_POST['really_simple_share_'.'twitter_text']);
 			$option['twitter_follow']      = esc_html($_POST['really_simple_share_'.'twitter_follow']);
@@ -201,6 +203,8 @@ function really_simple_share_options () {
 			foreach (explode(',',$option['sort']) as $name) {
 				$checked = ($option['active_buttons'][$name]) ? 'checked="checked"' : '';
 				$options = '';
+				$options2 = '';
+        $li_style = '';
 				switch ($name) {
 					case 'facebook_like': 
 						$options = 'Facebook app ID:
@@ -253,10 +257,19 @@ function really_simple_share_options () {
 					case 'buffer': 
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
 						break;
+					case 'specificfeeds': 
+						$options = __('SF link', 'really-simple-share').': 
+							<input type="text" name="really_simple_share_specificfeeds_link" value="'.stripslashes($option['specificfeeds_link']).'" style="width:100px; margin:0; padding:0;" />
+							<span class="description">('.__("mandatory", 'really-simple-share' ).')</span>';
+						$li_style = 'style="height:75px;"';
+            $options2 = '<div style="clear:both; background-color: #ccc; font-size:10px;">'.__('SpecificFeeds allows your visitors to receive messages from your Blog/RSS Feed by email. It\'s 100% free and also has
+              <a href="http://www.specificfeeds.com/rss" target="_blank">several other benefits</a>. Enter above the pop-up link you received after setting up your feed on 
+              <a href="http://www.specificfeeds.com/rss" target="_blank">SpecificFeeds.com/rss</a>', 'really-simple-share' ).'</div>';
+            break;
 					case 'tipy': 
 						$options = __('Tipy site id', 'really-simple-share').': 
 							<input type="text" name="really_simple_share_tipy_uid" value="'.stripslashes($option['tipy_uid']).'" style="width:80px; margin:0; padding:0;" />
-							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>';
+							<span class="description">('.__("mandatory", 'really-simple-share' ).')</span>';
 						break;
 					case 'twitter': 
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
@@ -267,7 +280,7 @@ function really_simple_share_options () {
 						break;
 				}
 				$button_status = ($checked) ? 'active' : 'inactive';
-				$out .= '<li class="ui-state-default button_'.$button_status.'" id="'.$name.'">
+				$out .= '<li class="ui-state-default button_'.$button_status.'" id="'.$name.'" '.$li_style.'>
 						<div style="float:left; width:180px;" title="'.esc_html($active_buttons[$name]).' - '.$button_status.'">
 							<input type="checkbox" class="button_activate" name="really_simple_share_active_'.$name.'" title="'.__('Activate button', 'really-simple-share').' '.$active_buttons[$name].'" '.$checked.' /> 
 							<span class="button_title">'.esc_html($active_buttons[$name]).'</span>
@@ -278,6 +291,7 @@ function really_simple_share_options () {
 						<div style="float:left; width:260px;">
 							'.$options.'
 						</div>
+						'.$options2.'
 					</li>';
 			}
 

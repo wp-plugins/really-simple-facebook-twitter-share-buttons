@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.0.2
+Version: 3.1.0
 Author URI: http://www.whiletrue.it
 */
 
@@ -556,6 +556,9 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
         	, currency: "litecoin", alignment: "bl", qrcode: true, auto_show: false
         });
         </script>';
+    } else if ($name == 'specificfeeds') {
+      $out .= '<a href="javascript:void(0);" onclick="window.open(\''.$option['specificfeeds_link'].'\',\'EmailSubscribe\',\'toolbar=yes,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400,height=400,left=430,top=23\'); return false;">'
+          .'<span class="super">'.__('Subscribe', 'really-simple-share').':</span> <img src="http://www.specificfeeds.com/theme/classic/img/sf_20.png" alt="SpecificFeeds" title="SpecificFeeds" /></a>';
 		}
 		
 		// CLOSE THE BUTTON DIV
@@ -699,6 +702,11 @@ function really_simple_share_get_options_stored () {
 		$option['width_buttons']['litecoin'] = '100'; 
 		$option['sort'] .= ',bitcoin,litecoin';
 	}	
+	if ($option['sort'] != '' && strpos($option['sort'], 'specificfeeds')===false) {
+		// Versions below 3.1 compatibility
+		$option['width_buttons']['specificfeeds'] = '110'; 
+		$option['sort'] .= ',specificfeeds';
+	}	
 
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
@@ -720,16 +728,16 @@ function really_simple_share_get_options_default () {
 		'linkedin'=>false, 'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 
 		'tumblr'=>false, 'facebook_share'=>false, 'pinzout'=>false, 'rss'=>false, 'print'=>false, 'youtube'=>false,
-    'bitcoin'=>false, 'litecoin'=>false, );
+    'bitcoin'=>false, 'litecoin'=>false, 'specificfeeds'=>false);
 	$option['width_buttons'] = array('facebook_like'=>'100', 'facebook_share_new'=>'110', 'twitter'=>'100', 'linkedin'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'google_share'=>'110', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
 		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140',
-    'bitcoin'=>'120', 'litecoin'=>'120', );
+    'bitcoin'=>'120', 'litecoin'=>'120', 'specificfeeds'=>'110');
 	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'facebook_share_new', 'google_share', 
     'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube',
-    'bitcoin', 'litecoin',));
+    'bitcoin', 'litecoin', 'specificfeeds'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
@@ -763,6 +771,7 @@ function really_simple_share_get_options_default () {
 	$option['pinterest_multi_image'] = false;
 	$option['pinterest_hover'] = '';
 	$option['rss_text'] = 'comments feed';
+	$option['specificfeeds_link'] = '';
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';
