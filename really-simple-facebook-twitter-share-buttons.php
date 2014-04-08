@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.0
+Version: 3.1.1
 Author URI: http://www.whiletrue.it
 */
 
@@ -411,6 +411,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 			$option_layout = ($option['pinterest_count']) ? $option_layout : 'none';
 
 			$media = '';
+      $pinterest_title = $title;
 			if (!$option['pinterest_multi_image'] and in_the_loop()) {
 				// TRY TO USE THE THUMBNAIL, OTHERWHISE TRY TO USE THE FIRST ATTACHMENT
 				$the_post_id = get_the_ID();
@@ -420,11 +421,11 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
             // TRY TO GET ALT ATTRIBUTE
             $alt = get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true);
             if(count($alt) && $alt != '') {
-              $title = $alt;
+              $pinterest_title = $alt;
             } else {
               // ELSE USE TITLE ATTRIBUTE
               $attachment = get_post( $post_thumbnail_id );
-              $title = $attachment->post_title;
+              $pinterest_title = $attachment->post_title;
             }
 				}
 				// IF NO MEDIA IS FOUND, LOOK FOR AN ATTACHMENT
@@ -444,10 +445,10 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
             // TRY TO GET ALT ATTRIBUTE
             $alt = get_post_meta($attachment->ID, '_wp_attachment_image_alt', true);
             if(count($alt) && $alt != '') {
-              $title = $alt;
+              $pinterest_title = $alt;
             } else {
               // ELSE USE TITLE ATTRIBUTE
-              $title = $attachment->post_title;
+              $pinterest_title = $attachment->post_title;
             }
 					}
 				}
@@ -460,12 +461,12 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
   				// TRY TO GET ALT ATTRIBUTE
 					$output = @preg_match_all('/<img.+alt=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
 					if (isset($matches [1] [0]) && $matches[1][0] != '')  {
-						$title = $matches [1] [0];
+						$pinterest_title = $matches [1] [0];
 					} else {
     				// TRY TO GET TITLE ATTRIBUTE
   					$output = @preg_match_all('/<img.+title=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
   					if (isset($matches [1] [0]) && $matches[1][0] != '')  {
-  						$title = $matches [1] [0];
+  						$pinterest_title = $matches [1] [0];
   					}
           }
 				}
@@ -473,7 +474,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 				
 			if ($media != '') {
 				// ONE IMAGE
-				$appended_url = '?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.rawurlencode(strip_tags($title));
+				$appended_url = '?url='.rawurlencode($link).'&media='.rawurlencode($media).'&description='.rawurlencode(strip_tags($pinterest_title));
 				$data_pin_do = 'buttonPin';
 			} else {
 				// ANY IMAGE ON PAGE
