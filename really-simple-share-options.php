@@ -138,7 +138,7 @@ function really_simple_share_options () {
 	$sel_pinterest_hover_hide  = ($option['pinterest_hover']=='hide' ) ? 'selected="selected"' : '';
 	
   foreach ($checkboxes as $val) {
-  	$$val = ($option[$val]) ? 'checked="checked"' : '';
+  	$$val = (isset($option[$val]) && $option[$val]) ? 'checked="checked"' : '';
   }
   
 	
@@ -275,8 +275,9 @@ function really_simple_share_options () {
 						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
 						break;
 					case 'youtube': 
+            $youtube_channel = (isset($option['youtube_channel'])) ? stripslashes($option['youtube_channel']) : '';
 						$options = __('Channel name').':
-							<input type="text" name="really_simple_share_youtube_channel" value="'.stripslashes($option['youtube_channel']).'" style="width:120px; margin:0; padding:0;" />';
+							<input type="text" name="really_simple_share_youtube_channel" value="'.$youtube_channel.'" style="width:120px; margin:0; padding:0;" />';
 						break;
 				}
 				$button_status = ($checked) ? 'active' : 'inactive';

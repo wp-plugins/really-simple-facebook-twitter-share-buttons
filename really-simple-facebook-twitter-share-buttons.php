@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.1
+Version: 3.1.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -692,18 +692,18 @@ function really_simple_share_get_options_stored () {
     $option = array();
   } 
   
-	if ($option['sort'] != '' && strpos($option['sort'], 'facebook_share_new')===false) {
+	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'facebook_share_new')===false) {
 		// Versions below 2.16.15 compatibility
 		$option['width_buttons']['facebook_share_new'] = '110'; 
 		$option['sort'] .= ',facebook_share_new';
 	}	
-	if ($option['sort'] != '' && strpos($option['sort'], 'bitcoin')===false) {
+	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'bitcoin')===false) {
 		// Versions below 3.0 compatibility
 		$option['width_buttons']['bitcoin'] = '100'; 
 		$option['width_buttons']['litecoin'] = '100'; 
 		$option['sort'] .= ',bitcoin,litecoin';
 	}	
-	if ($option['sort'] != '' && strpos($option['sort'], 'specificfeeds')===false) {
+	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'specificfeeds')===false) {
 		// Versions below 3.1 compatibility
 		$option['width_buttons']['specificfeeds'] = '110'; 
 		$option['sort'] .= ',specificfeeds';
