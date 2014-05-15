@@ -3,7 +3,7 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds
 Requires at least: 2.9+
-Tested up to: 3.9
+Tested up to: 3.9.1
 Stable tag: 3.1.2
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
@@ -44,6 +44,8 @@ Please note that in order to place single share buttons, they have to be active 
 = Selective disable =
 
 If you want to hide the share buttons inside selected posts, set a "really_simple_share_disable" custom field with value "yes".
+
+To do so e.g. on a page: open the WordPress backend, go to Pages, click on the Page title to enter the Page edit screen. Then you can add the custom field, [as explained here](http://www.carriedils.com/how-to-create-custom-fields-in-wordpress/ "How to Create Custom Fields in WordPress").
 
 = News =
 
@@ -438,4 +440,3 @@ Facebook Share button is deprecated in favor of Facebook Like button
 
 = 1.0.0 =
 Initial release
-
