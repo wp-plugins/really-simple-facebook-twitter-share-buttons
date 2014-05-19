@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.2
+Version: 3.1.3
 Author URI: http://www.whiletrue.it
 */
 
@@ -133,9 +133,9 @@ function really_simple_share_facebook_like_html5_bottom_scripts () {
 		  var js, fjs = d.getElementsByTagName(s)[0];
 		  if (d.getElementById(id)) return;
 		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1'.$app_id.'";
+		  js.src = "//connect.facebook.net/'.$really_simple_share_option['locale'].'/all.js#xfbml=1'.$app_id.'&version=v2.0";
 		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, "script", "facebook-jssdk"));</script>';
+		}(document, \'script\', \'facebook-jssdk\'));</script>';
 	echo $out;
 }
 
@@ -328,7 +328,7 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 							  var js, fjs = d.getElementsByTagName(s)[0];
 							  if (d.getElementById(id)) return;
 							  js = d.createElement(s); js.id = id;
-							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1&status=0'.$app_id.'";
+							  js.src = "//connect.facebook.net/'.$option['locale'].'/all.js#xfbml=1&status=0'.$app_id.'&version=v2.0";
 							  fjs.parentNode.insertBefore(js, fjs);
 							}(document, "script", "facebook-jssdk"));</script>';
 						$facebook_like_send_script_inserted = true;
@@ -753,7 +753,7 @@ function really_simple_share_get_options_default () {
 	$option['scripts_at_bottom'] = false;
 
 	$option['facebook_like_appid'] = '';
-	$option['facebook_like_html5'] = false;
+	$option['facebook_like_html5'] = true;
 	$option['facebook_like_text'] = 'like';
 	$option['facebook_like_send'] = false;
 	$option['facebook_like_fixed_url'] = '';

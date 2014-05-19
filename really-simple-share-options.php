@@ -207,7 +207,7 @@ function really_simple_share_options () {
         $li_style = '';
 				switch ($name) {
 					case 'facebook_like': 
-						$options = 'Facebook app ID:
+						$options = 'App ID:
 							<input type="text" name="really_simple_share_facebook_like_appid" value="'.stripslashes($option['facebook_like_appid']).'" style="width:120px; margin:0; padding:0;" />';
 						break;
 					case 'email': 
@@ -219,7 +219,7 @@ function really_simple_share_options () {
 							<input type="text" name="really_simple_share_facebook_share_text" value="'.stripslashes($option['facebook_share_text']).'" style="width:160px; margin:0; padding:0;" />';
 						break;
 					case 'facebook_share_new': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_facebook_share_new_count" '.$facebook_share_new_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_facebook_share_new_count" '.$facebook_share_new_count.' />';
 						break;
 					case 'print': 
 						$options = __('Button text').':
@@ -243,19 +243,19 @@ function really_simple_share_options () {
 							<span class="description">'.__("(mandatory)", 'really-simple-share' ).'</span>';
 						break;
 					case 'google1': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google1_count" '.$google1_count.' />';
 						break;
 					case 'google_share': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google_share_count" '.$google_share_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_google_share_count" '.$google_share_count.' />';
 						break;
 					case 'linkedin': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_linkedin_count" '.$linkedin_count.' />';
 						break;
 					case 'pinterest': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_pinterest_count" '.$pinterest_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_pinterest_count" '.$pinterest_count.' />';
 						break;
 					case 'buffer': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_buffer_count" '.$buffer_count.' />';
 						break;
 					case 'specificfeeds': 
 						$options = __('SF link', 'really-simple-share').': 
@@ -272,7 +272,7 @@ function really_simple_share_options () {
 							<span class="description">('.__("mandatory", 'really-simple-share' ).')</span>';
 						break;
 					case 'twitter': 
-						$options = __('Show counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
+						$options = __('Counter', 'really-simple-share').': <input type="checkbox" name="really_simple_share_twitter_count" '.$twitter_count.' />';
 						break;
 					case 'youtube': 
             $youtube_channel = (isset($option['youtube_channel'])) ? stripslashes($option['youtube_channel']) : '';
