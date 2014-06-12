@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds
 Requires at least: 2.9+
 Tested up to: 3.9.1
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
 
@@ -112,6 +112,9 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 
 == Changelog ==
+
+= 3.1.4 =
+* Added: SpecificFeeds Email & RSS Follow button
 
 = 3.1.3 =
 * Fixed: Facebook share fix

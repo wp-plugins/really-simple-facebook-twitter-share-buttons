@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.3
+Version: 3.1.4
 Author URI: http://www.whiletrue.it
 */
 
@@ -560,8 +560,12 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
     } else if ($name == 'specificfeeds') {
       $out .= '<a href="javascript:void(0);" onclick="window.open(\''.$option['specificfeeds_link'].'\',\'EmailSubscribe\',\'toolbar=yes,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400,height=400,left=430,top=23\'); return false;">'
           .'<span class="super">'.__('Subscribe', 'really-simple-share').':</span> <img src="http://www.specificfeeds.com/theme/classic/img/sf_20.png" alt="SpecificFeeds" title="SpecificFeeds" /></a>';
+    } else if ($name == 'specificfeeds_follow') {
+      $button_text = ($option['specificfeeds_follow_text']) ? $option['specificfeeds_follow_text'] : 'Follow';
+      $out .= '<a href="http://www.specificfeeds.com/follow" target="_blank">'
+          .'<img src="'.plugins_url('images/specificfeeds_follow.png',__FILE__).'" alt="Email, RSS" title="Email, RSS" /> '.stripslashes($button_text).'</a>';
 		}
-		
+    
 		// CLOSE THE BUTTON DIV
 		$out .= '</div>';
 	}
@@ -708,6 +712,12 @@ function really_simple_share_get_options_stored () {
 		$option['width_buttons']['specificfeeds'] = '110'; 
 		$option['sort'] .= ',specificfeeds';
 	}	
+	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'specificfeeds_follow')===false) {
+		// Versions below 3.1.4 compatibility
+		$option['width_buttons']['specificfeeds_follow'] = '110'; 
+  	$option['specificfeeds_follow_text'] = 'Follow';
+		$option['sort'] = 'specificfeeds_follow,'.$option['sort'];
+	}	
 
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
@@ -724,8 +734,9 @@ function really_simple_share_get_options_stored () {
 
 function really_simple_share_get_options_default () {
 	$option = array();
-	$option['active_buttons'] = array('facebook_like'=>true, 'facebook_share_new'=>true, 
-    'twitter'=>true, 'google1'=>true, 'google_share'=>false,   
+	$option['active_buttons'] = array('facebook_like'=>true, 
+    'twitter'=>true, 'google1'=>true, 'specificfeeds_follow'=>true,
+    'facebook_share_new'=>false, 'google_share'=>false,
 		'linkedin'=>false, 'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 
 		'tumblr'=>false, 'facebook_share'=>false, 'pinzout'=>false, 'rss'=>false, 'print'=>false, 'youtube'=>false,
@@ -734,8 +745,8 @@ function really_simple_share_get_options_default () {
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'google_share'=>'110', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
 		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140',
-    'bitcoin'=>'120', 'litecoin'=>'120', 'specificfeeds'=>'110');
-	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'facebook_share_new', 'google_share', 
+    'bitcoin'=>'120', 'litecoin'=>'120', 'specificfeeds'=>'110', 'specificfeeds_follow'=>'110');
+	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'specificfeeds_follow', 'facebook_share_new', 'google_share', 
     'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube',
     'bitcoin', 'litecoin', 'specificfeeds'));
@@ -773,6 +784,7 @@ function really_simple_share_get_options_default () {
 	$option['pinterest_hover'] = '';
 	$option['rss_text'] = 'comments feed';
 	$option['specificfeeds_link'] = '';
+	$option['specificfeeds_follow_text'] = 'Follow';
 	$option['tipy_uid'] = '';
 	$option['twitter_count'] = true;
 	$option['twitter_text'] = '';

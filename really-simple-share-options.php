@@ -34,6 +34,7 @@ function really_simple_share_options () {
 		'bitcoin'=>'Bitcoin',
 		'litecoin'=>'Litecoin',
 		'specificfeeds'=>'SpecificFeeds',
+		'specificfeeds_follow'=>'Email & RSS (follow)',
 	);	
 
 	$show_in = array(
@@ -103,6 +104,7 @@ function really_simple_share_options () {
 			$option['litecoin_wallet']     = esc_html($_POST['really_simple_share_'.'litecoin_wallet']);
 			$option['flattr_uid']          = esc_html($_POST['really_simple_share_'.'flattr_uid']);
 			$option['specificfeeds_link']  = esc_html($_POST['really_simple_share_'.'specificfeeds_link']);
+			$option['specificfeeds_follow_text']  = esc_html($_POST['really_simple_share_'.'specificfeeds_follow_text']);
 			$option['tipy_uid']            = esc_html($_POST['really_simple_share_'.'tipy_uid']);
 			$option['twitter_text']        = esc_html($_POST['really_simple_share_'.'twitter_text']);
 			$option['twitter_follow']      = esc_html($_POST['really_simple_share_'.'twitter_follow']);
@@ -266,6 +268,10 @@ function really_simple_share_options () {
               <a href="http://www.specificfeeds.com/rss" target="_blank">several other benefits</a>. Enter above the pop-up link you received after setting up your feed on 
               <a href="http://www.specificfeeds.com/rss" target="_blank">SpecificFeeds.com/rss</a>', 'really-simple-share' ).'</div>';
             break;
+					case 'specificfeeds_follow': 
+						$options = __('Button text').':
+							<input type="text" name="really_simple_share_specificfeeds_follow_text" value="'.stripslashes($option['specificfeeds_follow_text']).'" style="width:160px; margin:0; padding:0;" />';
+						break;
 					case 'tipy': 
 						$options = __('Tipy site id', 'really-simple-share').': 
 							<input type="text" name="really_simple_share_tipy_uid" value="'.stripslashes($option['tipy_uid']).'" style="width:80px; margin:0; padding:0;" />
