@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.4
+Version: 3.1.5
 Author URI: http://www.whiletrue.it
 */
 
@@ -162,6 +162,10 @@ function really_simple_share_init ($force=false) {
 	}
 	if ($really_simple_share_option['active_buttons']['flattr']) {
 		wp_enqueue_script('really_simple_share_flattr', 'https://api.flattr.com/js/0.6/load.js?mode=auto&#038;ver=0.6', array(), false, $really_simple_share_option['scripts_at_bottom']);
+	}
+  // FRYPE LIB HAS TO BE IN THE HEADER
+	if ($really_simple_share_option['active_buttons']['frype']) {
+		wp_enqueue_script('really_simple_share_tumblr', 'https://www.draugiem.lv/api/api.js', array(), false);
 	}
 	if ($really_simple_share_option['active_buttons']['tumblr']) {
 		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
@@ -564,6 +568,10 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
       $button_text = ($option['specificfeeds_follow_text']) ? $option['specificfeeds_follow_text'] : 'Follow';
       $out .= '<a href="http://www.specificfeeds.com/follow" target="_blank">'
           .'<img src="'.plugins_url('images/specificfeeds_follow.png',__FILE__).'" alt="Email, RSS" title="Email, RSS" /> '.stripslashes($button_text).'</a>';
+    } else if ($name == 'frype') {
+      // GENERATE DIFFERENT IDS FOR BUTTONS IN THE SAME PAGE
+      $random_id = rand(1,100000);
+      $out .= '<div id="draugiemLike'.$random_id.'"></div><script type="text/javascript">var p = { popup:true, mobile:true }; new DApi.Like(p).append("draugiemLike'.$random_id.'");</script>';
 		}
     
 		// CLOSE THE BUTTON DIV
@@ -718,6 +726,11 @@ function really_simple_share_get_options_stored () {
   	$option['specificfeeds_follow_text'] = 'Follow';
 		$option['sort'] = 'specificfeeds_follow,'.$option['sort'];
 	}	
+	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'frype')===false) {
+		// Versions below 3.1.5 compatibility
+		$option['width_buttons']['frype'] = '110'; 
+		$option['sort'] .= ',frype';
+	}	
 
 	// MERGE DEFAULT AND STORED OPTIONS
 	$option_default = really_simple_share_get_options_default();
@@ -740,16 +753,16 @@ function really_simple_share_get_options_default () {
 		'linkedin'=>false, 'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 
 		'tumblr'=>false, 'facebook_share'=>false, 'pinzout'=>false, 'rss'=>false, 'print'=>false, 'youtube'=>false,
-    'bitcoin'=>false, 'litecoin'=>false, 'specificfeeds'=>false);
+    'bitcoin'=>false, 'litecoin'=>false, 'specificfeeds'=>false, 'frype'=>false);
 	$option['width_buttons'] = array('facebook_like'=>'100', 'facebook_share_new'=>'110', 'twitter'=>'100', 'linkedin'=>'100', 
 		'digg'=>'100', 'stumbleupon'=>'100', 'hyves'=>'100', 'email'=>'40', 
 		'reddit'=>'100', 'google1'=>'80', 'google_share'=>'110', 'flattr'=>'120', 'pinterest'=>'90', 'tipy'=>'120', 
 		'buffer'=>'100', 'tumblr'=>'100', 'facebook_share'=>'100', 'pinzout'=>'75', 'rss'=>'150', 'print'=>'40', 'youtube'=>'140',
-    'bitcoin'=>'120', 'litecoin'=>'120', 'specificfeeds'=>'110', 'specificfeeds_follow'=>'110');
+    'bitcoin'=>'120', 'litecoin'=>'120', 'specificfeeds'=>'110', 'specificfeeds_follow'=>'110', 'frype'=>'110');
 	$option['sort'] = implode(',',array('facebook_like', 'twitter', 'google1', 'specificfeeds_follow', 'facebook_share_new', 'google_share', 
     'linkedin', 'pinterest', 'digg', 'stumbleupon', 'hyves', 'email', 
 		'reddit', 'flattr', 'tipy', 'buffer', 'tumblr', 'facebook_share', 'pinzout', 'rss', 'print', 'youtube',
-    'bitcoin', 'litecoin', 'specificfeeds'));
+    'bitcoin', 'litecoin', 'specificfeeds', 'frype'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
 	$option['layout'] = 'button';
