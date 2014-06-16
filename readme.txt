@@ -6,16 +6,16 @@ Requires at least: 2.9+
 Tested up to: 3.9.1
 Stable tag: 3.1.5
 
-Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other share buttons of your choice above or below your posts.
+Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts.
 
 == Description ==
-This plugin shows Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other popular share buttons above or below your posts.
+This plugin shows Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other popular social share buttons above or below your posts.
 Easy customization of active buttons and position in the Settings menu.
 
 In contrast to several other sharing plugin, this one aims to use only original code provided by any social network.
 There is no other service in the middle, you are not required to register or get a key to use it. Enjoy!
 
-Facebook Like, Twitter and Google +1 share buttons are loaded by default. 
+Facebook Like, Twitter and Google +1 social share buttons are loaded by default. 
 Other buttons, including Digg, Facebook Share, Flattr, LinkedIn, Pinterest, Bitcoin, Litecoin, Stumbleupon, Youtube, Hyves, Print, Email, RSS, Reddit, Tipy, Tumblr, Buffer, Pinzout, SpecificFeeds, Draugiem.lv (Frype.com) can be added through the `Settings->Really simple share` menu.
 
 Please be careful when selecting the `Show buttons in these pages` options : it can interact badly with other slide/fade/carousel/sidebar active plugins.
