@@ -35,6 +35,7 @@ function really_simple_share_options () {
 		'litecoin'=>'Litecoin',
 		'specificfeeds'=>'SpecificFeeds',
 		'specificfeeds_follow'=>'Email & RSS (follow)',
+		'frype' => 'Draugiem.lv (frype.com)',
 	);	
 
 	$show_in = array(
