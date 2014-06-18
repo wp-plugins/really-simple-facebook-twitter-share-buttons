@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds, draugiem, frype
 Requires at least: 2.9+
 Tested up to: 3.9.1
-Stable tag: 3.1.6
+Stable tag: 3.1.7
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts.
 
@@ -114,6 +114,9 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 == Changelog ==
 
+= 3.1.7 =
+* Fixed: Check default active buttons
+
 = 3.1.6 =
 * Fixed: Draugiem.lv button text
 
@@ -136,30 +139,17 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 * Added: SpecificFeeds button
 
 = 3.0.2 =
+* Added: Bitcoin and Litecoin buttons
+* Changed: Try to use image title, if alt text is void, as Pinterest description
+* Changed: Code cleaning
 * Fixed: Facebook Like iFrame fix
 * Fixed: Buffer button default text cleaning
 
-= 3.0.1 =
-* Changed: Try to use image title, if alt text is void, as Pinterest description
-
-= 3.0 =
-* Added: Bitcoin and Litecoin buttons
-* Changed: Code cleaning
-
 = 2.17.3 =
-* Added: Use image alt text, if present, as Pinterest description 
-
-= 2.17.2 =
-* Fixed: Facebook Share (new) css cleaning
-
-= 2.17.1 =
-* Fixed: Facebook Share (new) button in count page
-
-= 2.17 =
 * Added: Facebook Share (new) button
+* Added: Use image alt text, if present, as Pinterest description 
 * Changed: Performance improvements
-* Fixed: Hardcoded CSS cleaning
-* Fixed: Facebook Like code cleaning
+* Fixed: Facebook Like code and Hardcoded CSS cleaning
 
 = 2.16.4 =
 * Added: New admin page showing share button counts for recent posts and pages
@@ -193,24 +183,19 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 * Fixed: Pinterest image default alt text (thanks Laserjob)
 
 = 2.11.2 =
+* Added: Youtube channel button
 * Added: Email custom subject
 * Fixed: Plugin updates bug
-* Fixed: Facebook like status bug (thanks laserjobs)
-* Fixed: Pinterest title bug (thanks laserjobs)
-
-= 2.11 =
-* Added: Youtube channel button
+* Fixed: Facebook like status and Pinterest title bug (thanks laserjobs)
 
 = 2.10.5 =
+* Added: Different calls to action, above and below the post
+* Added: Print button, with optional label
+* Changed: code cleaning
 * Fixed: CSRF vulnerability on settings page
 * Fixed: Pinterest image fixed protocol, avoids mess on some sites
 * Fixed: Pinterest multiple calls (from different plugins) could stop counters
 * Fixed: Facebook iframe style cleaning
-
-= 2.10 =
-* Added: Different calls to action, above and below the post
-* Added: Print button, with optional label
-* Changed: code cleaning
 
 = 2.9.9 =
 * Added: WhileTrue RSS Feed
@@ -397,12 +382,6 @@ Users having versions from 2.4 to 2.4.3 should upgrade due to a bugfix on the Go
 
 = 1.7.3 =
 Users having version from 1.6.3 to 1.7.2 should upgrade due to a bugfix on the Flattr button 
-
-= 1.7.2 =
-Users having version from 1.6.3 to 1.7.1 should upgrade due to a bugfix on the Flattr button 
-
-= 1.7.1 =
-Users having version from 1.6.3 to 1.7.0 should upgrade due to bugfixes on general loading and on the Flattr button 
 
 = 1.4.2 =
 Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Content and JavaScript loading bugfix

@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.6
+Version: 3.1.7
 Author URI: http://www.whiletrue.it
 */
 
@@ -711,24 +711,19 @@ function really_simple_share_get_options_stored () {
 	}	
 	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'bitcoin')===false) {
 		// Versions below 3.0 compatibility
-		$option['width_buttons']['bitcoin'] = '100'; 
-		$option['width_buttons']['litecoin'] = '100'; 
 		$option['sort'] .= ',bitcoin,litecoin';
 	}	
 	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'specificfeeds')===false) {
 		// Versions below 3.1 compatibility
-		$option['width_buttons']['specificfeeds'] = '110'; 
 		$option['sort'] .= ',specificfeeds';
 	}	
 	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'specificfeeds_follow')===false) {
 		// Versions below 3.1.4 compatibility
-		$option['width_buttons']['specificfeeds_follow'] = '110'; 
   	$option['specificfeeds_follow_text'] = 'Follow';
 		$option['sort'] = 'specificfeeds_follow,'.$option['sort'];
 	}	
 	if (isset($option['sort']) && $option['sort'] != '' && strpos($option['sort'], 'frype')===false) {
 		// Versions below 3.1.5 compatibility
-		$option['width_buttons']['frype'] = '110'; 
 		$option['sort'] .= ',frype';
 	}	
 
@@ -736,6 +731,12 @@ function really_simple_share_get_options_stored () {
 	$option_default = really_simple_share_get_options_default();
 	$option = array_merge($option_default, $option);
 
+  // CHECK IF BUTTON ACTIVE IS SET
+	foreach($option['active_buttons'] as $key=>$val) {
+		if ($val=='') {
+			$option['active_buttons'][$key] = $option_default['active_buttons'][$key];
+		}
+	}	
 	// CHECK IF BUTTON WIDTH IS SET
 	foreach($option['width_buttons'] as $key=>$val) {
 		if ($val=='') {
