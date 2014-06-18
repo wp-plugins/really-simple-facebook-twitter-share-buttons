@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.7
+Version: 3.1.8
 Author URI: http://www.whiletrue.it
 */
 
@@ -165,7 +165,7 @@ function really_simple_share_init ($force=false) {
 	}
   // FRYPE LIB HAS TO BE IN THE HEADER
 	if ($really_simple_share_option['active_buttons']['frype']) {
-		wp_enqueue_script('really_simple_share_tumblr', 'https://www.draugiem.lv/api/api.js', array(), false);
+		wp_enqueue_script('really_simple_share_frype', 'https://www.draugiem.lv/api/api.js', array(), false);
 	}
 	if ($really_simple_share_option['active_buttons']['tumblr']) {
 		wp_enqueue_script('really_simple_share_tumblr', 'http://platform.tumblr.com/v1/share.js', array(), false, $really_simple_share_option['scripts_at_bottom']);
@@ -732,15 +732,15 @@ function really_simple_share_get_options_stored () {
 	$option = array_merge($option_default, $option);
 
   // CHECK IF BUTTON ACTIVE IS SET
-	foreach($option['active_buttons'] as $key=>$val) {
-		if ($val=='') {
-			$option['active_buttons'][$key] = $option_default['active_buttons'][$key];
+	foreach($option_default['active_buttons'] as $key=>$val) {
+		if (!isset($option['active_buttons'][$key])) {
+			$option['active_buttons'][$key] = $val;
 		}
-	}	
+	}
 	// CHECK IF BUTTON WIDTH IS SET
-	foreach($option['width_buttons'] as $key=>$val) {
-		if ($val=='') {
-			$option['width_buttons'][$key] = $option_default['width_buttons'][$key];
+	foreach($option_default['width_buttons'] as $key=>$val) {
+		if (!isset($option['width_buttons'][$key]) || $option['width_buttons'][$key] == '') {
+			$option['width_buttons'][$key] = $val;
 		}
 	}	
 	return $option;

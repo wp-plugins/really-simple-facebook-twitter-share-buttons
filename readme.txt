@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds, draugiem, frype
 Requires at least: 2.9+
 Tested up to: 3.9.1
-Stable tag: 3.1.7
+Stable tag: 3.1.8
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts.
 
@@ -113,6 +113,10 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 
 == Changelog ==
+
+= 3.1.8 =
+* Fixed: Draugiem.lv script name bug
+* Fixed: Active buttons bug from 3.1.7
 
 = 3.1.7 =
 * Fixed: Check default active buttons
@@ -374,20 +378,8 @@ Initial release
 
 == Upgrade Notice ==
 
-= 2.10.3 =
-Users having versions from 2.10.1 and 2.10.2 should upgrade due to a bugfix on the Pinterest button
-
-= 2.4.4 =
-Users having versions from 2.4 to 2.4.3 should upgrade due to a bugfix on the Google+ and Pinterest buttons 
-
-= 1.7.3 =
-Users having version from 1.6.3 to 1.7.2 should upgrade due to a bugfix on the Flattr button 
-
-= 1.4.2 =
-Users having version 1.4.0 and 1.4.1 are advised to upgrade due to an Excerpt/Content and JavaScript loading bugfix
-
-= 1.2.2 =
-Facebook Share button is deprecated in favor of Facebook Like button
+= 3.1.8 =
+Users having version 3.1.7 should upgrade due to a bugfix on shown buttons
 
 = 1.0.0 =
 Initial release
