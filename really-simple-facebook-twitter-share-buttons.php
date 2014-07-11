@@ -4,7 +4,7 @@ Plugin Name: Really simple Facebook Twitter share buttons
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.1.8
+Version: 3.2
 Author URI: http://www.whiletrue.it
 */
 
@@ -247,7 +247,10 @@ function really_simple_share ($content, $filter, $link='', $title='', $author=''
 	$option = $really_simple_share_option;
 
 	if ($filter!='shortcode') {
-		if (is_single()) {
+		$post_type = get_post_type();
+    if (in_array($post_type, get_post_types(array('_builtin'=>false)))) {
+			if (!$option['show_in_custom'][$post_type]) { return $content; }
+    } else if (is_single()) {
 			if (!$option['show_in']['posts']) { return $content; }
 		} else if (is_singular() and !is_front_page()) {
 			if (!$option['show_in']['pages']) {	return $content; }
@@ -766,6 +769,7 @@ function really_simple_share_get_options_default () {
     'bitcoin', 'litecoin', 'specificfeeds', 'frype'));
 	$option['position'] = 'below';
 	$option['show_in'] = array('posts'=>true, 'pages'=>true, 'home_page'=>true, 'tags'=>true, 'categories'=>true, 'dates'=>true, 'authors'=>true, 'search'=>true);
+  $option['show_in_custom'] = array();
 	$option['layout'] = 'button';
 	$option['locale'] = 'en_US';
 	$option['above_prepend_above']  = '';
