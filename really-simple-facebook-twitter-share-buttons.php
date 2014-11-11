@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: Really simple Facebook Twitter share buttons
+Plugin Name: Really Simple Share
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: WhileTrue
-Version: 3.2.2
+Version: 3.2.3
 Author URI: http://www.whiletrue.it
 */
 
