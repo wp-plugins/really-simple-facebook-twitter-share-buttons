@@ -6,7 +6,7 @@ Requires at least: 2.9+
 Tested up to: 4.0
 Stable tag: 3.2.3
 
-Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts. Previously known as "Really simple Facebook Twitter share buttons".
+Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts.
 
 == Description ==
 This plugin shows Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other popular social share buttons above or below your posts.
@@ -55,6 +55,8 @@ To do so e.g. on a page: open the WordPress backend, go to Pages, click on the P
 
 = Reference =
 
+Previously known as "Really simple Facebook Twitter share buttons".
+ 
 For more info on this plugin: [www.whiletrue.it](http://www.whiletrue.it/really-simple-share-wordpress-plugin/ "www.whiletrue.it")
 
 Do you like this plugin? Give a chance to our other works:
