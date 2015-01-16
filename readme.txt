@@ -4,7 +4,7 @@ Donate link: http://www.whiletrue.it/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds, draugiem, frype
 Requires at least: 2.9+
 Tested up to: 4.1
-Stable tag: 3.3
+Stable tag: 3.3.1
 
 Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest, Tumblr and other social share buttons of your choice above or below your posts.
 
@@ -114,6 +114,9 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 
 == Changelog ==
+
+= 3.3.1 =
+* Fixed: Performance Mode bugfix
 
 = 3.3 =
 * Added: Initial support for Performance Mode
@@ -375,6 +378,9 @@ Initial release
 
 
 == Upgrade Notice ==
+
+= 3.3.1 =
+Users having version 3.3 should upgrade due to a bugfix on Performance Mode
 
 = 3.1.8 =
 Users having version 3.1.7 should upgrade due to a bugfix on shown buttons
