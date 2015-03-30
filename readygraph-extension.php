@@ -21,7 +21,11 @@
   
 
   add_action('admin_notices', 'add_readygraph_plugin_warning');
-  add_action('wp_footer', 'readygraph_client_script_head');
+if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0){
+if (get_option('readygraph_access_token', '') == '') {
+  add_action('wp_footer', 'readygraph_rsftsb_client_script_head');
+}
+}
   add_action('admin_init', 'on_plugin_activated_readygraph_rsftsb_redirect');
 	add_option('readygraph_rsftsb_connect_notice','true');
 
