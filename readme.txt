@@ -4,7 +4,7 @@ Donate link: http://www.plugins.readygraph.com/donate/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds, draugiem, frype
 Requires at least: 2.9+
 Tested up to: 4.1
-Stable tag: 4.1.1
+Stable tag: 4.1.2
 
 Puts Facebook, Twitter, LinkedIn, Google, Pinterest, and more share buttons above/below your posts. And automate social user growth with ReadyGraph.
 
