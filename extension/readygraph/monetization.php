@@ -24,26 +24,42 @@ rsftsb_delete_rg_options();
 $dir = plugin_dir_path( __FILE__ );
 rsftsb_rrmdir($dir);
 }
-
+function readygraph_monetize_update(){
+	$app_id = get_option('readygraph_application_id');
+	$email = get_option('readygraph_monetize_email');
+	$monetize = get_option('readygraph_enable_monetize');
+	$url = 'https://readygraph.com/api/v1/wp-monetize/';
+	$response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'monetize_email' => $email, 'monetize' => $monetize)));
+}
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "changeaccount")rsftsb_disconnectReadyGraph();
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "deleteaccount")rsftsb_deleteReadyGraph();
 	global $main_plugin_title;
 	if (!get_option('readygraph_access_token') || strlen(get_option('readygraph_access_token')) <= 0) {
 	//redirect to main page
-	$current_url = explode("&", $_SERVER['REQUEST_URI']); 
-	echo '<script>window.location.replace("'.$current_url[0].'");</script>';
+	//$current_url = "admin.php?page=readygraph-app"; 
+	//echo '<script>window.location.replace("'.$current_url.'");</script>';
 	}
 	else {
-		if(isset($_GET["source"]) && $_GET["source"] == "social-feed"){
-			if (isset($_POST["readygraph_access_token"])) update_option('readygraph_access_token', $_POST["readygraph_access_token"]);
-			if (isset($_POST["readygraph_refresh_token"])) update_option('readygraph_refresh_token', $_POST["readygraph_refresh_token"]);
-			if (isset($_POST["readygraph_email"])) update_option('readygraph_email', $_POST["readygraph_email"]);
-			if (isset($_POST["readygraph_application_id"])) update_option('readygraph_application_id', $_POST["readygraph_application_id"]);	
-			if (isset($_POST["readygraph_enable_sidebar"])) update_option('readygraph_enable_sidebar', $_POST["sidebar"]);
-		}
-		
+	if (isset($_POST["readygraph_access_token"])) update_option('readygraph_access_token', $_POST["readygraph_access_token"]);
+	if (isset($_POST["readygraph_refresh_token"])) update_option('readygraph_refresh_token', $_POST["readygraph_refresh_token"]);
+	if (isset($_POST["readygraph_email"])) update_option('readygraph_email', $_POST["readygraph_email"]);
+	if (isset($_POST["readygraph_application_id"])) update_option('readygraph_application_id', $_POST["readygraph_application_id"]);
 	}
-?>	
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if (isset($_POST["readygraph_monetize"]) && $_POST["readygraph_monetize"] == "1") update_option('readygraph_enable_monetize', "true");
+		else update_option('readygraph_enable_monetize', "false");
+		if (isset($_POST["readygraph_monetize_email"])) update_option('readygraph_monetize_email', $_POST["readygraph_monetize_email"]);
+		readygraph_monetize_update();
+	}
+	if (get_option('readygraph_enable_branding', '') == 'false') {
+	?>
+<style>
+/* FOR INLINE WIDGET */
+.rgw-text {
+    display: none !important;
+}
+</style>
+<?php } ?>	
 
 <link rel="stylesheet" type="text/css" href="<?php echo plugins_url( 'assets/css/admin.css', __FILE__ ) ?>">
 <script type="text/javascript" src="<?php echo plugins_url( 'assets/js/admin.js', __FILE__ ) ?>"></script>
@@ -52,6 +68,16 @@ rsftsb_rrmdir($dir);
 <input type="hidden" name="readygraph_refresh_token" value="<?php echo get_option('readygraph_refresh_token', '') ?>">
 <input type="hidden" name="readygraph_email" value="<?php echo get_option('readygraph_email', '') ?>">
 <input type="hidden" name="readygraph_application_id" value="<?php echo get_option('readygraph_application_id', '') ?>">
+<input type="hidden" name="readygraph_settings" value="<?php echo htmlentities(str_replace("\\\"", "\"", get_option('readygraph_settings', '{}'))) ?>">
+<input type="hidden" name="readygraph_delay" value="<?php echo get_option('readygraph_delay', '5000') ?>">
+<input type="hidden" name="readygraph_enable_sidebar" value="<?php echo get_option('readygraph_enable_sidebar', 'false') ?>">
+<input type="hidden" name="readygraph_enable_notification" value="<?php echo get_option('readygraph_enable_notification', 'true') ?>">
+<input type="hidden" name="readygraph_auto_select_all" value="<?php echo get_option('readygraph_auto_select_all', 'true') ?>">
+<input type="hidden" name="readygraph_enable_branding" value="<?php echo get_option('readygraph_enable_branding', 'false') ?>">
+<input type="hidden" name="readygraph_send_blog_updates" value="<?php echo get_option('readygraph_send_blog_updates', 'true') ?>">
+<input type="hidden" name="readygraph_send_real_time_post_updates" value="<?php echo get_option('readygraph_send_real_time_post_updates', 'false') ?>">
+<input type="hidden" name="readygraph_popup_template" value="<?php echo get_option('readygraph_popup_template', 'default-template') ?>">
+
 
 <div class="authenticate" style="display: none;">
 	    <div class="wrap1" style="min-height: 600px;">
@@ -130,7 +156,7 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 	<div class="readygraph-nav-menu">
 	<ul><li>Grow Users
 	  <ul>
-		<li><a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=signup-popup">Signup Popup</a></li>
+		<li><a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0];?>?page=readygraph-app&ac=signup-popup">Signup Popup</a></li>
 		<li><a href="https://readygraph.com/application/insights/" target="_blank">User Statistics</a></li>
 		<li><a href="#"></a></li>
 	  </ul>
@@ -145,7 +171,7 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
   <li>
     Engage Users
     <ul>
-		<li><a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=social-feed">Social Feed</a></li>
+		<li><a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0];?>?page=readygraph-app&ac=social-feed">Social Feed</a></li>
 		<li><a href="#">Social Followers</a></li>
 		<li><a href="#">Feedback Survey</a></li>
     </ul>
@@ -153,8 +179,8 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
   <li>Basic Settings
     <ul>
 		<li><a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=site-profile">Site Profile</a></li>
-		<li><a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=feature-settings">Feature Settings</a></li>
-		<li><a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings">Monetization Settings</a></li>
+		<li><a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0];?>?page=readygraph-app&ac=feature-settings">Feature Settings</a></li>
+		<li><a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0];?>?page=readygraph-app&ac=monetization-settings">Monetization Settings</a></li>
 	</ul>
   </li>
 </ul>
@@ -163,26 +189,31 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 	</div>
 	<div class="btn-group" style="margin: 8px 10px 0 10px;">
 		<p>
-		<a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=faq" style="color: #b1c1ca" >FAQ  <img src="<?php echo plugin_dir_url( __FILE__ );?>assets/10.png" /></a></p>
+		<a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0];?>?page=readygraph-app&ac=faq" style="color: #b1c1ca" >FAQ  <img src="<?php echo plugin_dir_url( __FILE__ );?>assets/10.png" /></a></p>
 	</div>
 	<div class="btn-group" style="">
 		<p><a href="https://readygraph.com/accounts/payment/?email=<?php echo get_option('readygraph_email', '') ?>" target="_blank" style="color: #b1c1ca" ><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/go-premium.png" height="40px" style="margin:5px" /></a></p>
 	</div>
 	</div>
-	<div class="tutorial-true" style="margin: 5% auto;">
-		<h3 style="font-weight: normal; text-align: center;">Next Step: Customize automated emails to engage your userbase</h3>
-		<h4 style="font-weight: normal; text-align: center;">Head over to ReadyGraph.com to customize emails such as:</h4>
-		
-			<div style="width: 275px; margin: 0 auto;"><ol><li>Welcome Email</li>
-			<li>Friend Invite Email</li>
-			<li>Updates of new content you post</li>
-			<li>Several More</li></ol>
+	<div style="margin: 3% 5%">
+		<?php if(get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true") { ?><h3 style="font-weight: normal; text-align: center;"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/check.png"/>Congratulations! <?php echo $main_plugin_title; ?>'s ReadyGraph monetization engine is now active.</h3><?php } ?>
+		<h3><strong>Adjust Monetization Settings</strong></h3>
 			
-			<div class="save-changes" style="font-weight: normal; text-align: center;"><button type="button" class="btn btn-large btn-warning save-next" onclick="window.open('https://readygraph.com/application/customize/settings/advance/');return false;" style="margin: 15px">Customize Email</button><br>
-			<a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=basic-settings" style="margin: 15px">Skip, End Tutorial</a>
-			</div></div>
+			<div style="width: 60%;">
+			<img src="<?php echo plugin_dir_url( __FILE__ );?>assets/round-check.png" style="float: left; height: 20px; vertical-align: middle;"/><h5 class="rg-h4" style="margin-left: 30px;text-align:justify; line-height: 20px;">Note: Please ensure that you have entered your correct email below.  Soon after you enter your email and click “Save Settings”, you should receive an email from our partner at AdsOptimal allowing you to login to see your stats and (once you reach the minimum) collect payments.  Please contact us anytime if you have questions.  If you no longer want to monetize via our non intrusive, highly optimized mobile ad units, you can opt out below.</h5>
+			
+			<br>
+			<div style="display: block; margin: 10px;"><label for="readygraph_monetize_email">Email:</label><input type="text" name="readygraph_monetize_email" id="readygraph_monetize_email" value="<?php echo get_option('readygraph_monetize_email');?>" style="display: inline; margin: 0 0 0 20px" /></div>
+				<p><input type="checkbox" name="readygraph_monetize" value="1" style="margin: 0 10px;" <?php if(get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true") echo "checked"; ?> >Enable Monetization</span>
+					<a href="#" class="help-tooltip"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/Help-icon.png" width="15px" style="margin-left:10px;"/><span><img class="callout" src="<?php echo plugin_dir_url( __FILE__ );?>assets/callout_black.gif" /><strong>ReadyGraph Monetization Settings</strong><br />You can check/uncheck this box to enable/disable the monetization settings for ReadyGraph<br /></span></a>
+				</p>
+				<div class="save-changes">
+			<button type="submit" class="btn btn-large btn-warning save" formaction="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings" style="margin: 15px">Save Changes</button>
+			</div>
+			
+			</div>
+			
 	</div>
-	
 </div>
 </form>
 <script type="text/javascript" src="https://readygraph.com/scripts/readygraph.js"></script>
@@ -217,7 +248,6 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 			$(document.body).bind('click', parent_disable);
 		});
 		$(".change-account").click(function() {
-			document.cookie="readygraph_tutorial=true"
 			var url = authHost + '/oauth/authenticate?client_id=' + settings.clientId + '&redirect_uri=' + encodeURIComponent(location.href.replace('#' + location.hash,"")) + '&response_type=token';
 			var logout = authHost + '/oauth/logout?redirect=' + encodeURIComponent(url);
 			openPopup(logout);
@@ -257,7 +287,7 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 		}
 		else {
 			$('.rgw-fb-login-button-iframe').hide();
-			$('div.authenticate').show();
+			$('div.authenticated').show();
 			
 			if ($('[name="readygraph_access_token"]').val()) {
 				$('.rgw-fb-login-button-iframe').show();

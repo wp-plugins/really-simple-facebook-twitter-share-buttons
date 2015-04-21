@@ -4,7 +4,18 @@
   $plugin_slug = basename(dirname(__FILE__));
   $menu_slug = 'readygraph-app';
   $main_plugin_title = 'Really Simple Share';
-
+	add_action( 'wp_ajax_rsftsb-myajax-submit', 'rsftsb_myajax_submit' );
+function rsftsb_myajax_submit() {
+	global $wpdb;
+	$monetize = $_POST['readygraph_monetize'];
+	if ($monetize == "true"){
+	update_option('readygraph_enable_monetize',"true");
+	}
+	else{
+	update_option('readygraph_enable_monetize',"false");
+	}
+	wp_die();
+}
   // ReadyGraph Engine Hooker
   //
   include_once('extension/readygraph/extension.php');
@@ -71,8 +82,7 @@ function rsftsb_post_updated_send_email( $post_id ) {
 	// If this is just a revision, don't send the email.
 	if ( wp_is_post_revision( $post_id ) )
 		return;
-	$new_array = get_option('really_simple_share');
-	if (!$new_array['active_buttons']['specificfeeds_follow']){
+	if (!get_option('readygraph_access_token')){
 		return;
 	}
 	if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0 && get_option('readygraph_send_blog_updates') == "true"){
