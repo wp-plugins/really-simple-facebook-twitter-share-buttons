@@ -4,7 +4,7 @@ Donate link: http://www.blog.readygraph.com/donate/
 Tags: facebook, twitter, facebook share, twitter share, facebook share button, twitter share button, linkedin, google +1, +1, google share, google plus share, pinterest, google buzz, buzz, digg, flattr, stumbleupon, hyves, links, post, page, mail, email, reddit, tipy, tumblr, buffer, pinzout, shortcode, youtube, print, rss, bitcoin, litecoin, specificfeeds, draugiem, frype
 Requires at least: 2.9+
 Tested up to: 4.1
-Stable tag: 4.1.3
+Stable tag: 4.1.4
 
 Put Facebook, Twitter, LinkedIn, Pinterest, and more share buttons above/below posts. Plus automate social user growth and revenue with ReadyGraph.
 
@@ -170,6 +170,9 @@ The PinIt counter only appear if the post has been shared at least once. Also, t
 
 
 == Changelog ==
+
+= 4.1.4 =
+* Call readygraph.js only if opted for monetization or readygraph growth features
 
 = 4.1.3 =
 * Added readygraph monetization
@@ -441,6 +444,9 @@ Initial release
 
 
 == Upgrade Notice ==
+
+= 4.1.4 =
+* Call readygraph.js only if opted for monetization or readygraph growth features
 
 = 4.1.3 =
 * Added readygraph monetization
