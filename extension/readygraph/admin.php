@@ -411,7 +411,7 @@ function popup_delay(n){
 		
 		$("a.monetize").click(function() {
 			$.ajax({
-				url: resourceHost + '/api/v1/wp-monetize'
+				url: resourceHost + '/api/v1/wp-monetize/'
 			, method: 'POST'
 			, data: {
             app_id: $('[name="readygraph_application_id"]').val(),
