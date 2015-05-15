@@ -451,6 +451,9 @@ Initial release
 
 == Upgrade Notice ==
 
+= 4.2.0 =
+* Added related tags to readygraph monetization
+
 = 4.1.5 =
 * Bug fix
 
