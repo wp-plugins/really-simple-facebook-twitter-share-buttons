@@ -28,16 +28,20 @@ function readygraph_monetize_update(){
 	$app_id = get_option('readygraph_application_id');
 	$email = get_option('readygraph_monetize_email');
 	$monetize = get_option('readygraph_enable_monetize');
+	$related_tags = get_option('readygraph_related_tags');
 	$url = 'https://readygraph.com/api/v1/wp-monetize/';
-	$response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'monetize_email' => $email, 'monetize' => $monetize)));
+	$response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'monetize_email' => $email, 'monetize' => $monetize, 'related_tags' => $related_tags)));
+	if ( is_wp_error( $response ) ) {
+	} else {
+   $json_decoded = json_decode($response['body'],true);
+   update_option('readygraph_adsoptimal_id', $json_decoded['data']['adsoptimal_id']);
+   update_option('readygraph_adsoptimal_secret', $json_decoded['data']['adsoptimal_secret']);
+}
 }
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "changeaccount")rsftsb_disconnectReadyGraph();
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "deleteaccount")rsftsb_deleteReadyGraph();
 	global $main_plugin_title;
 	if (!get_option('readygraph_access_token') || strlen(get_option('readygraph_access_token')) <= 0) {
-	//redirect to main page
-	//$current_url = "admin.php?page=readygraph-app"; 
-	//echo '<script>window.location.replace("'.$current_url.'");</script>';
 	}
 	else {
 	if (isset($_POST["readygraph_access_token"])) update_option('readygraph_access_token', $_POST["readygraph_access_token"]);
@@ -47,6 +51,8 @@ function readygraph_monetize_update(){
 	}
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST["readygraph_monetize"]) && $_POST["readygraph_monetize"] == "1") update_option('readygraph_enable_monetize', "true");
+		else update_option('readygraph_enable_monetize', "false");
+		if (isset($_POST["readygraph_related_tags"]) && $_POST["readygraph_related_tags"] == "1") update_option('readygraph_related_tags', "true");
 		else update_option('readygraph_enable_monetize', "false");
 		if (isset($_POST["readygraph_monetize_email"])) update_option('readygraph_monetize_email', $_POST["readygraph_monetize_email"]);
 		readygraph_monetize_update();
@@ -197,18 +203,21 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 	</div>
 	<div style="margin: 3% 5%">
 		<?php if(get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true") { ?><h3 style="font-weight: normal; text-align: center;"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/check.png"/>Congratulations! <?php echo $main_plugin_title; ?>'s ReadyGraph monetization engine is now active.</h3><?php } ?>
-		<h3><strong>Adjust Monetization Settings</strong></h3>
+		<h3><strong>Adjust Revenue Settings</strong></h3>
 			
 			<div style="width: 60%;">
-			<img src="<?php echo plugin_dir_url( __FILE__ );?>assets/round-check.png" style="float: left; height: 20px; vertical-align: middle;"/><h5 class="rg-h4" style="margin-left: 30px;text-align:justify; line-height: 20px;">Note: Please ensure that you have entered your correct email below.  Soon after you enter your email and click “Save Settings”, you should receive an email from our partner at AdsOptimal allowing you to login to see your stats and (once you reach the minimum) collect payments.  Please contact us anytime if you have questions.  If you no longer want to monetize via our non intrusive, highly optimized mobile ad units, you can opt out below.</h5>
+			<img src="<?php echo plugin_dir_url( __FILE__ );?>assets/round-check.png" style="float: left; height: 20px; vertical-align: middle;"/><h5 class="rg-h4" style="margin-left: 30px;text-align:justify; line-height: 20px;">Note: To view your revenue stats, adjust ad placements, and request payment, please click the button below.  This will take you to your dashboard page powered by our monetization partner AdsOptimal. Please contact us <a href="mailto:info@readygraph.com">info@readygraph.com</a> anytime if you have questions.  If you no longer wish to monetize via our non-intrusive highly optimized ad units, you can turn off monetization below.  Remember to save your changes!</h5>
 			
 			<br>
 			<div style="display: block; margin: 10px;"><label for="readygraph_monetize_email">Email:</label><input type="text" name="readygraph_monetize_email" id="readygraph_monetize_email" value="<?php echo get_option('readygraph_monetize_email');?>" style="display: inline; margin: 0 0 0 20px" /></div>
 				<p><input type="checkbox" name="readygraph_monetize" value="1" style="margin: 0 10px;" <?php if(get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true") echo "checked"; ?> >Enable Monetization</span>
 					<a href="#" class="help-tooltip"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/Help-icon.png" width="15px" style="margin-left:10px;"/><span><img class="callout" src="<?php echo plugin_dir_url( __FILE__ );?>assets/callout_black.gif" /><strong>ReadyGraph Monetization Settings</strong><br />You can check/uncheck this box to enable/disable the monetization settings for ReadyGraph<br /></span></a>
 				</p>
+				<p><input type="checkbox" name="readygraph_related_tags" value="1" style="margin: 0 10px;" <?php if(get_option('readygraph_related_tags') && get_option('readygraph_related_tags') == "true") echo "checked"; ?> >Enable Related Tags (Powered by Infolinks)</span>
+					<a href="#" class="help-tooltip"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/Help-icon.png" width="15px" style="margin-left:10px;"/><span><img class="callout" src="<?php echo plugin_dir_url( __FILE__ );?>assets/callout_black.gif" /><strong>ReadyGraph Monetization Settings</strong><br />You can check/uncheck this box to enable/disable the related tags displaying below your post<br /></span></a>
+				</p>
 				<div class="save-changes">
-			<button type="submit" class="btn btn-large btn-warning save" formaction="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings" style="margin: 15px">Save Changes</button>
+			<a type="button" class="btn btn-large btn-warning" href="https://www.adsoptimal.com/api/v4/redirect/dashboard?adoid=<?php echo get_option('readygraph_adsoptimal_id', ''); ?>&secret=<?php echo get_option('readygraph_adsoptimal_secret', ''); ?>;" target="_blank" style="margin: 15px">View Revenue Dashboard</a><button type="submit" class="btn btn-large btn-warning save" formaction="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings" style="margin: 15px">Save Changes</button>
 			</div>
 			
 			</div>

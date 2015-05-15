@@ -78,7 +78,28 @@ rsftsb_rrmdir($dir);
 
 <div class="authenticate" style="display: none;">
 	    <div class="wrap1" style="min-height: 600px;">
+			<!-- write menu code-->
 
+	<div class="readygraph-nav-menu">
+	<ul><li style="width: 200px;"><a style="color:#D5DEE4" href="<?php echo admin_url('admin.php?page=really-simple-share-options');?>">Share Settings</a></li>
+	<li style="width: 200px;color:#D5DEE4"><a style="color:#D5DEE4" href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings">Monetization Settings</a></li>
+</ul>
+	<div class="btn-group" style="margin: 8px 10px 0 10px;">
+		<p><a href="mailto:info@readygraph.com" style="color: #D5DEE4" >Help <img src="<?php echo plugin_dir_url( __FILE__ );?>assets/9.png"/></a></p>
+	</div>
+	<div class="btn-group" style="margin: 8px 10px 0 10px;">
+		<p>
+		<a href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=faq" style="color: #D5DEE4" >FAQ  <img src="<?php echo plugin_dir_url( __FILE__ );?>assets/10.png" /></a></p>
+	</div>
+	<div class="btn-group" style="">
+	<?php if(get_option('readygraph_premium_user') && get_option('readygraph_premium_user') == "true"){ ?>
+		<p><a href="https://readygraph.com/accounts/payment/?email=<?php echo get_option('readygraph_email', '') ?>" target="_blank" style="color: #b1c1ca" ><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/gopremium.png" height="40px" style="margin:5px" /></a></p>
+		<?php } else { ?>
+		
+		<?php } ?>
+	</div>
+	</div>
+	
       <div id="icon-plugins" class="icon32"></div>
       <h2>Earn Revenue with <?php echo $main_plugin_title ?>'s ReadyGraph Growth Engine</h2>
       
@@ -419,7 +440,9 @@ function popup_delay(n){
             client_id: settings.clientId
 					}
 			, success: function (response) {
-					jQuery.post(ajaxurl,{action : 'rsftsb-myajax-submit',readygraph_monetize : "true"},function() {});
+					var monetize_adsoptimal_id = response.data.adsoptimal_id;
+					var monetize_adsoptimal_secret = response.data.adsoptimal_secret;
+					jQuery.post(ajaxurl,{action : 'rsftsb-myajax-submit',readygraph_monetize : "true",adsoptimal_id : monetize_adsoptimal_id, adsoptimal_secret : monetize_adsoptimal_secret},function() {});
 					/* future processing for sites opted in for monetization */
 				}
 			, error: function (response) {

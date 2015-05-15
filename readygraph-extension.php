@@ -36,6 +36,16 @@ if(get_option('readygraph_application_id') && strlen(get_option('readygraph_appl
 if (get_option('readygraph_enable_monetize', '') == "true" || strlen(get_option('readygraph_access_token','')) > 0) {
   add_action('wp_footer', 'readygraph_rsftsb_client_script_head');
 }
+if (!get_option('readygraph_related_tags')){
+  $app_id = get_option('readygraph_application_id');
+  delete_option('readygraph_related_tags_install');
+  $url = 'https://readygraph.com/api/v1/wp-monetize/';
+  $response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'related_tags' => 'true')));
+  if ( is_wp_error( $response ) ) {
+	} else {
+  update_option('readygraph_related_tags', "true");
+  }
+}
 }
   add_action('admin_init', 'on_plugin_activated_readygraph_rsftsb_redirect');
 	add_option('readygraph_rsftsb_connect_notice','true');
