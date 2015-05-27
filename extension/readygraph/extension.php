@@ -108,7 +108,7 @@ function add_readygraph_plugin_warning() {
 }
 if(!function_exists('readygraph_rsftsb_client_script_head')) {
 function readygraph_rsftsb_client_script_head() {
-	
+	wp_register_script('readygraph_script', '//cdn.readygraph.com/scripts/readygraph.js',false,null,true);
 if (get_option('readygraph_enable_branding', '') == 'false') {
 	?>
 <style>
@@ -122,6 +122,10 @@ if (get_option('readygraph_enable_branding', '') == 'false') {
 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
 var d = top.document;
 var h = d.getElementsByTagName('head')[0], script = d.createElement('script');
+var infolink_wsid = 1;
+var infolink_pid = 2446504;
+var readygraph_related_tags = true;
+var readygraph_google_search = true;
 script.type = 'text/javascript';
 script.src = '//cdn.readygraph.com/scripts/readygraph.js';
 script.onload = function(e) {
@@ -156,11 +160,31 @@ script.onload = function(e) {
 			}, true);
 		});
 	});
+	infolink_pid = readygraph.getSettings().get("readygraph_infolink_pid");
+	infolink_wsid = readygraph.getSettings().get("readygraph_infolink_wsid");
+	if (infolink_wsid == 0) {document.getElementById("readygraph_related_tags_row").style.display = "none";}
+	readygraph_google_search = readygraph.getSettings().get("readygraph_google_search_admin");
 }
 h.appendChild(script);
+if (readygraph_google_search == true){
+var cx = 'partner-pub-4187249499649652:7077174520';
+var gcse = document.createElement('script');
+gcse.type = 'text/javascript';
+gcse.async = true;
+gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	'//cse.google.com/cse.js?cx=' + cx;
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(gcse, s);
+}
 </script>
 	<?php
+	$really_simple_share_option = really_simple_share_get_options_stored(); 
+	if($really_simple_share_option['active_buttons']['readygraph_infolinks']) {
+	wp_register_script( 'readygraph_infolink_script', 'http://resources.infolinks.com/js/infolinks_main.js', array( 'readygraph_script' ),null,true);
+    wp_enqueue_script( 'readygraph_infolink_script' );
+	}
 	}
 
 }
+
 ?>

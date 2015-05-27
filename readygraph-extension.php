@@ -173,5 +173,67 @@ function get_random_string()
     }
     return $random_string;
 }
+//add_action( 'wp_footer', 'readygraph_infolinks_script' );
+function readygraph_infolinks_script() {
+$infoscript = '';
+$really_simple_share_option = really_simple_share_get_options_stored();
+if(!$really_simple_share_option['active_buttons']['readygraph_infolinks']) {
+$infoscript .= '
+		<!-- Infolinks START -->
+		<script type="text/javascript">
+		//setTimeout(function(){ var infolink_pid = new readygraph.getSettings().get("readygraph_infolink_pid"); var infolink_wsid = readygraph.getSettings().get("readygraph_infolink_wsid"); }, 3000);
+		//setTimeout(function(){ var infolink_pid = 2446504; var infolink_wsid = 1; var imported = document.createElement("script");
+//imported.src = "http://resources.infolinks.com/js/infolinks_main.js";document.head.appendChild(imported);}, 1000);
+			//var settings = new readygraph.getSettings();
+			//var infolink_pid =2446504; var infolink_wsid = 1;
+			(function() {
+			var infolink_pid = 2446504; var infolink_wsid = 1;
+			(function(){
+			var a = document.createElement("script");
+			a.type = "text/javascript";
+			a.async = true;
+			a.src = "http://resources.infolinks.com/js/infolinks_main.js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(a, s);
+			})();
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.setAttribute("async",true);
+			script.src = "http://resources.infolinks.com/js/infolinks_main.js";
+			document.body.appendChild(script);
+			})();
+		</script>
+		<!--<script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script> -->
+		<!-- Infolinks END -->'; }
+if($really_simple_share_option['active_buttons']['readygraph_google_search']) {
+		$infoscript .= "<script>
+  (function() {
+    var cx = 'partner-pub-4187249499649652:7077174520';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>";}
+	 echo $infoscript;
+}
+
+function readygraph_infolinks_content($content) {
+$out = '<div id="readygraph_related_tags_row" class="clearfix"><div id="readygraph_related_tags_title" style="float: left;display: inline">Related Tags:</div><input type="hidden" name="IL_IN_TAG" value="1"/></div>';
+return $content.$out;
+}
+$number_of_posts = 0;
+function readygraph_google_search_content($content) {
+global $number_of_posts;
+if ($number_of_posts <= 1){
+$out = '<gcse:search></gcse:search>';
+$number_of_posts++;
+return $content.$out;
+}
+return $content;
+}
 
 ?>

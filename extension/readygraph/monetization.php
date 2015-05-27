@@ -24,20 +24,28 @@ rsftsb_delete_rg_options();
 $dir = plugin_dir_path( __FILE__ );
 rsftsb_rrmdir($dir);
 }
+$really_simple_share_option = really_simple_share_get_options_stored();
 function readygraph_monetize_update(){
 	$app_id = get_option('readygraph_application_id');
 	$email = get_option('readygraph_monetize_email');
 	$monetize = get_option('readygraph_enable_monetize');
-	$related_tags = get_option('readygraph_related_tags');
+	if($really_simple_share_option['active_buttons']['readygraph_infolinks']) $related_tags = "true";
+	else $related_tags = "false";
+	if($really_simple_share_option['active_buttons']['readygraph_google_search']) $google_search = "true";
+	else $google_search = "false";
 	$url = 'https://readygraph.com/api/v1/wp-monetize/';
-	$response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'monetize_email' => $email, 'monetize' => $monetize, 'related_tags' => $related_tags)));
+	$response = wp_remote_post($url, array( 'body' => array('app_id' => $app_id, 'monetize_email' => $email, 'monetize' => $monetize, 'related_tags' => $related_tags, 'google_search' => $google_search)));
 	if ( is_wp_error( $response ) ) {
 	} else {
    $json_decoded = json_decode($response['body'],true);
+   if (array_key_exists('adsoptimal_id', $json_decoded['data'])) {
    update_option('readygraph_adsoptimal_id', $json_decoded['data']['adsoptimal_id']);
+   }   if (array_key_exists('adsoptimal_secret', $json_decoded['data'])) {
    update_option('readygraph_adsoptimal_secret', $json_decoded['data']['adsoptimal_secret']);
+   }
 }
 }
+
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "changeaccount")rsftsb_disconnectReadyGraph();
 	if(isset($_GET["action"]) && base64_decode($_GET["action"]) == "deleteaccount")rsftsb_deleteReadyGraph();
 	global $main_plugin_title;
@@ -52,9 +60,12 @@ function readygraph_monetize_update(){
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST["readygraph_monetize"]) && $_POST["readygraph_monetize"] == "1") update_option('readygraph_enable_monetize', "true");
 		else update_option('readygraph_enable_monetize', "false");
-		if (isset($_POST["readygraph_related_tags"]) && $_POST["readygraph_related_tags"] == "1") update_option('readygraph_related_tags', "true");
-		else update_option('readygraph_enable_monetize', "false");
+		if (isset($_POST["readygraph_related_tags"]) && $_POST["readygraph_related_tags"] == "1") $really_simple_share_option['active_buttons']['readygraph_infolinks'] = true;
+		else $really_simple_share_option['active_buttons']['readygraph_infolinks'] = false;
+		if (isset($_POST["readygraph_google_search"]) && $_POST["readygraph_google_search"] == "1") $really_simple_share_option['active_buttons']['readygraph_google_search'] = true;
+		else $really_simple_share_option['active_buttons']['readygraph_google_search'] = false;
 		if (isset($_POST["readygraph_monetize_email"])) update_option('readygraph_monetize_email', $_POST["readygraph_monetize_email"]);
+		update_option('really_simple_share', $really_simple_share_option);
 		readygraph_monetize_update();
 	}
 	if (get_option('readygraph_enable_branding', '') == 'false') {
@@ -215,6 +226,9 @@ If you have questions or concerns contact us anytime at <a href="mailto:info@rea
 				</p>
 				<p><input type="checkbox" name="readygraph_related_tags" value="1" style="margin: 0 10px;" <?php if(get_option('readygraph_related_tags') && get_option('readygraph_related_tags') == "true") echo "checked"; ?> >Enable Related Tags (Powered by Infolinks)</span>
 					<a href="#" class="help-tooltip"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/Help-icon.png" width="15px" style="margin-left:10px;"/><span><img class="callout" src="<?php echo plugin_dir_url( __FILE__ );?>assets/callout_black.gif" /><strong>ReadyGraph Monetization Settings</strong><br />You can check/uncheck this box to enable/disable the related tags displaying below your post<br /></span></a>
+				</p>
+				<p><input type="checkbox" name="readygraph_google_search" value="1" style="margin: 0 10px;" <?php if($really_simple_share_option['active_buttons']['readygraph_google_search']) echo "checked"; ?> >Enable Google Search Box (Powered by Google Custom Search)</span>
+					<a href="#" class="help-tooltip"><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/Help-icon.png" width="15px" style="margin-left:10px;"/><span><img class="callout" src="<?php echo plugin_dir_url( __FILE__ );?>assets/callout_black.gif" /><strong>ReadyGraph Monetization Settings</strong><br />You can check/uncheck this box to enable/disable the google search box displaying below your post<br /></span></a>
 				</p>
 				<div class="save-changes">
 			<a type="button" class="btn btn-large btn-warning" href="https://www.adsoptimal.com/api/v4/redirect/dashboard?adoid=<?php echo get_option('readygraph_adsoptimal_id', ''); ?>&secret=<?php echo get_option('readygraph_adsoptimal_secret', ''); ?>;" target="_blank" style="margin: 15px">View Revenue Dashboard</a><button type="submit" class="btn btn-large btn-warning save" formaction="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&ac=monetization-settings" style="margin: 15px">Save Changes</button>
