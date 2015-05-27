@@ -33,9 +33,7 @@ function rsftsb_myajax_submit() {
 
   add_action('admin_notices', 'add_readygraph_plugin_warning');
 if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0){
-if (get_option('readygraph_enable_monetize', '') == "true" || strlen(get_option('readygraph_access_token','')) > 0) {
-  add_action('wp_footer', 'readygraph_rsftsb_client_script_head');
-}
+add_action('wp_footer', 'readygraph_rsftsb_client_script_head');
 if (!get_option('readygraph_related_tags')){
   $app_id = get_option('readygraph_application_id');
   delete_option('readygraph_related_tags_install');
