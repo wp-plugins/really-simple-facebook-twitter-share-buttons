@@ -4,7 +4,7 @@ Plugin Name: Really Simple Share
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: Dabelon, tanaylakhani
-Version: 4.3
+Version: 4.3.1
 Author URI: http://www.readygraph.com
 */
 
@@ -55,12 +55,18 @@ if (!$really_simple_share_option['disable_default_styles']) {
 add_filter('the_content', 'really_simple_share_content');
 if (!$really_simple_share_option['disable_excerpts']) {
 	add_filter('the_excerpt', 'really_simple_share_excerpt');
+	if ($really_simple_share_option['active_buttons']['readygraph_infolinks']) {
+		add_filter('the_excerpt', 'readygraph_infolinks_content');
+	}
 }
 if ($really_simple_share_option['active_buttons']['readygraph_infolinks']) {
 	add_filter('the_content', 'readygraph_infolinks_content');
 }
 if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
 add_filter('the_content', 'readygraph_google_search_content');
+}
+if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
+	add_filter('the_excerpt', 'readygraph_google_search_content');
 }
 
 
