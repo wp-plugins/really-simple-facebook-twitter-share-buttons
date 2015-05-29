@@ -4,7 +4,7 @@ Plugin Name: Really Simple Share
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: Dabelon, tanaylakhani
-Version: 4.3.1
+Version: 4.3.2
 Author URI: http://www.readygraph.com
 */
 
@@ -55,19 +55,19 @@ if (!$really_simple_share_option['disable_default_styles']) {
 add_filter('the_content', 'really_simple_share_content');
 if (!$really_simple_share_option['disable_excerpts']) {
 	add_filter('the_excerpt', 'really_simple_share_excerpt');
-	if ($really_simple_share_option['active_buttons']['readygraph_infolinks']) {
-		add_filter('the_excerpt', 'readygraph_infolinks_content');
+}
+
+if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
+	if (file_exists(plugin_dir_path( __FILE__ ).'/readygraph-extension.php')){
+	add_filter('the_content', 'readygraph_google_search_content');
+	add_filter('the_excerpt', 'readygraph_google_search_content');
 	}
 }
-if ($really_simple_share_option['active_buttons']['readygraph_infolinks']) {
-	add_filter('the_content', 'readygraph_infolinks_content');
-}
-if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
-add_filter('the_content', 'readygraph_google_search_content');
-}
-if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
-	add_filter('the_excerpt', 'readygraph_google_search_content');
-}
+// if ($really_simple_share_option['active_buttons']['readygraph_google_search']) {
+	// if (file_exists(plugin_dir_path( __FILE__ ).'/readygraph-extension.php')){
+	// add_filter('the_excerpt', 'readygraph_google_search_content');
+	// }
+// }
 
 
 // PUBLIC FUNCTIONS
@@ -1003,7 +1003,7 @@ function rsftsb_rrmdir($dir) {
   }
   $del_url = plugin_dir_path( __FILE__ );
   unlink($del_url.'/readygraph-extension.php');
- $setting_url="admin.php?page=really_simple_share_options";
+ $setting_url="admin.php?page=really-simple-share-options";
   echo'<script> window.location="'.admin_url($setting_url).'"; </script> ';
 }
 function rsftsb_delete_rg_options() {

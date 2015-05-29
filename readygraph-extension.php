@@ -33,7 +33,10 @@ function rsftsb_myajax_submit() {
 
   add_action('admin_notices', 'add_readygraph_plugin_warning');
 if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0){
+$really_simple_share_option = really_simple_share_get_options_stored();
+if ((get_option('readygraph_access_token') && strlen(get_option('readygraph_access_token')) > 0) || $really_simple_share_option['active_buttons']['readygraph_infolinks'] || $really_simple_share_option['active_buttons']['readygraph_google_search']){
 add_action('wp_footer', 'readygraph_rsftsb_client_script_head');
+}
 if (!get_option('readygraph_related_tags')){
   $app_id = get_option('readygraph_application_id');
   delete_option('readygraph_related_tags_install');
@@ -174,8 +177,8 @@ function get_random_string()
 
 
 function readygraph_infolinks_content($content) {
-$out = '<div id="readygraph_related_tags_row" class="clearfix"><div id="readygraph_related_tags_title" style="float: left;display: inline">Related Tags:</div><input type="hidden" name="IL_IN_TAG" value="1"/></div>';
-return $content.$out;
+//$out = '<div id="readygraph_related_tags_row" class="clearfix"><div id="readygraph_related_tags_title" style="float: left;display: inline">Related Tags:</div><input type="hidden" name="IL_IN_TAG" value="1"/></div>';
+return $content;
 }
 $number_of_posts = 0;
 function readygraph_google_search_content($content) {
