@@ -4,7 +4,7 @@ Plugin Name: Really Simple Share
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: Dabelon, tanaylakhani
-Version: 4.3.2
+Version: 4.3.3
 Author URI: http://www.readygraph.com
 */
 
@@ -226,10 +226,10 @@ function really_simple_share_style () {
 
 
 function really_simple_share_menu () {
-	if( file_exists(plugin_dir_path( __FILE__ ).'/readygraph-extension.php')) {
-	global $menu_slug;
+	if( file_exists(plugin_dir_path( __FILE__ ).'/readygraph-extension.php') && (get_option('readygraph_deleted') != "true")) {
+	global $rsftsb_menu_slug;
 	add_menu_page( __( 'Really Simple Share', 'really-simple-share' ), __( 'Really Simple Share', 'really-simple-share' ), 'admin_dashboard', 'really-simple-share', 'readygraph_rsftsb_menu_page' );
-	add_submenu_page('really-simple-share', 'Readygraph App', __( 'Readygraph App', 'really-simple-share' ), 'administrator', $menu_slug, 'readygraph_rsftsb_menu_page');
+	add_submenu_page('really-simple-share', 'Readygraph App', __( 'Readygraph App', 'really-simple-share' ), 'administrator', $rsftsb_menu_slug, 'readygraph_rsftsb_menu_page');
 	add_submenu_page('really-simple-share', 'Share Options', __( 'Share Options', 'really-simple-share' ), 'administrator', 'really-simple-share-options', 'really_simple_share_options');
 	add_submenu_page('really-simple-share', 'Share Counts', __( 'Share Counts', 'really-simple-share' ), 'administrator', 'really-simple-share-counts', 'really_simple_share_counts');
 	add_submenu_page('really-simple-share', 'Go Premium', __( 'Go Premium', 'really-simple-share' ), 'administrator', 'readygraph-go-premium', 'readygraph_rsftsb_premium_page');
