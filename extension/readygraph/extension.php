@@ -6,7 +6,6 @@ function rsftsb_readygraph_client_script_head() {
 	if(function_exists('s2_readygraph_client_script_head'))  return;
 	if(function_exists('gCF_readygraph_client_script_head'))  return;
 	if(function_exists('ee_readygraph_client_script_head'))  return;
-	if(function_exists('rsftsb_readygraph_client_script_head'))  return;
 	if(function_exists('al2fb_readygraph_client_script_head'))  return;
 	if(function_exists('rpr_readygraph_client_script_head'))  return;
 	if(!get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) < 0) return;
@@ -87,15 +86,17 @@ script.onload = function(e) {
 	});
 }
 h.appendChild(script);
-if (readygraph_google_search == true){
+</script>
+<?php } 
+function rsftsb_google_search_script_head() { 
+?>
+<script type='text/javascript'>
 var cx = 'partner-pub-4187249499649652:7077174520';
 var gcse = document.createElement('script');
 gcse.type = 'text/javascript';
 gcse.async = true;
-gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	'//cse.google.com/cse.js?cx=' + cx;
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(gcse, s);
-}
+gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//cse.google.com/cse.js?cx=' + cx;
+var q = document.getElementsByTagName('script')[0];
+q.parentNode.insertBefore(gcse, q);
 </script>
 <?php } ?>

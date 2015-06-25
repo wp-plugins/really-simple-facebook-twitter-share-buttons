@@ -126,12 +126,14 @@ function add_rsftsb_readygraph_plugin_warning() {
 }
   
 	add_action('admin_notices', 'add_rsftsb_readygraph_plugin_warning');
-
+	$really_simple_share_option = really_simple_share_get_options_stored();
 	if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0){
-	if ((get_option('readygraph_access_token') && strlen(get_option('readygraph_access_token')) > 0) || (get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true")){
+	if ((get_option('readygraph_access_token') && strlen(get_option('readygraph_access_token')) > 0) || (get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true")|| ($really_simple_share_option['active_buttons']['specificfeeds_follow'])){
 	add_action('wp_footer', 'rsftsb_readygraph_client_script_head');
 	}
 	}
+	add_action( 'wp_footer', 'rsftsb_google_search_script_head', 5);
+
 	add_action('admin_init', 'on_plugin_activated_readygraph_rsftsb_redirect');
 	add_option('readygraph_connect_notice','true');
 
@@ -166,6 +168,8 @@ function rg_rsftsb_popup_options_enqueue_scripts() {
 
 function rsftsb_post_updated_send_email( $post_id ) {
 	// If this is just a revision, don't send the email.
+	$post_type = get_post_type( $post_id );
+	if ('page' != $post_type && 'post' != $post_type) return;
 	if ( wp_is_post_revision( $post_id ) ) return;
 	if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0 && get_option('readygraph_send_blog_updates') == "true"){
 		$post_title = get_the_title( $post_id );
@@ -260,6 +264,7 @@ function rsftsb_get_random_string()
     }
     return $random_string;
 }
+
 $number_of_posts = 0;
 function readygraph_google_search_content($content) {
 global $number_of_posts;
@@ -270,4 +275,5 @@ return $content.$out;
 }
 return $content;
 }
+
 ?>
