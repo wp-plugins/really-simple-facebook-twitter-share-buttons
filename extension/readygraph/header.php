@@ -117,4 +117,17 @@ include("functions.php");
 		<p><a href="https://readygraph.com/accounts/payment/?email=<?php echo get_option('readygraph_email', '') ?>" target="_blank" style="color: #b1c1ca" ><img src="<?php echo plugin_dir_url( __FILE__ );?>assets/go-premium.png" height="40px" style="margin:5px" /></a></p>
 	</div>
 	</div>
+	<?php } else { ?>
+	<div style="clear;both;float:right;display:block;width: 10%; height: 50px;margin-right: 3.5%;z-index:100">
+		<div class="btn-group pull-right" style="margin: 15px 10px 0 0;z-index:100">
+			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="background: #939393; border-color: #ffffff; color: #ffffff;z-index:100 ">
+				<span class="email-address" style="text-shadow: none;">Settings</span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a class="delete" href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&action=<?php echo base64_encode("deleteaccount");?>">Delete ReadyGraph</a></li>
+			</ul>
+		</div>
+		
+	</div>
+	
 	<?php } ?>

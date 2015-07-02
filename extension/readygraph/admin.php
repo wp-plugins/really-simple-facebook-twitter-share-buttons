@@ -46,7 +46,9 @@ include("header.php");
 <!--		<h3 style="margin-top: 0px; font-weight: 300;"><?php //echo $main_plugin_title ?>, Now with ReadyGraph</h3> -->
 		<p style="padding: 50px 0px 10px 0px;"><a class="btn btn-primary connect" href="javascript:void(0);" style="font-size: 18px; padding: 20px 25px;">Connect ReadyGraph >></a></p>
 		<span><input type="checkbox" id="readygraph_monetize" name="readygraph_monetize" value="1" style="margin: 0 10px;" checked >Enable Monetization</span>
-		
+		<p>&nbsp;</p>
+
+		<p style="height: 20px;text-align:center">Or <a class="delete" href="<?php $current_url = explode("&", $_SERVER['REQUEST_URI']); echo $current_url[0];?>&action=<?php echo base64_encode("deleteaccount");?>">Delete ReadyGraph</a></p>
 		<!--<p style="padding: 0px 0px;"><a class="btn btn-default skip" href="javascript:void(0);" style="font-size: 10px; line-height: 20px; padding: 0 30px;">Skip ReadyGraph</a></p>-->
 		<p style="margin-top:50px">Readygraph maximizes your Growth and Revenue</p>
 		<p style="text-align: left; padding: 0 20px;">

@@ -4,7 +4,7 @@ Plugin Name: Really Simple Share
 Plugin URI: http://www.whiletrue.it/really-simple-facebook-twitter-share-buttons-for-wordpress/
 Description: Puts Facebook, Twitter, LinkedIn, Google "+1", Pinterest and other share buttons of your choice above or below your posts.
 Author: Dabelon, tanaylakhani
-Version: 4.3.7
+Version: 4.3.8
 Author URI: http://www.readygraph.com
 */
 
@@ -19,6 +19,9 @@ Author URI: http://www.readygraph.com
     GNU General Public License for more details.
 */
 
+//plugin version upgrades
+define( 'RSFTSB_VERSION', '4.3.8' );
+
 // RETRIEVE PLUGIN EXTERNAL FUNCTIONS
 
 require_once('really-simple-share-options.php');
@@ -28,7 +31,14 @@ require_once('really-simple-share-counts.php');
 // RETRIEVE OPTIONS
 
 $really_simple_share_option = really_simple_share_get_options_stored();
-
+if (isset($really_simple_share_option['version'])){
+	if ($really_simple_share_option['version'] !== RSFTSB_VERSION ) {
+		add_action('shutdown', 'really_simple_share_update');
+	}
+} else { 
+$really_simple_share_option['version'] = RSFTSB_VERSION;
+update_option('really_simple_share', $really_simple_share_option);	
+}
 
 // ACTION AND FILTERS
 
@@ -208,6 +218,9 @@ function really_simple_share_init ($force=false) {
     // ALWAYS IN THE HEADER, OTHERWHISE THE WIDGET IS UNABLE TO LOAD
 		wp_enqueue_script('really_simple_share_bitcoin', 'http://coinwidget.com/widget/coin.js');
 	}
+}
+function really_simple_share_update ($force=false) {
+	//plugin version check and upgrade code
 }
 
 function really_simple_share_style () {
@@ -916,7 +929,7 @@ function really_simple_share_get_options_stored () {
 function really_simple_share_get_options_default () {
 	$option = array();
 	$option['active_buttons'] = array('facebook_like'=>true, 
-    'twitter'=>true, 'google1'=>true, 'specificfeeds_follow'=>true,'readygraph_infolinks'=>true,'readygraph_google_search'=>true,
+    'twitter'=>true, 'google1'=>true, 'specificfeeds_follow'=>true,'readygraph_infolinks'=>true,'readygraph_google_search'=>false,
     'facebook_share_new'=>false, 'google_share'=>false,
 		'linkedin'=>false, 'digg'=>false, 'stumbleupon'=>false, 'hyves'=>false, 'email'=>false, 
 		'reddit'=>false, 'flattr'=>false, 'pinterest'=>false, 'tipy'=>false, 'buffer'=>false, 
