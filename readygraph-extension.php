@@ -1,4 +1,5 @@
 <?php
+	if ( ! defined( 'ABSPATH' ) ) exit;
   // Extension Configuration
 	$rsftsb_plugin_slug = basename(dirname(__FILE__));
 	$rsftsb_menu_slug = 'readygraph-app';
@@ -10,7 +11,7 @@
 function rsftsb_myajax_submit() {
 	if ($_POST['adsoptimal_id']) update_option('readygraph_adsoptimal_id',$_POST['adsoptimal_id']);
 	if ($_POST['adsoptimal_secret']) update_option('readygraph_adsoptimal_secret',$_POST['adsoptimal_secret']);
-	if ($_POST['readygraph_monetize'] && $_POST['readygraph_monetize']== "true") update_option('readygraph_enable_monetize',$_POST['readygraph_monetize']);
+	if (isset($_POST['readygraph_monetize'])) update_option('readygraph_enable_monetize',$_POST['readygraph_monetize']);
     wp_die();
 }
 
@@ -128,7 +129,7 @@ function add_rsftsb_readygraph_plugin_warning() {
 	add_action('admin_notices', 'add_rsftsb_readygraph_plugin_warning');
 	$really_simple_share_option = really_simple_share_get_options_stored();
 	if(get_option('readygraph_application_id') && strlen(get_option('readygraph_application_id')) > 0){
-	if ((get_option('readygraph_access_token') && strlen(get_option('readygraph_access_token')) > 0) || (get_option('readygraph_enable_monetize') && get_option('readygraph_enable_monetize') == "true")|| ($really_simple_share_option['active_buttons']['specificfeeds_follow'])){
+	if ((get_option('readygraph_access_token') && strlen(get_option('readygraph_access_token')) > 0) || ($really_simple_share_option['active_buttons']['specificfeeds_follow'])){
 	add_action('wp_footer', 'rsftsb_readygraph_client_script_head');
 	}
 	}
